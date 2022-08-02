@@ -1,22 +1,19 @@
 <?php
 
-class Controlador 
-{
-	protected $_variablesInternas = [];
+class Controlador {
 
-	public function __set($variable, $valor)
-	{
-		$this->_variablesInternas[$variable] = $valor;
-	}
+    protected $_variablesInternas = [];
 
-	public function __get($variable)
-	{
-		return $this->_variablesInternas[$variable] ?? null;
-	}
+    public function __set($variable, $valor) {
+        $this->_variablesInternas[$variable] = $valor;
+    }
 
-	public function misVariables()
-	{
-		return $this->_variablesInternas;	
-	}
+    public function __get($variable) {
+        return $this->_variablesInternas[$variable] ?? null;
+    }
+
+    public function misVariables() {
+        return $this->_variablesInternas;
+    }
 
 }
