@@ -1,14 +1,31 @@
 <?php
 
+/**
+ * Manegador de errores y excepciones
+ */
 class Errores
 {
+    /**
+     * Manejador general de errores
+     * @param $level
+     * @param $message
+     * @param $file
+     * @param $line
+     * @return void
+     * @throws ErrorException
+     */
     public static function manejarError($level, $message, $file, $line)
     {
         if (error_reporting() !== 0) {  // to keep the @ operator working
             throw new \ErrorException($message, 0, $level, $file, $line);
         }
     }
-    
+
+    /**
+     * Manejador de Excepciones general
+     * @param $exception
+     * @return void
+     */
     public static function manejarExcepcion($exception)
     {
         $code = $exception->getCode();
@@ -36,7 +53,7 @@ class Errores
 
             error_log($message);
             
-            Cargar::vista("_Compartidos/Plantillas/$code.phtml");
+            Cargar::vista("_Compartidos/Plantillas/$code");
         }
     }
 }

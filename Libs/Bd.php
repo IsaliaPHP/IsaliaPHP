@@ -1,116 +1,255 @@
 <?php
 
-class Bd {
+/**
+ * Bd
+ * Clase para la gestión de acceso a la base de datos
+ * y operaciones CRUD: Crear, Leer, Actualizar y Borrar
+ *
+ */
+class Bd
+{
+    /**
+     * Base de datos a la que se conecta
+     *
+     * @var PDO
+     */
+    private static $_conexion = null;
 
-    private $_conexion = null;
-    private $_ultimoId;
-    private $_filasAfectadas;
 
-    public final function conectar() {
+    /**
+     * Sirve para conectarse a la base de datos
+     * usando los parámetros de la clase Configuracion
+     * @throws Exception
+     */
+    private static function conectar()
+    {
+
+        if (isset(self::$_conexion)) {
+            return TRUE;
+        }
+
         try {
-            $this->_conexion = new PDO(
-                    Configuracion::CADENA_CONEXION, Configuracion::USUARIO_BD, Configuracion::CLAVE_BD, Configuracion::PARAMETROS_EXTRAS
+            self::$_conexion = new PDO(
+                Configuracion::CADENA_CONEXION,
+                Configuracion::USUARIO_BD,
+                Configuracion::CLAVE_BD,
+                Configuracion::PARAMETROS_EXTRAS
             );
             return TRUE;
         } catch (Exception $e) {
+            throw new Exception($e->getMessage());
             return FALSE;
         }
     }
 
-    public final function buscar(string $sql, array $parametros = null) {
-        $this->conectar();
+    /**
+     * Permite reutilizar sentencias para la ejecución de
+     * consultas parametrizadas
+     */
+    private static function _ejecutar(string $sql, array $parametros = null)
+    {
+        self::conectar();
 
-        $sth = $this->_conexion->prepare($sql);
+        $sentencia = self::$_conexion->prepare($sql);
         if (is_array($parametros)) {
-            $sth->execute($parametros);
+            $sentencia->execute($parametros);
         } else {
-            $sth->execute();
+            $sentencia->execute();
         }
-
-        $result = $sth->fetchAll(PDO::FETCH_ASSOC);
-        $sth->closeCursor();
-        $this->cerrarConexion();
-
-        return $result;
+        return $sentencia;
     }
 
-    public final function buscarPrimero(string $sql, array $parametros = null) {
-        $this->conectar();
-        $sth = $this->_conexion->prepare($sql);
-        if (is_array($parametros)) {
-            $sth->execute($parametros);
-        } else {
-            $sth->execute();
-        }
-        $result = $sth->fetch(PDO::FETCH_ASSOC);
-        $sth->closeCursor();
-        $this->cerrarConexion();
+    /**
+     * Obtiene filas (registros) desde la base de datos como array
+     * @param string $sql
+     * @param array $parametros
+     *
+     * @return array
+     */
+    public static function obtenerFilas(string $sql, array $parametros = null)
+    {
 
-        return $result;
+        $sentencia = self::_ejecutar($sql, $parametros);
+
+        $filas = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+        $sentencia->closeCursor();
+
+        return $filas;
     }
 
-    public final function obtenerValor(string $sql) {
-        $this->conectar();
-        $sth = $this->_conexion->prepare($sql);
-        $sth->execute();
-        $result = $sth->fetch(PDO::FETCH_NUM);
-        $sth->closeCursor();
-        $this->cerrarConexion();
+    /**
+     * Obtiene una fila (registro) desde la base de datos como array
+     * @param string $sql
+     * @param array $parametros
+     *
+     * @return array
+     */
+    public static function obtenerFila(string $sql, array $parametros = null)
+    {
+        $filas = self::obtenerFilas($sql, $parametros);
+        if (isset($filas) && count($filas) > 0) {
+            return $filas[0];
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Obtiene un escalar (valor) desde la base de datos
+     * @param string $sql
+     *
+     * @return mixed
+     */
+    public static function obtenerValor(string $sql)
+    {
+        $sentencia = self::_ejecutar($sql);
+
+        $result = $sentencia->fetch(PDO::FETCH_NUM);
+        $sentencia->closeCursor();
 
         return !empty($result) ? $result[0] : null;
     }
 
-    public final function ejecutar(string $sql, array $parametros = null) {
-        $this->conectar();
-        $sth = $this->_conexion->prepare($sql);
+    /**
+     * Ejecuta sentencias SQL para Crear, Actualizar o Eliminar
+     * Retorna la cantidad de filas afectadas con la consulta
+     * @param string $sql
+     * @param array $parametros
+     *
+     * @return int
+     */
+    private static function ejecutar(string $sql, array $parametros = null)
+    {
 
-        Informacion::escribirLog($sql);
-        
-        if (is_array($parametros)) {
-            $sth->execute($parametros);
-        } else {
-            $sth->execute();
+        $sentencia = self::_ejecutar($sql, $parametros);
+
+        $filasAfectadas = $sentencia->rowCount();
+
+        return $filasAfectadas;
+    }
+
+    /**
+     * Genera y ejecuta SQL para agregar un registro en la tabla indicada
+     * Retorna último ID insertado
+     * @param string $tabla
+     * @param array $input
+     *
+     * @return int
+     */
+    public static function insertar(string $tabla, array $input)
+    {
+        $atributos = '';
+        $valores = '';
+        $parametros = [];
+
+        foreach ($input as $key => $value) {
+            $atributos .= $key . ',';
+            $valores .= ':' . $key . ',';
+            $parametros[':' . $key] = $value;
         }
 
-        $this->_ultimoId = null;
-        $this->_filasAfectadas = null;
+        $atributos = str_replace(',,', '', $atributos . ',');
+        $valores = str_replace(',,', '', $valores . ',');
 
-        $this->_filasAfectadas = $sth->rowCount();
-        $result = intval($this->_filasAfectadas) > 0;
+        $sql = "INSERT INTO " . $tabla . " (" . $atributos . ") ";
+        $sql .= " VALUES (" . $valores . ")";
 
-        if (strpos(strtolower($sql), 'insert into') !== false) {
-            $this->_ultimoId = $this->_conexion->lastInsertId();
+        self::ejecutar($sql, $parametros);
 
-            if ($this->_ultimoId > 0) {
-                $result = $this->_ultimoId;
-            }
+        return self::$_conexion->lastInsertId();
+    }
+
+    /**
+     * Genera y ejecuta SQL para actualizar uno o más registros en la tabla indicada
+     * Retorna cantidad de filas afectadas
+     * @param string $tabla
+     * @param array $input
+     * @param string $condicion
+     *
+     * @return int
+     */
+    public static function actualizar(string $tabla, array $input, string $condicion = null)
+    {
+        $valores = '';
+
+        $parametros = [];
+
+        foreach ($input as $key => $value) {
+            $valores .= "$key = :$key,";
+            $parametros[':' . $key] = $value;
         }
 
-        Informacion::escribirLog(join(',', $parametros));
+        $valores = str_replace(',,', '', $valores . ',');
 
-        $this->cerrarConexion();
+        $sql = "UPDATE " . $tabla;
+        $sql .= " SET " . $valores . " ";
 
-        return $result ?? null;
+        if (!empty($condicion)) {
+            $sql .= $condicion;
+        }
+
+        return self::ejecutar($sql, $parametros);
     }
 
-    public final function obtenerUltimoId() {
-        return $this->_ultimoId;
+    /**
+     * Genera y ejecuta SQL para eliminar uno o más registro en la tabla indicada
+     * Retorna cantidad de filas afectadas
+     * @param string $tabla
+     * @param string $condicion
+     * @param array $parametros
+     *
+     * @return int
+     */
+    public static function eliminar(string $tabla, string $condicion, array $parametros = null)
+    {
+        $sql = "DELETE FROM " . $tabla . " " . $condicion;
+
+        return self::ejecutar($sql, $parametros);
     }
 
-    public final function cerrarConexion() {
-        $this->_conexion = null;
+
+    /**
+     * Permite cerrar la conexión a la base de datos
+     */
+    private static function _cerrarConexion()
+    {
+        self::$_conexion = null;
     }
 
-    public final function iniciarTransaccion() {
-        $this->_conexion->beginTransaction();
+
+    /**
+     * Inicia una transacción en caso de requerirla
+     */
+    public static function iniciarTransaccion()
+    {
+        self::$_conexion->beginTransaction();
     }
 
-    public final function aceptarTransaccion() {
-        $this->_conexion->commit();
+
+    /**
+     * Acepta los cambios realizados dentro de la transacción
+     */
+    public static function aceptarTransaccion()
+    {
+        self::$_conexion->commit();
     }
 
-    public final function reversarTransaccion() {
-        $this->_conexion->rollback();
+
+    /**
+     * Rechaza los cambios realizados dentro de la transacción
+     */
+    public static function reversarTransaccion()
+    {
+        self::$_conexion->rollback();
+    }
+
+
+    /**
+     * Cierra la conexión una vez que el objeto sale de memoria
+     */
+    function __destruct()
+    {
+        self::_cerrarConexion();
     }
 
 }

@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * Clase encargada de eliminar caracteres extraños en las variables globales de PHP
+ */
 class Sanitizar {
 
     private static function stripSlashesDeep($value) {
@@ -27,6 +30,10 @@ class Sanitizar {
         }
     }
 
+    /**
+     * Ejecuta funciones que se encargan de sanitizar variables globales de PHP
+     * @return void
+     */
     public static function ejecutar() {
         static::removeMagicQuotes();
         static::unregisterGlobals();
