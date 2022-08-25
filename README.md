@@ -28,9 +28,6 @@ Los controladores deberán crearse en la carpeta App\Controladores. Su nombre de
 #### Controlador predeterminado
 De forma predeterminada, SimpleMVC utiliza el controlador HomeControlador como clase inicial. Esta configuración puede ser modificada en el archivo \Libs\Configuracion.php
 
-#### Método predeterminado
-De forma predeterminada los controladores preguntan por la existencia de un método llamado antes_de_filtrar() que sirve como base para ejecutar código antes de que se ejecuten las acciones del controlador. Por ejemplo para autentificación o autorización de acceso en diferentes controladores.
-
 #### Vista predeterminada
 De igual forma, se ha definido que el nombre de la vista predeterminada sea *index*, por lo tanto, cada vez que un usuario utilice una llamada al controlador sin incluir la acción, de forma predeterminada, SimpleMVC buscará la acción (método/función) index dentro del controlador.
 
@@ -53,3 +50,24 @@ class UsuariosControlador
 ```
 
 La vista recibirá una variable como $saludo, con la cual podrá interactuar libremente.
+
+#### Método predeterminado
+De forma predeterminada los controladores preguntarán por la existencia de un método llamado *antes_de_filtrar()* que sirve como base para ejecutar código antes de que se ejecuten las acciones del controlador. Por ejemplo para autentificación o autorización de acceso en diferentes controladores. Ver el ejemplo a continuación:
+
+```php
+class UsuariosControlador 
+{
+
+    public function antes_de_filtrar(){
+        if (Sesion::obtener('esta_logueado') == false) {
+            return Enrutador::irA('login/entrar'); //va al controlador login, metodo entrar
+        }
+    }
+    
+    public function index(){
+        return Cargar::vista('Usuarios/index', [
+            "usuarios" => Bd::obtenerFilas("SELECT * FROM usuarios")
+            ] ); //la vista recibe la variable $usuarios
+    }
+}
+```
