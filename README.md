@@ -71,3 +71,49 @@ class UsuariosControlador
     }
 }
 ```
+
+### Acceso a la base de datos
+SimpleMVC implementa una clase llamada Bd (por Base de Datos) en la cual se alojan métodos estáticos que permiten la consulta, creación, actualización y eliminación de datos. En términos de utilidad, las operaciones de INSERT, UPDATE y DELETE están encapsuladas para evitar errores clásicos de escritura de sentencias SQL. Como la clase es un wrapper para PDO, es posible utilizar las mismas funcionalidades de PDO en ella. Los métodos de consulta de datos reciben SQL directo.
+
+#### Obtener N filas de una consulta, método obtenerFilas
+El método obtenerFilas retorna un arreglo de arreglos asociativos de acuerdo a la consulta SQL que se le pase como parámetro (si parece más sencillo, es lo mismo que decir que regresa una lista de registros/filas/tuplas)
+
+```php
+$usuarios = Bd::obtenerFilas("SELECT * FROM usuarios");
+```
+
+#### Obtener una fila a partir de una consulta, método obtenerFila
+A diferencia del método anterior, sólo regresa un arreglo asociativo a partir de la consulta pasada como parámetro (retorna un registro/fila/tupla)
+
+```php
+$usuario_actual = Bd::obtenerFila("SELECT * FROM usuarios WHERE id = :id", [":id" => $id]); //aquí usamos parámetros de PDO
+```
+
+#### Agregar un registro en la tabla, método insertar
+El método insertar permite agregar un registro en la tabla de acuerdo a los datos pasados como arreglo asociativo. Retorna el id del último registro agregado.
+
+```php
+$datos = ["nombre" => "Erick", "email" => "erick@servidor.com", "activo" => 1];
+$usuario_id = Bd::insertar("usuarios", $datos); //le indicamos a qué tabla debe insertar el registro
+```
+
+#### Actualizar un registro en la tabla, método actualizar
+El método actualizar permite modificar un registro en la tabla de acuerdo a los datos pasados como arreglo asociativo. Retorna la cantidad de filas afectadas en la actualización.
+
+```php
+$datos = ["nombre" => "Erick Root"]; //solo actualizaremos el nombre del usuario
+$filas_actualizadas = Bd::actualizar("usuarios", $datos, "WHERE id = $id"); //asumimos que $id viene de algún paso previo
+```
+
+#### Eliminar un registro en la tabla, método eliminar
+El método eliminar permite eliminar un registro en la tabla de acuerdo a la condición indicada. Retorna la cantidad de filas afectadas en la eliminación.
+
+```php
+Bd::eliminar("usuarios", "WHERE id = $id"); //asumimos que $id viene de un paso previo
+```
+
+### Documentación
+El resto de la documentación podrá encontrarse dentro de la sección Wiki en este mismo repositorio.
+
+### Aviso final
+El código aquí expuesto no asegura ni garantiza que esté libre de errores o fallos, por lo tanto, el usuario es responsable de utilizarlo bajo su propio criterio. Su creador no entrega garantías de ningún tipo sobre el código y no es responsable por el uso que las personas hagan de él.
