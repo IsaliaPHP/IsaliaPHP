@@ -18,9 +18,9 @@ Las clases que sean creadas deben ser creadas usando el formato NombreDeClase, p
 
 #### Carga automática de clases
 El framework cuenta con un cargador automático de clases (Autoloader), pero sólo buscará aquellas clases que estén creadas en las siguientes ubicaciones:
-a) \Libs
-b) \App\Controladores
-c) \App\Modelos
+- a) \Libs
+- b) \App\Controladores
+- c) \App\Modelos
 
 #### Nombre de Controladores
 Los controladores deberán crearse en la carpeta App\Controladores. Su nombre de clase debe seguir las características indicadas anteriormente, pero además deberá agregarse el sufijo Controlador en el nombre de la misma (y también en el nombre del archivo físico). Ejemplos para nombres de clases válidos: UsuariosControlador, LoginControlador, HomeControlador. De igual forma, los nombres de archivos deberán coincidir con la regla del nombrado de clases, es decir, UsuariosControlador.php, LoginControlador.php, HomeControlador.php.
