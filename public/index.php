@@ -1,10 +1,5 @@
 <?php
 
-if (Configuracion::VER_ERRORES == true) {
-    error_reporting(E_ALL ^ E_STRICT); // Comentar en producción
-    ini_set('display_errors', 'On'); //comentar en producción    
-}
-
 
 define('RUTA_RAIZ', dirname(dirname(__FILE__)));
 define('DS', DIRECTORY_SEPARATOR);
@@ -49,7 +44,12 @@ spl_autoload_register(
             throw new Exception("Clase no encontrada $clase");
         }
     }
-)
+);
+
+if (Configuracion::VER_ERRORES == true) {
+    error_reporting(E_ALL ^ E_STRICT); // Comentar en producción
+    ini_set('display_errors', 'On'); //comentar en producción    
+}
 
 /**
  * Asignamos los manejadores de errores y excepciones
