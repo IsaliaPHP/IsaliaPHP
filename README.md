@@ -1,4 +1,4 @@
-# SimpleMVC
+# SimpleMVC [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/nelsonrojasn/mvcPHPEsp/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/nelsonrojasn/mvcPHPEsp/?branch=main)
 Framework MVC escrito en PHP con clases y funciones en español
 
 ## Introducción
