@@ -9,9 +9,9 @@ class Cargar {
      * Carga una vista de acuerdo a su nombre
      * @param $nombre
      * @param $parametros
-     * @return void
+     * @return bool
      */
-    public static function vista($nombre, $parametros = null) {
+    public static function vista($nombre, $parametros = null):bool {
         if (isset($parametros) && is_array($parametros)) {
             extract($parametros);
         }
