@@ -20,9 +20,10 @@ class Cargar {
 
         if (file_exists($ruta)) {
             require_once $ruta;
+            return true;
         } else {
             echo "No se encuentra " . $ruta;
-            return;
+            return false;
         }
     }
 
