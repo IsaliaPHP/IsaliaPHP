@@ -28,11 +28,11 @@ Los controladores deberán crearse en la carpeta App\Controladores. Su nombre de
 #### Controlador predeterminado
 De forma predeterminada, SimpleMVC utiliza el controlador HomeControlador como clase inicial. Esta configuración puede ser modificada en el archivo \Libs\Configuracion.php
 
-#### Vista predeterminada
-De igual forma, se ha definido que el nombre de la vista predeterminada sea *index*, por lo tanto, cada vez que un usuario utilice una llamada al controlador sin incluir la acción, de forma predeterminada, SimpleMVC buscará la acción (método/función) index dentro del controlador.
+#### Acción/método predeterminada
+De igual forma, se ha definido que el nombre de la acción predeterminada sea *index*, por lo tanto, cada vez que un usuario utilice una llamada al controlador sin incluir la acción, SimpleMVC buscará la acción (método/función) index dentro del controlador.
 
 #### Ubicación de las vistas
-Cada controlador deberá contar con vistas, las que alojará dentro de la ruta \App\Vistas\NombreDelControlador (sin el sufijo Controlador). Por ejemplo, las vistas del controlador UsuariosControlador se encontrarán en Vistas\Usuarios
+Cada controlador deberá contar con vistas, las que alojará dentro de la ruta \App\Vistas\NombreDelControlador (sin el sufijo Controlador). Por ejemplo, las vistas del controlador UsuariosControlador se encontrarán en Vistas\Usuarios.
 
 #### Nombre de las vistas
 Las vistas pueden llevar el nombre que el usuario estime conveniente. Sólo es necesario que la extensión del archivo sea .phtml. Por ejemplo, si el controlador UsuariosControlador tiene un metodo para agregar usuarios, entonces podría tener una archivo de vista llamado agregar.phtml. Se hace hincapié en que el nombre no es relevante porque es el usuario quien decide qué vista es la que puede cargar dentro del método del controlador.
@@ -60,7 +60,7 @@ class UsuariosControlador
 
     public function antes_de_filtrar(){
         if (Sesion::obtener('esta_logueado') == false) {
-            return Enrutador::irA('login/entrar'); //va al controlador login, metodo entrar
+            return Enrutador::irA('login/entrar'); //va al controlador login, método entrar
         }
     }
     
@@ -73,16 +73,16 @@ class UsuariosControlador
 ```
 
 ### Acceso a la base de datos
-SimpleMVC implementa una clase llamada Bd (por Base de Datos) en la cual se alojan métodos estáticos que permiten la consulta, creación, actualización y eliminación de datos. En términos de utilidad, las operaciones de INSERT, UPDATE y DELETE están encapsuladas para evitar errores clásicos de escritura de sentencias SQL. Como la clase es un wrapper para PDO, es posible utilizar las mismas funcionalidades de PDO en ella. Los métodos de consulta de datos reciben SQL directo.
+SimpleMVC implementa una clase llamada Bd (por Base de Datos) en la cual se alojan métodos estáticos que permiten la consulta, creación, actualización y eliminación de datos. En términos de utilidad, las operaciones de INSERT, UPDATE y DELETE están encapsuladas para evitar errores clásicos de escritura de sentencias SQL. Como la clase utiliza PDO, hace uso de dichas funcionalidades. Los métodos de consulta de datos reciben SQL directo.
 
-#### Obtener N filas de una consulta, método obtenerFilas
+#### Obtener N filas de una consulta, método obtenerFilas (buscar registros)
 El método obtenerFilas retorna un arreglo de arreglos asociativos de acuerdo a la consulta SQL que se le pase como parámetro (si parece más sencillo, es lo mismo que decir que regresa una lista de registros/filas/tuplas)
 
 ```php
 $usuarios = Bd::obtenerFilas("SELECT * FROM usuarios");
 ```
 
-#### Obtener una fila a partir de una consulta, método obtenerFila
+#### Obtener una fila a partir de una consulta, método obtenerFila (buscar un registro)
 A diferencia del método anterior, sólo regresa un arreglo asociativo a partir de la consulta pasada como parámetro (retorna un registro/fila/tupla)
 
 ```php
