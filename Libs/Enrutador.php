@@ -10,7 +10,7 @@ class Enrutador {
      * @param string $ruta
      * @return void
      */
-    static function irA(string $ruta) {
+    public static function irA(string $ruta) {
         header('Location: ' . RUTA_PUBLICA . $ruta, TRUE, 302);
     }
 
