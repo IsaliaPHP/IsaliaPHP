@@ -57,7 +57,6 @@ class Cargar {
      */
     public static function controladorPorUrl(string $url) {
 
-        $urlArray = array();
         $urlArray = explode("/", $url);
 
         $controlador = ( isset($urlArray[0]) && !empty($urlArray[0]) ) ? $urlArray[0] : Configuracion::CONTROLADOR_PREDETERMINADO;
@@ -70,7 +69,6 @@ class Cargar {
         array_shift($urlArray);
         $queryString = $urlArray;
 
-        $controladorNombre = $controlador;
         $controlador = ucwords($controlador);
 
         $despachador = new $controlador();
@@ -86,7 +84,6 @@ class Cargar {
         } else {
             /* Error Generation Code Here */
             throw new Exception("$controlador/$accion no existe");
-            return;
         }
     }
 
