@@ -38,7 +38,6 @@ class Bd
             return TRUE;
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
-            return FALSE;
         }
     }
 
@@ -247,7 +246,7 @@ class Bd
     /**
      * Cierra la conexión una vez que el objeto sale de memoria
      */
-    function __destruct()
+    public function __destruct()
     {
         self::_cerrarConexion();
     }
