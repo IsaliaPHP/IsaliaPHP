@@ -46,7 +46,7 @@ spl_autoload_register(
     }
 );
 
-if (Configuracion::VER_ERRORES == true) {
+if (Configuracion::VER_ERRORES === TRUE) {
     error_reporting(E_ALL ^ E_STRICT); // Comentar en producción
     ini_set('display_errors', 'On'); //comentar en producción    
 }
