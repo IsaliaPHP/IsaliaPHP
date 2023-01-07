@@ -6,7 +6,7 @@
 class Sanitizar {
 
     private static function stripSlashesDeep($value) {
-        $value = is_array($value) ? array_map('static::stripSlashesDeep', $value) : stripslashes($value);
+        $value = is_array($value) ? array_map('Sanitizar::stripSlashesDeep', $value) : stripslashes($value);
         return $value;
     }
 
