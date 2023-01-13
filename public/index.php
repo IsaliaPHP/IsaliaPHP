@@ -3,9 +3,8 @@
 
 define('RUTA_RAIZ', dirname(dirname(__FILE__)));
 define('DS', DIRECTORY_SEPARATOR);
-define('RUTA_APLICACION', RUTA_RAIZ . DS . 'app' . DS);
-define('RUTA_LIBS', RUTA_RAIZ . DS . 'lib' . DS);
-
+define('RUTA_APLICACION', RUTA_RAIZ . DS . 'App' . DS);
+define('RUTA_LIBS', RUTA_RAIZ . DS . 'Libs' . DS);
 define('START_TIME', microtime(TRUE));
 
 
@@ -32,17 +31,11 @@ session_start();
 /**
  * Generación de carga automática de clases
  */
+require_once RUTA_LIBS . "Autocarga.php";
+
 spl_autoload_register(
     function ($clase) {
-        if (file_exists(RUTA_RAIZ . DS . 'Libs' . DS . $clase . '.php')) {
-            require_once(RUTA_RAIZ . DS . 'Libs' . DS . $clase . '.php');
-        } else if (file_exists(RUTA_RAIZ . DS . 'App' . DS . 'Controladores' . DS . $clase . '.php')) {
-            require_once(RUTA_RAIZ . DS . 'App' . DS . 'Controladores' . DS . $clase . '.php');
-        } else if (file_exists(RUTA_RAIZ . DS . 'App' . DS . 'Modelos' . DS . $clase . '.php')) {
-            require_once(RUTA_RAIZ . DS . 'App' . DS . 'Modelos' . DS . $clase . '.php');
-        } else {
-            throw new Exception("Clase no encontrada $clase");
-        }
+        Autocarga::ejecutar($clase);
     }
 );
 

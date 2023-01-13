@@ -22,7 +22,7 @@ class Cargar {
             require_once $ruta;
             return true;
         } else {
-            echo "No se encuentra " . $ruta;
+            throw new Exception("No se encuentra " . $ruta, 1);
             return false;
         }
     }
@@ -44,7 +44,7 @@ class Cargar {
         if (file_exists($ruta)) {
             require_once $ruta;
         } else {
-            echo "No se encuentra " . $ruta;
+            throw new Exception("No se encuentra " . $ruta, 1);
         }
     }
 
