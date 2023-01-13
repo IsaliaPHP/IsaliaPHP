@@ -3,10 +3,10 @@ Framework MVC escrito en PHP con clases y funciones en español
 
 ## Introducción
 SimpleMVC ha sido creado basándose en las ideas de reutilización de código, uso de convenciones y programación orientada a objetos.
-Está pensado como herramienta de desarrollo para proyectos simples, que no requieren de librerías externas.
-Usa el lenguaje PHP que permite utilizarlo tanto en grandes servidores, como en servidores compartidos (Shared Hosting).
+Está pensado como herramienta de desarrollo para proyectos simples.
+Usa el lenguaje de programación PHP y permite utilizarlo tanto en servidores dedicados, como en servidores compartidos (Shared Hosting).
 El framework está diseñado para acceder a bases de datos, aunque se ha elegido que sólo cuente con conexión a una única base de datos. 
-El usuario puede seleccionar el motor que necesite, siempre que pueda contar con una configuración compatible con PDO.
+El usuario puede seleccionar el motor que necesite, siempre que pueda contar con una configuración compatible con PDO (PHP Data Objects).
 
 ## Convenciones
 En esta sección se presentan las convenciones, o los acuerdos sobre los cuales se ha creado este framework. 
@@ -17,10 +17,13 @@ En esta sección se presentan las convenciones, o los acuerdos sobre los cuales 
 Las clases que sean creadas deben ser creadas usando el formato NombreDeClase, por ejemplo: Usuario, CarroDeCompras, Categoria. Del mismo modo, el nombre de archivo de la clase debe mantenerse tal cual en el sistema de archivos, es decir, Usuario.php, CarroDeCompras.php, Categoria.php.
 
 #### Carga automática de clases
-El framework cuenta con un cargador automático de clases (Autoloader), pero sólo buscará aquellas clases que estén creadas en las siguientes ubicaciones:
+El framework cuenta con un cargador automático de clases (Autoloader). Inicialmente buscará aquellas clases que estén creadas en las siguientes ubicaciones:
 - \Libs
 - \App\Controladores
+- \App\Libs
 - \App\Modelos
+
+Luego cargará cualquier clase que haya sido incluida usando composer (desde la carpeta vendor)
 
 #### Nombre de Controladores
 Los controladores deberán crearse en la carpeta App\Controladores. Su nombre de clase debe seguir las características indicadas anteriormente, pero además deberá agregarse el sufijo Controlador en el nombre de la misma (y también en el nombre del archivo físico). Ejemplos para nombres de clases válidos: UsuariosControlador, LoginControlador, HomeControlador. De igual forma, los nombres de archivos deberán coincidir con la regla del nombrado de clases, es decir, UsuariosControlador.php, LoginControlador.php, HomeControlador.php.
