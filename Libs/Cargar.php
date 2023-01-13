@@ -23,7 +23,6 @@ class Cargar {
             return true;
         } else {
             throw new Exception("No se encuentra " . $ruta, 1);
-            return false;
         }
     }
 
