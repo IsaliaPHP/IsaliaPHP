@@ -70,7 +70,7 @@ class Modelo
         if (intval($this->id) > 0) {
             return $this->actualizar($this->_datos, " WHERE id = " . $this->id) > 0;
         } else {
-            $nuevo_id = $this->agregar($this->_datos);
+            $nuevo_id = intval($this->agregar($this->_datos));
             $this->id = $nuevo_id;
             return $nuevo_id > 0;
         }
