@@ -133,7 +133,7 @@ class Bd
      * @param string $tabla
      * @param array $input
      *
-     * @return string
+     * @return int
      */
     public static function insertar(string $tabla, array $input)
     {
