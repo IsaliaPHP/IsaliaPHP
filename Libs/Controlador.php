@@ -1,5 +1,14 @@
 <?php 
 
+/**
+ * 
+ * @author nelson rojas
+ * class Controlador
+ * @property string _controlador
+ * @property string _accion
+ * @property string _vista
+ * @property string _plantilla
+ */
 class Controlador 
 {
     protected $_propiedades = [];
