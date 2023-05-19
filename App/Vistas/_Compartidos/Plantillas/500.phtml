@@ -1,3 +1,12 @@
-<?= Cargar::parcial('encabezado') ?>
-<h1>500 - Error de servidor</h1>
-<?= Cargar::parcial('piedepagina') ?>
+<!doctype html>
+<html>
+    <head>
+        <title>SimpleMVC - Página de Error</title>
+        <link rel="stylesheet" type="text/css" 
+              href="<?= RUTA_PUBLICA ?>css/simple.css">
+    </head>
+    <body>    
+        <h1>500 - Error de servidor</h1>    	
+  		<?php echo Cargar::parcial('piedepagina'); ?>
+	</body>
+</html>

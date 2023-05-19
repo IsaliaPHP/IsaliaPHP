@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * 
+ * @author nelson rojas
+ * class Modelo
+ * @property int id
+ */
 class Modelo
 {
     protected $_nombre_modelo;
