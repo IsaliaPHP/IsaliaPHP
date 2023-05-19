@@ -1,18 +1,19 @@
 <?php
 
 /**
- * Controlador inicial si no se cambia en la clase 
- * \Libs\Configuracion
+ * Controlador inicial si no se cambia en 
+ * App\Libs\Configuracion
  */
-class HomeControlador 
+class HomeControlador extends Controlador
 {
 
     /**
-     * Método predeterminado si no se modifica en la clase 
-     * \Libs\Configuracion
+     * Método predeterminado si no se modifica en 
+     * App\Libs\Configuracion
      */
     public function index() {
-        return Cargar::vista("home/index");
+        //carga de forma predeterminada la vista 
+        //index.phtml encontrada en App\Vistas\Home\
     }
 
 }

@@ -5,6 +5,8 @@
  */
 class Cargar {
 
+    static $_contenido;
+    
     /**
      * Carga una vista de acuerdo a su nombre
      * @param $nombre
@@ -70,7 +72,7 @@ class Cargar {
 
         $controlador = ucwords($controlador);
 
-        $despachador = new $controlador();
+        $despachador = new $controlador($controlador, $accion);
 
         // revisa si existe un metodo llamado "antes_de_filtrar"
         // y lo llama. es ideal para autenticacion o autorizacion
@@ -86,4 +88,14 @@ class Cargar {
         }
     }
 
+    
+    public static function asignarContenido($contenido)
+    {
+        self::$_contenido =  $contenido;
+    }
+    
+    public static function obtenerContenido()
+    {
+        return self::$_contenido;
+    }
 }
