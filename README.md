@@ -58,7 +58,7 @@ La vista recibirá una variable como $saludo, con la cual podrá interactuar lib
 De forma predeterminada los controladores preguntarán por la existencia de un método llamado *antes_de_filtrar()* que sirve como base para ejecutar código antes de que se ejecuten las acciones del controlador. Por ejemplo para autentificación o autorización de acceso en diferentes controladores. Ver el ejemplo a continuación:
 
 ```php
-class UsuariosControlador 
+class UsuariosControlador extends Controlador
 {
 
     public function antes_de_filtrar(){
