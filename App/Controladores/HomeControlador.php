@@ -6,14 +6,19 @@
  */
 class HomeControlador extends Controlador
 {
-
+    /** 
+     * funcion que se ejecuta antes de cualquier acción del controlador
+     */
+    public function antes_de_filtrar()
+    {
+        Cargar::asignarPlantilla('default');
+    }
     /**
      * Método predeterminado si no se modifica en 
      * App\Libs\Configuracion
      */
     public function index() {
-        //carga de forma predeterminada la vista 
-        //index.phtml encontrada en App\Vistas\Home\
+        Cargar::vista("Home/index");
     }
 
 }

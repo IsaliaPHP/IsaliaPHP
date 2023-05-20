@@ -104,17 +104,25 @@ class Cargar {
         }
     }
 
-    
+    /**
+     * funcion útil para cargar vistas dentro de plantillas
+     */
     public static function asignarContenido($contenido)
     {
         self::$_contenido =  $contenido;
     }
     
+    /**
+     * funcion útil para cargar vistas dentro de plantillas
+     */
     public static function obtenerContenido()
     {
         return self::$_contenido;
     }
     
+    /**
+     * funcion para asignar la plantilla que se mostrará con la vista
+     */
     public static function asignarPlantilla($nombrePlantilla)
     {
         self::$_plantilla = $nombrePlantilla;

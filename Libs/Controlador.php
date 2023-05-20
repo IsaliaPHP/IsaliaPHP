@@ -6,8 +6,6 @@
  * class Controlador
  * @property string _controlador
  * @property string _accion
- * @property string _vista
- * @property string _plantilla
  */
 class Controlador 
 {
@@ -20,6 +18,9 @@ class Controlador
         $this->_accion = $accion;
     }
     
+    /**
+     * recupera el contenido desde el arreglo _propiedades
+     */
     public final function obtenerPropiedades()
     {
         return $this->_propiedades;    
