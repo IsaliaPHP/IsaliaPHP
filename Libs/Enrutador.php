@@ -12,6 +12,7 @@ class Enrutador {
      */
     public static function irA(string $ruta) {
         header('Location: ' . RUTA_PUBLICA . $ruta, TRUE, 302);
+        return;
     }
 
 }

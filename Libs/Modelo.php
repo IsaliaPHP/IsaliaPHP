@@ -19,7 +19,12 @@ class Modelo
             $this->_nombre_modelo = $nombreClase;
         }
 
-        $this->_nombre_tabla = strtolower($this->_nombre_modelo);
+        $this->_nombre_tabla = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $this->_nombre_modelo));
+
+
+        if ((int) method_exists($this, "inicializar")) {
+            call_user_func(array($this, "inicializar"));
+        }
     }
     
     public function obtenerPorId(int $id)
@@ -40,12 +45,24 @@ class Modelo
         return Bd::obtenerFilas($sql, $parametros);
     }
     
+    public function obtenerPrimero($condicion, $parametros = null)
+    {
+        $sql = "SELECT * FROM " . $this->_nombre_tabla . " ";
+        
+        if (!empty($condicion)) {
+            $sql .= $condicion;
+        }
+        
+        return Bd::obtenerFila($sql, $parametros);
+    }
+    
+    
     public function agregar($datos)
     {
         return Bd::insertar($this->_nombre_tabla, $datos);
     }
 
-    public function actualizar($datos, $condicion)
+    public function actualizar($datos, $condicion = null)
     {
         return Bd::actualizar($this->_nombre_tabla, $datos, $condicion);
     }
@@ -65,6 +82,13 @@ class Modelo
         }
     }
     
+    public function cargar($datos)
+    {
+        foreach($datos as $clave => $valor) {
+            $this->$clave = $valor;
+        }
+    }
+    
     public function guardar()
     {
         if (intval($this->id) > 0) {
@@ -74,6 +98,7 @@ class Modelo
             $this->id = $nuevo_id;
             return $nuevo_id > 0;
         }
+        return false;
     } 
     
     
