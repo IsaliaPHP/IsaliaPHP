@@ -264,7 +264,7 @@ Para usar este método es necesario utilizar el objeto modelo como contedor de p
     //UPDATE entrada set activa = 0 WHERE id = 99;
 ```
 
-Como consejo práctico, cuando se usa el método guardar es necesario cuidar el uso del atributo id en las propiedades del objeto, ya que si el valor en él es distinto de 0 o null asumirá que se trata de una actualización y en el caso que sea 0 o null asumirá que debe crear una inserción.
+Como consejo práctico, cuando se usa el método guardar es necesario cuidar el uso del atributo id en las propiedades del objeto, ya que si el valor en él es mayor a cero asumirá que se trata de una actualización y en el caso que sea 0 o null asumirá que debe crear una inserción.
 
 
 ### actualizar
