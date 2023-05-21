@@ -6,12 +6,6 @@
  * class Modelo
  * @property int id
  * @method inicializar
- * @method antes_de_agregar
- * @method antes_de_actualizar
- * @method antes_de_eliminar
- * @method despues_de_agregar
- * @method despues_de_actualizar
- * @method despues_de_eliminar
  */
 class Modelo
 {
@@ -137,10 +131,12 @@ class Modelo
         return $this->_datos[$atributo] ?? null;
     }
     
-    public function __call($nombre_del_metodo, $args)
-    {
-        if ((int) method_exists($this, $nombre_del_metodo)) {
-            call_user_func(array($this, $nombre_del_metodo));
-        }
-    }   
+    //metodos auxiliares
+    public function antes_de_agregar() {}
+    public function antes_de_actualizar() {}
+    public function antes_de_eliminar() {}
+    public function despues_de_agregar() {}
+    public function despues_de_actualizar() {}
+    public function despues_de_eliminar() {}
+
 }
