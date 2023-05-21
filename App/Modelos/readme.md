@@ -48,7 +48,6 @@ class Correo
         $encabezado = $encabezado . "Mime-Version: 1.0\n";
         $encabezado = $encabezado . "Content-Type: text/html";
 
-        
         mail($para, $asunto, $cuerpo, $header) or die("Su mensaje no pudo enviarse.");
     }
 }
