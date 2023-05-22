@@ -1,5 +1,7 @@
 # SimpleMVC  [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/nelsonrojasn/SimpleMVC/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/nelsonrojasn/SimpleMVC/?branch=main) [![Build Status](https://scrutinizer-ci.com/g/nelsonrojasn/SimpleMVC/badges/build.png?b=main)](https://scrutinizer-ci.com/g/nelsonrojasn/SimpleMVC/build-status/main)
-Framework MVC escrito en PHP con documentación y comunidad en español.
+Un framework escrito en PHP para proyectos simples con documentación en español
+![image](https://github.com/nelsonrojasn/SimpleMVC/assets/74690438/78fdf191-5800-4bc6-89ea-d31f2553d95e)
+
 
 ## Introducción
 SimpleMVC ha sido creado basándose en las ideas de reutilización de código, uso de convenciones y programación orientada a objetos.
