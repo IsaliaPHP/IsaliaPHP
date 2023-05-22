@@ -3,10 +3,10 @@
 /**
  * Clase encargada de eliminar caracteres extraños en las variables globales de PHP
  */
-class Sanitizar {
+class Sanitize {
 
     private static function stripSlashesDeep($value) {
-        $value = is_array($value) ? array_map('Sanitizar::stripSlashesDeep', $value) : stripslashes($value);
+        $value = is_array($value) ? array_map('Sanitize::stripSlashesDeep', $value) : stripslashes($value);
         return $value;
     }
 
@@ -34,7 +34,7 @@ class Sanitizar {
      * Ejecuta funciones que se encargan de sanitizar variables globales de PHP
      * @return void
      */
-    public static function ejecutar() {
+    public static function execute() {
         static::removeMagicQuotes();
         static::unregisterGlobals();
     }

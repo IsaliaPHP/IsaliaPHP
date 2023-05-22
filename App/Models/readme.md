@@ -28,7 +28,7 @@ class CarroDeCompras
 
 ```php
 /* Conectado a la tabla item */
-class Item extends Modelo 
+class Item extends Model
 {
 
 }

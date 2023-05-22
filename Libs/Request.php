@@ -3,7 +3,7 @@
 /**
  * Clase para gestionar los Requests POST y GET
  */
-class Peticion {
+class Request {
     /**
      * Obtiene el contenido de $_POST[$var]
      * @param string $var
@@ -18,7 +18,7 @@ class Peticion {
      * @param string $var
      * @return bool
      */
-    public static function tienePost(string $var):bool {
+    public static function hasPost(string $var):bool {
         return filter_has_var(INPUT_POST, $var);
     }
 
@@ -36,7 +36,7 @@ class Peticion {
      * @param string $var
      * @return bool
      */
-    public static function tieneGet(string $var):bool {
+    public static function hasGet(string $var):bool {
         return filter_has_var(INPUT_GET, $var);
     }
 

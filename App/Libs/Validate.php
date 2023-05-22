@@ -3,7 +3,7 @@
 /**
  * Clase para realizar validaciones generales
  */
-class Validar
+class Validate
 {
     /**
      * Revisa que $input corresponda con un id válido
@@ -11,10 +11,10 @@ class Validar
      * @return bool
      * @throws Exception
      */
-	public static function esId($input):bool
+	public static function isId($input):bool
 	{
 		if (!is_numeric($input) || $input < 1) {
-			throw new Exception("Id incorrecto: " . $input);
+			throw new Exception("Incorrect Id: " . $input);
 		}
 		return true;
 	}

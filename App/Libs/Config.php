@@ -3,14 +3,14 @@
 /**
  * Clase de configuraciones
  */
-class Configuracion {
+class Config {
     /**
      * utiliza de forma predeterminada MySQL (o MariaDB)
      */
-    const CADENA_CONEXION = 'mysql:host=127.0.0.1;dbname=NombreBaseDatos;charset=utf8';
-    const USUARIO_BD = 'nombreUsuarioBaseDeDatos';
-    const CLAVE_BD = 'claveDeAccesoDelUsuario';
-    const PARAMETROS_EXTRAS = [
+    const CONNECTION_STRING = 'mysql:host=127.0.0.1;dbname=NombreBaseDatos;charset=utf8';
+    const USER = 'nombreUsuarioBaseDeDatos';
+    const PASSWORD = 'claveDeAccesoDelUsuario';
+    const PARAMETERS = [
         PDO::ATTR_PERSISTENT => true, //conexión persistente
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
     ];
@@ -21,15 +21,15 @@ class Configuracion {
      * Una vez que pases a producción lo ideal es pasarle el valor
      * false
      */
-    const VER_ERRORES = true;
+    const SHOW_ERRORS = true;
     
     /**
      * Controlador predeterminado
      */
-    const CONTROLADOR_PREDETERMINADO = 'Home';
+    const DEFAULT_CONTROLLER = 'Home';
     
     /**
      * Acción o método predeterminado de cualquier controlador
      */
-    const ACCION_PREDETERMINADA = 'index';
+    const DEFAULT_ACTION = 'index';
 }

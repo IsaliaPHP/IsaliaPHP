@@ -3,7 +3,7 @@
 /**
  * Manegador de errores y excepciones
  */
-class Errores
+class Report
 {
     /**
      * Manejador general de errores
@@ -14,7 +14,7 @@ class Errores
      * @return void
      * @throws ErrorException
      */
-    public static function manejarError($level, $message, $file, $line)
+    public static function handleError($level, $message, $file, $line)
     {
         if (error_reporting() !== 0) {  // to keep the @ operator working
             throw new \ErrorException($message, 0, $level, $file, $line);
@@ -26,7 +26,7 @@ class Errores
      * @param $exception
      * @return void
      */
-    public static function manejarExcepcion($exception)
+    public static function handleException($exception)
     {
         $code = $exception->getCode();
         if ($code != 404) {
@@ -34,7 +34,7 @@ class Errores
         }
         http_response_code($code);
 
-        if (Configuracion::VER_ERRORES) {
+        if (Config::SHOW_ERRORS) {
             
             echo "<h1>Fatal error</h1>";
             echo "<p>Uncaught exception: '" . get_class($exception) . "'</p>";
@@ -43,7 +43,7 @@ class Errores
             echo "<p>Thrown in '" . $exception->getFile() . "' on line " . $exception->getLine() . "</p>";
             
         } else {
-            $log = RUTA_RAIZ . DS . 'App' . DS . 'Temporal' . DS . 'Logs' . DS . date('Y-m-d') . '.txt';
+            $log = ROOT . DS . 'App' . DS . 'Temp' . DS . 'Logs' . DS . date('Y-m-d') . '.txt';
             ini_set('error_log', $log);
 
             $message = "Uncaught exception: '" . get_class($exception) . "'";
@@ -53,7 +53,7 @@ class Errores
 
             error_log($message);
             
-            Cargar::vista("_Compartidos/Plantillas/$code");
+            Load::view("_Shared/Templates/$code");
         }
     }
 }
