@@ -2,23 +2,23 @@
 
 /**
  * Controlador inicial si no se cambia en 
- * App\Libs\Configuracion
+ * App\Libs\Config
  */
-class HomeControlador extends Controlador
+class HomeController extends Controller
 {
     /** 
      * funcion que se ejecuta antes de cualquier acción del controlador
      */
-    public function antes_de_filtrar()
+    public function beforeFilter()
     {
-        Cargar::asignarPlantilla('default');
+        Load::setTemplate('default');
     }
     /**
      * Método predeterminado si no se modifica en 
-     * App\Libs\Configuracion
+     * App\Libs\Config
      */
     public function index() {
-        Cargar::vista("Home/index");
+        Load::view("Home/index");
     }
 
 }

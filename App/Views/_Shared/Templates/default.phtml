@@ -3,13 +3,13 @@
     <head>
         <title>SimpleMVC les da la bienvenida</title>
         <link rel="stylesheet" type="text/css" 
-              href="<?= RUTA_PUBLICA ?>css/simple.css">
+              href="<?= PUBLIC_PATH ?>css/simple.css">
     </head>
     <body>
     
-    	<?php echo Cargar::obtenerContenido(); ?>
+    	<?php echo Load::getContent(); ?>
     	
-  		<?php echo Cargar::parcial('piedepagina'); ?>
+  		<?php echo Load::partial('piedepagina'); ?>
 	</body>
 </html>
     
