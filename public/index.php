@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Configurar la zona horaria de la aplicación
  */
@@ -18,13 +19,13 @@ define('START_TIME', microtime(TRUE));
  * En caso que quede directo como elemento raíz, 
  * asignaremos PUBLIC_PATH como 'www.servidor.com'
  */
-define('PUBLIC_PATH', substr($_SERVER['SCRIPT_NAME'], 0, -16)); 
+define('PUBLIC_PATH', substr($_SERVER['SCRIPT_NAME'], 0, -16));
 // quita public/index.php
 
 /**
  * url enviada desde el navegador
  */
-$url = isset($_GET['url']) ? $_GET['url'] : '/'; 
+$url = isset($_GET['url']) ? $_GET['url'] : '/';
 
 /**
  * Iniciar la Sesión de PHP
@@ -43,8 +44,8 @@ spl_autoload_register(
 );
 
 /**
-* Permite mostrar los errores mientras estamos desarrollando la aplicación
-*/
+ * Permite mostrar los errores mientras estamos desarrollando la aplicación
+ */
 error_reporting(E_ALL ^ E_STRICT); // Comentar en producción
 ini_set('display_errors', 'On'); //comentar en producción    
 
