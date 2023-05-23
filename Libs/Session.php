@@ -7,11 +7,11 @@
 class Session
 {
 	/**
-     * Permite obtener una entrada desde la variable $_SESSION
-     * de acuerdo a su clave $key 
-     * @param string $key
-     * @return mixed
-     */
+	 * Permite obtener una entrada desde la variable $_SESSION
+	 * de acuerdo a su clave $key 
+	 * @param string $key
+	 * @return mixed
+	 */
 	public static function get(string $key)
 	{
 		if (empty($_SESSION[$key])) {
@@ -22,23 +22,23 @@ class Session
 	}
 
 	/**
-     * Permite crear una entrada en la variable $_SESSION
-     * de acuerdo a su clave $key 
-     * @param string $key
-     * @param mixed $value
-     * @return void
-     */
+	 * Permite crear una entrada en la variable $_SESSION
+	 * de acuerdo a su clave $key 
+	 * @param string $key
+	 * @param mixed $value
+	 * @return void
+	 */
 	public static function set(string $key, $value)
 	{
 		$_SESSION[$key] = $value;
 	}
 
 	/**
-     * Permite eliminar una entrada en la variable $_SESSION
-     * de acuerdo a su clave $key 
-     * @param string $key
-     * @return void
-     */
+	 * Permite eliminar una entrada en la variable $_SESSION
+	 * de acuerdo a su clave $key 
+	 * @param string $key
+	 * @return void
+	 */
 	public static function delete(string $key)
 	{
 		unset($_SESSION[$key]);
