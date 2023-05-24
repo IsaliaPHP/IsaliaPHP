@@ -6,7 +6,8 @@
               href="<?= PUBLIC_PATH ?>css/simple.css">
     </head>
     <body>    
-        <h1>500 - Error de servidor</h1>    	
+        <h1>500 - Error de servidor</h1>   
+        <?= Load::getContent(); ?> 	
   		<?php echo Load::partial('piedepagina'); ?>
 	</body>
 </html>

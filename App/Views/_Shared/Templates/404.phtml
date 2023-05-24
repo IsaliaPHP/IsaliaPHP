@@ -1,8 +1,14 @@
-<?php
-
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+<!doctype html>
+<html>
+    <head>
+        <title>SimpleMVC - No encontrado</title>
+        <link rel="stylesheet" type="text/css" 
+              href="<?= PUBLIC_PATH ?>css/simple.css">
+    </head>
+    <body>    
+        <h1>Recurso no encontrado</h1>   
+        <p>Por lo visto el recurso al que ha accedido no se encuentra o fue movido permanentemente.</p>
+        <p>Prueba volver a la página inicial por favor. <a href="<?= PUBLIC_PATH?>">Volver</a></p>
+  		<?php echo Load::partial('piedepagina'); ?>
+	</body>
+</html>
