@@ -62,7 +62,7 @@ class Load
             '_Shared' . DS . 'Partials' . DS . $partial_name . '.phtml';
 
         if (file_exists($ruta)) {
-            require_once $ruta;
+            require $ruta;
         } else {
             throw new Exception("No se encuentra " . $ruta, 1);
         }
