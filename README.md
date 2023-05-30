@@ -1,8 +1,8 @@
-# SimpleMVC  [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/nelsonrojasn/SimpleMVC/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/nelsonrojasn/SimpleMVC/?branch=main) [![Build Status](https://scrutinizer-ci.com/g/nelsonrojasn/SimpleMVC/badges/build.png?b=main)](https://scrutinizer-ci.com/g/nelsonrojasn/SimpleMVC/build-status/main)
+# IsaliaPHP  
 Un framework escrito en PHP para proyectos simples con documentación en español.
 
 ## Introducción
-SimpleMVC ha sido creado basándose en las ideas de reutilización de código, uso de convenciones y programación orientada a objetos.
+IsaliaPHP ha sido creado basándose en las ideas de reutilización de código, uso de convenciones y programación orientada a objetos.
 Está pensado como herramienta de desarrollo para proyectos simples.
 Usa el lenguaje de programación PHP y permite utilizarlo tanto en servidores dedicados, como en servidores compartidos (Shared Hosting).
 El framework está diseñado para acceder a bases de datos, aunque se ha elegido que sólo cuente con conexión a una única base de datos. 
@@ -30,10 +30,10 @@ Luego cargará cualquier clase que haya sido incluida usando composer (desde la 
 Los controladores deberán crearse en la carpeta App\Controllers. Su nombre de clase debe seguir las características indicadas anteriormente, pero además deberá agregarse el sufijo Controller en el nombre de la misma (y también en el nombre del archivo físico). Ejemplos para nombres de clases válidos: UsuariosController, LoginController, HomeController. De igual forma, los nombres de archivos deberán coincidir con la regla del nombrado de clases, es decir, UsuariosController.php, LoginController.php, HomeController.php.
 
 #### Controlador predeterminado
-De forma predeterminada, SimpleMVC utiliza el controlador HomeController como clase inicial. Esta configuración puede ser modificada en el archivo App\Libs\Config.php
+De forma predeterminada, IsaliaPHP utiliza el controlador HomeController como clase inicial. Esta configuración puede ser modificada en el archivo App\Libs\Config.php
 
 #### Acción/método predeterminada
-De igual forma, se ha definido que el nombre de la acción predeterminada sea *index*, por lo tanto, cada vez que un usuario utilice una llamada al controlador sin incluir la acción, SimpleMVC buscará la acción (método/función) index dentro del controlador. Esta configuración puede ser modificada igualmente en el archivo App\Libs\Config.php
+De igual forma, se ha definido que el nombre de la acción predeterminada sea *index*, por lo tanto, cada vez que un usuario utilice una llamada al controlador sin incluir la acción, IsaliaPHP buscará la acción (método/función) index dentro del controlador. Esta configuración puede ser modificada igualmente en el archivo App\Libs\Config.php
 
 #### Ubicación de las vistas
 Cada controlador deberá contar con vistas, las que alojará dentro de la ruta \App\Views\NombreDelControlador (sin el sufijo Controlador). Por ejemplo, las vistas del controlador UsuariosController se encontrarán en App\Views\Usuarios.
@@ -100,7 +100,7 @@ class EntradasController extends AdminController
 ```
 
 ### Acceso a la base de datos
-SimpleMVC implementa una clase llamada Db (por DataBase /Base de Datos en español) en la cual se alojan métodos estáticos que permiten la consulta, creación, actualización y eliminación de datos. En términos de utilidad, las operaciones de INSERT, UPDATE y DELETE están encapsuladas para evitar errores clásicos de escritura de sentencias SQL. Como la clase utiliza PDO, hace uso de dichas funcionalidades. Los métodos de consulta de datos reciben SQL directo.
+IsaliaPHP implementa una clase llamada Db (por DataBase /Base de Datos en español) en la cual se alojan métodos estáticos que permiten la consulta, creación, actualización y eliminación de datos. En términos de utilidad, las operaciones de INSERT, UPDATE y DELETE están encapsuladas para evitar errores clásicos de escritura de sentencias SQL. Como la clase utiliza PDO, hace uso de dichas funcionalidades. Los métodos de consulta de datos reciben SQL directo.
 
 Puede verse su documentación en detalle dentro del archivo Documentation\db.md
 
