@@ -116,7 +116,7 @@ Veamos primero qué contiene el template default (alojada en App\Views\_Shared\T
 <!doctype html>
 <html>
     <head>
-        <title>SimpleMVC les da la bienvenida</title>
+        <title>IsaliaPHP les da la bienvenida</title>
         <link rel="stylesheet" type="text/css" 
               href="<?= PUBLIC_PATH ?>css/simple.css">
     </head>
@@ -147,7 +147,7 @@ Ahora vamos por las vistas en el siguiente orden: index, add y edit.
 
 ```php
 <header>
-    <h1>SimpleMVC - Listado de Items</h1>
+    <h1>IsaliaPHP - Listado de Items</h1>
 </header>
 <main>    
     <?php foreach($lista_de_entradas as $item): ?>
@@ -165,7 +165,7 @@ Iteramos sobre el arreglo $lista_de_entradas que dejamos en $item. Luego mostram
 
 ```php
 <header>
-    <h1>SimpleMVC - Agregar entrada</h1>
+    <h1>IsaliaPHP - Agregar entrada</h1>
 </header>
 <main>    
     <form action="<?= PUBLIC_PATH?>items/add" method="post">
@@ -199,7 +199,7 @@ Finalmente, el formulario edit no es muy diferente de add, como verá en el ejem
 
 ```php
 <header>
-    <h1>SimpleMVC - Editar entrada</h1>
+    <h1>IsaliaPHP - Editar entrada</h1>
 </header>
 <main>    
     <form action="<?= PUBLIC_PATH?>items/edit/<?=$item['id']?>" method="post">
