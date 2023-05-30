@@ -34,7 +34,7 @@ class Item extends Model
 }
 ```
 
-En la Wiki podrás ver una sección completa dedicada a la manipulación y consulta de datos usando la clase Modelo.
+En la Wiki podrás ver una sección completa dedicada a la manipulación y consulta de datos usando la clase Model.
 
 
 ```php
