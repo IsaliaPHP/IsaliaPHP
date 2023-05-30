@@ -1,4 +1,4 @@
-# IsaliaPHP  
+# IsaliaPHP  [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/nelsonrojasn/IsaliaPHP/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/nelsonrojasn/IsaliaPHP/?branch=main)
 Un framework escrito en PHP para proyectos simples con documentación en español.
 
 ## Introducción
