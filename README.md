@@ -1,4 +1,4 @@
-# IsaliaPHP  [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/IsaliaPHP/IsaliaPHP/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/IsaliaPHP/IsaliaPHP/?branch=main) [![Build Status](https://scrutinizer-ci.com/g/IsaliaPHP/IsaliaPHP/badges/build.png?b=main)](https://scrutinizer-ci.com/g/IsaliaPHP/IsaliaPHP/build-status/main) [![Code Quality](https://codeclimate.com/github/IsaliaPHP/IsaliaPHP/badges/gpa.svg)
+# IsaliaPHP  [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/IsaliaPHP/IsaliaPHP/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/IsaliaPHP/IsaliaPHP/?branch=main) [![Build Status](https://scrutinizer-ci.com/g/IsaliaPHP/IsaliaPHP/badges/build.png?b=main)](https://scrutinizer-ci.com/g/IsaliaPHP/IsaliaPHP/build-status/main) [![Code Quality](https://codeclimate.com/github/IsaliaPHP/IsaliaPHP/badges/gpa.svg)]
 Un framework escrito en PHP para proyectos simples con documentación en español.
 
 ## Introducción
