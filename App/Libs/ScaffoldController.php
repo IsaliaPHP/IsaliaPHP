@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @property list_of_items array
+ * @property message string
+ * @property current_item array
+ */
 class ScaffoldController extends AdminController
 {
     //debe indicarse aquí el nombre de la clase del modelo
