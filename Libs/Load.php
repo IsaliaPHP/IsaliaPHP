@@ -20,7 +20,7 @@ class Load
             extract($parameters);
         }
 
-        $ruta_vistas = ROOT . DS . 'App' . DS . 'Views' . DS;
+        $ruta_vistas = APP_PATH . 'Views' . DS;
 
         $archivo_vista = $ruta_vistas . $partial_name . '.phtml';
 
@@ -58,7 +58,7 @@ class Load
             extract($parameters);
         }
 
-        $ruta = ROOT . DS . 'App' . DS . 'Views' . DS .
+        $ruta = APP_PATH . 'Views' . DS .
             '_Shared' . DS . 'Partials' . DS . $partial_name . '.phtml';
 
         if (file_exists($ruta)) {

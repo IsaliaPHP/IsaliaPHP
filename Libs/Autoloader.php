@@ -4,11 +4,11 @@ class Autoloader
     public static function exec($class_name)
     {
         $folders = [
-            ROOT . DS . 'Libs' . DS,
-            ROOT . DS . 'App' . DS . 'Controllers' . DS,
-            ROOT . DS . 'App' . DS . 'Models' . DS,
-            ROOT . DS . 'App' . DS . 'Libs' . DS,
-            ROOT . DS . 'App' . DS . 'Helpers' . DS
+            LIBS_PATH,
+            APP_PATH . 'Controllers' . DS,
+            APP_PATH . 'Models' . DS,
+            APP_PATH . 'Libs' . DS,
+            APP_PATH . 'Helpers' . DS
         ];
 
         foreach ($folders as $folder) {
