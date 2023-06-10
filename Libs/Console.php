@@ -5,8 +5,7 @@
  */
 class Console {
 
-    const LOGS_DIR = ROOT . DS . 'App' . DS .
-            'Temp' . DS . 'Logs';
+    const LOGS_DIR = APP_PATH . 'Temp' . DS . 'Logs';
 
     /**
      * Escribe dentro del archivo de log de acuerdo a la fecha del sistema
