@@ -1,4 +1,4 @@
-# Clase Db
+# Clase Db de IsaliaPHP
 
 La clase Db (por Database /Base de Datos en español) aloja métodos estáticos que permiten la consulta, creación, actualización y eliminación de datos. En términos de utilidad, las operaciones de INSERT, UPDATE y DELETE están encapsuladas para evitar errores clásicos de escritura en sentencias SQL. Como la clase utiliza PDO, hace uso de dichas funcionalidades. Los métodos de consulta de datos reciben SQL directo.
 
