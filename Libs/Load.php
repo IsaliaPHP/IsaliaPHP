@@ -82,15 +82,20 @@ class Load
 
         $controlador = (isset($urlArray[0]) && !empty($urlArray[0])) ? $urlArray[0] : Config::DEFAULT_CONTROLLER;
 
-        $controlador .= 'Controller';
-
         array_shift($urlArray);
         $accion = (isset($urlArray[0]) && !empty($urlArray[0])) ? $urlArray[0] : Config::DEFAULT_ACTION;
 
         array_shift($urlArray);
         $queryString = $urlArray;
 
-        $controlador = ucwords($controlador);
+        /**
+         * resuelve nombres como:
+         * ventas => Ventas
+         * ventas_detalle => VentasDetalle
+         * mi_controlador_bonito => MiControladorBonito
+         */
+        $controlador = str_replace(' ', '', ucwords(str_replace('_', ' ', $controlador)));
+        $controlador .= 'Controller';
 
         $despachador = new $controlador($controlador, $accion);
 
