@@ -1,4 +1,4 @@
-# CRUD
+# CRUD con IsaliaPHP
 
 En esta sección de la documentación se presenta un CRUD (create, read, update, delete) clásico y simple que se trabajará sobre una tabla llamada item y que sirve para alojar la información de las publicaciones que se crean en un sitio web.
 
@@ -110,7 +110,7 @@ El método index hace una operación de consulta sobre la tabla item solicitando
 
 Carga la vista Items/index en la que se podrá trabajar con la variable $lista_de_entradas que está contenida en el arreglo que se retorna al llamar a getProperties.
 
-Veamos primero qué contiene el template default (alojada en App\Views\_Shared\Templates\default.phtml)
+Veamos primero qué contiene el template default (alojada en App\Views\\_Shared\Templates\default.phtml)
 
 ```php
 <!doctype html>
@@ -133,7 +133,7 @@ La plantilla es muy sencilla, y carga en ella lo que venga desde la variable con
 
 Tambián carga una vista parcial (que son trozos de vistas que nos pueden ser de utilidad en diferentes vistas: un pie de página, un menú, entre otros).
 
-Veamos el contenido de la vista parcial (alojada en App\Views\_Shared\Partials\piedepagina.phtml)
+Veamos el contenido de la vista parcial (alojada en App\Views\\_Shared\Partials\piedepagina.phtml)
 
 ```php
 <p>

@@ -1,4 +1,4 @@
-# Clase Model
+# Clase Model de IsaliaPHP
 
 La clase Model ha sido creada para simplificar el acceso y manipulación de los datos.
 
@@ -269,6 +269,8 @@ Para usar este método es necesario utilizar el objeto modelo como contedor de p
 Como consejo práctico, cuando se usa el método save es necesario cuidar el uso del atributo id en las propiedades del objeto, ya que si el valor en él es mayor a cero asumirá que se trata de una actualización y en el caso que sea 0 o null asumirá que debe realizar una inserción.
 
 
+## Modificar/Actualizar elementos
+
 ### update
 
 Sintaxis
@@ -289,6 +291,7 @@ El método **update** permite modificar uno o varios registros en la tabla de ac
     //UPDATE entrada set activa = 0 WHERE usuario_id = 2;
 ```
 
+## Eliminar elementos
 
 ### delete
 

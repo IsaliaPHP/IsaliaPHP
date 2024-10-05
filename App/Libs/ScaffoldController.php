@@ -23,6 +23,12 @@ class ScaffoldController extends AdminController
         Load::view($this->_controller . "/index", $this->getProperties());
     }
 
+    public function show(int $id)
+    {
+        $this->current_item = (new $this->_model)->findById($id);
+        Load::view($this->_controller . "/show", $this->getProperties());
+    }
+
     public function create()
     {
         $model_instance = new $this->_model();
@@ -35,7 +41,7 @@ class ScaffoldController extends AdminController
             $model_instance->load($requested_data);
             if ($model_instance->save()) {
                 //redirigir a la acción index del controlador actual
-                Router::to($this->_controller);
+                Router::to($this->_controller_url);
             } else {
                 $this->message = "Imposible crear el elemento";
             }
@@ -57,7 +63,7 @@ class ScaffoldController extends AdminController
             $model_instance->id = $id;
             if ($model_instance->save()) {
                 //redirigir a la acción index del controlador actual
-                Router::to($this->_controller);
+                Router::to($this->_controller_url);
             } else {
                 $this->message = "Imposible actualizar el elemento";
             }
