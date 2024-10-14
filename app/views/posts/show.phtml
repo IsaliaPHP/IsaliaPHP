@@ -1,0 +1,17 @@
+<header>
+    <h1><?= $post->title ?></h1>
+</header>
+
+<main>
+    <article>
+        <p class="post-meta">Published on: <?= date('F j, Y', strtotime($post->created_at)) ?></p>
+        <div class="post-content">
+            <?= $post->body ?>
+        </div>
+    </article>
+    
+    <nav>
+        <?= Html::link('posts', 'Back to Posts') ?>
+    </nav>
+</main>
+

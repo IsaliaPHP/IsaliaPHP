@@ -8,7 +8,7 @@ La clase Model ha sido creada para simplificar el acceso y manipulación de los 
 
 ### Nombrado de clases
 A modo de regla, cada nombre de clase tendrá una correspondencia con un nombre de tabla en la base de datos.
-Los nombres de las clases deberán utilizarse en el formato NombreDeClase (PascalCase) y de ese modo se traducirá el nombre de la tabla en la base de datos como nombre_de_clase. Vamos a ver algunos ejemplos más comunes.
+Los nombres de las clases deberán utilizarse en el formato NombreDeClase (PascalCase) y de ese modo se traducirá el nombre de la tabla en la base de datos como nombre_de_clase (snake_case). Vamos a ver algunos ejemplos más comunes.
 
 ```php
 //tabla producto
@@ -32,7 +32,7 @@ class Productos extends Model
     public function initialize()
     {
         //cambiar el nombre de la tabla según sea necesario
-        $this->setTableName('mis_productos');
+        $this->setTableName('articulos');
     }
 }
 ```
@@ -51,11 +51,11 @@ Cada tabla esperará que el identificador predeterminado sea llamado *id*, de ti
 
 
 ### Configuración de la base de datos
-La configuración para acceder a la base de datos se realiza en el archivo App\Libs\Config.php, que es una clase que contiene algunas constantes que permiten definir la cadena de conexión (en formato PDO), el usuario, la contraseña y parámetros opcionales.
+La configuración para acceder a la base de datos se realiza en el archivo app\libs\config.php, que es una clase que contiene algunas constantes que permiten definir la cadena de conexión (en formato PDO), el usuario, la contraseña y parámetros opcionales.
 
 
 ### Acceso a los datos
-Cada vez que solicitemos datos a la tabla, la clase Modelo nos regresará los datos en formato de arreglo asociativo de PHP, es decir, como ['clave' => 'valor']. Veremos ejemplos en cada uno de los métodos de búsqueda de información.
+Cada vez que solicitemos datos a la tabla, la clase *Model* nos regresará los datos en formato de objeto de PHP, es decir que podremos acceder los datos como $obj->atributo. Veremos ejemplos en cada uno de los métodos de búsqueda de información.
 
 
 ## Métodos
@@ -79,7 +79,7 @@ Sintaxis
 initialize()
 ```
 
-El método initialize ha sido creado como método de apoyo cada vez que se crea una instancia de la clase. Antes de que se ejecute cualquier método que el programad@r haya codificado, se ejecutará el método initialize. Es útil, para modificar a gusto el nombre de la tabla sin usar el estándar de la convención (NombreDeClase que se convierte en nombre_de_clase y se asume como el nombre de la tabla).
+El método initialize ha sido creado como método de apoyo cada vez que se crea una instancia de la clase. Antes de que se ejecute cualquier método que el/la desarrollador/a haya codificado, se ejecutará el método initialize. Es útil, para modificar a gusto el nombre de la tabla sin usar el estándar de la convención (NombreDeClase que se convierte en nombre_de_clase y se asume como el nombre de la tabla).
 
 
 ### findById
@@ -89,19 +89,17 @@ Sintaxis
 findById(integer $id)
 ```
 
-El método **findById**, como indica su nombre, permite realizar la búsqueda de un registro en la tabla a partir de su número identificador (id). Como parámetro espera recibir un número entero. Retorna un array asociativo PHP.
+El método **findById**, como indica su nombre, permite realizar la búsqueda de un registro en la tabla a partir de su número identificador (id). Como parámetro espera recibir un número entero. Retorna un objeto con los atributos de la tabla.
 
 ```php
 $primer_producto = (new Producto)->findById(1);
 
 /*
-retorna un arreglo asociativo con los datos del producto con id = 1
-
-$primer_producto contendrá un arreglo asociativo como se ve a continuación
-['id' => 1, 'nombre' => 'Primer Producto', 'precio' => 99.99, 'activo' => 1]
+retorna un objecto con los datos del producto con id = 1
+luego, en el código uno puede tener acceso a las propiedades como
 */
-//luego, en el código uno puede tener acceso a las propiedades como
-echo $primer_producto['nombre'];
+echo $primer_producto->id;
+echo $primer_producto->nombre;
 
 ```
 
@@ -113,20 +111,22 @@ Sintaxis
 findFirst(string $condition, array $parameters = null)
 ```
 
-El método **findFirst** requiere como parámetros un string como condición (generalmente una instrucción WHERE de sql) y, opcionalmente, un array de parámetros (para pasarle opciones PDO). Retorna un array asociativo PHP.
+El método **findFirst** requiere como parámetros un string como condición (generalmente una instrucción WHERE de sql) y, opcionalmente, un array de parámetros (para pasarle opciones PDO). Retorna un objeto con los atributos de la tabla.
 
 ```php
 $ultima_entrada = (new Entrada)->findFirst("WHERE activa = 1 ORDER BY id DESC");
 
 /*
-retorna un arreglo asociativo con los datos de la última entrada 
+retorna un objeto con los datos de la última entrada 
 activa registrada en la tabla entrada
 
-$ultima_entrada contendrá un arreglo asociativo como se ve a continuación
-['id' => 99, 'titulo' => 'Beneficios del té verde', 'cuerpo' => '...', 'activa' => 1]
+$ultima_entrada contendrá un objeto
+luego, en el código uno puede tener acceso a las propiedades como
 */
-//luego, en el código uno puede tener acceso a las propiedades como
-echo $ultima_entrada['titulo'];
+echo $ultima_entrada->id;
+echo $ultima_entrada->titulo;
+echo $ultima_entrada->cuerpo;
+
 
 
 $usuario = (new Usuario)->findFirst("WHERE login = :login", [':login' => $login]);
@@ -145,32 +145,18 @@ Sintaxis
 findAll(string $condition, array $parameters = null)
 ```
 
-El método **findAll** es similar en parámetros al método obtenerPrimero, con la diferencia que retorna un arreglo de arreglos asociativos.
+El método **findAll** es similar en parámetros al método obtenerPrimero, con la diferencia que retorna un arreglo de objetos.
 
 ```php
 $ultimas_entradas = (new Entrada)->findAll("WHERE activa = 1 ORDER BY id DESC LIMIT 10");
 
 /*
-retorna un arreglo con arreglos asociativo con los datos de las última 10 entradas 
+retorna un arreglo con objetos con los datos de las última 10 entradas 
 activas registrada en la tabla entrada
-
-$ultimas_entrada contendrá 
-[
-    ['id' => 99, 'titulo' => 'Beneficios del té verde', 'cuerpo' => '...', 'activa' => 1],
-    ['id' => 98, 'titulo' => 'Beneficios del café', 'cuerpo' => '...', 'activa' => 1],
-    ['id' => 97, 'titulo' => 'Beneficios del chocolate', 'cuerpo' => '...', 'activa' => 1],
-    ['id' => 96, 'titulo' => 'Beneficios del té rojo', 'cuerpo' => '...', 'activa' => 1],
-    ['id' => 95, 'titulo' => 'Beneficios del coco', 'cuerpo' => '...', 'activa' => 1],
-    ['id' => 94, 'titulo' => 'Beneficios del limón', 'cuerpo' => '...', 'activa' => 1],
-    ['id' => 93, 'titulo' => 'Beneficios del apio', 'cuerpo' => '...', 'activa' => 1],
-    ['id' => 92, 'titulo' => 'Beneficios de dormir bien', 'cuerpo' => '...', 'activa' => 1],
-    ['id' => 91, 'titulo' => 'Beneficios beber agua', 'cuerpo' => '...', 'activa' => 1],
-    ['id' => 90, 'titulo' => 'Beneficios de sonreir', 'cuerpo' => '...', 'activa' => 1],
-];
 */
 //luego, en el código uno puede tener acceso a las propiedades como
 foreach($ultimas_entradas as $entrada) {
-    echo $entrada['titulo'];
+    echo $entrada->titulo;
 }
 
 
@@ -182,31 +168,54 @@ asociativo de parámetros
 */
 //en el código se puede tener acceso a las propiedades como
 foreach($usuarios as $usuario) {
-    echo $usuario['nombre'];
+    echo $usuario->nombre;
 }
+```
+
+### findBySQL
+
+Sintaxis
+```php
+findAll(string $condition, array $parameters = null)
+```
+
+El método **findBySQL** permite ejecutar una consulta SQL y obtener los resultados como un arreglo de objetos. Es útil cuando se necesita cargar información de diferentes tablas.
+
+```php
+$ultimas_entradas = (new Entrada)->findBySQL("SELECT * FROM entrada WHERE activa = 1 ORDER BY id DESC LIMIT 10");
+
+/*
+retorna un arreglo con objetos con los datos de las última 10 entradas 
+activas registrada en la tabla entrada
+*/
+//luego, en el código uno puede tener acceso a las propiedades como
+foreach($ultimas_entradas as $entrada) {
+    echo $entrada->titulo;
+}
+
 ```
 
 
 ## Agregar elementos
 
-Para agregar elementos en la tabla (insertar) la clase modelo implementa dos estrategias.
+Para agregar elementos en la tabla (insertar) la clase model implementa dos estrategias.
 
 
 ### create
 
 Sintaxis
 ```php
-create(array $attributes)
+create()
 ```
 
-El método **create** permite insertar un nuevo elemento en la tabla a partir de los atributos recibidos como parámetro, el que corresponde con un arreglo asociativo de PHP. Retorna el identificador del elemento insertado en la tabla.
+El método **create** permite insertar un nuevo elemento en la tabla a partir de los atributos definidos como propiedades del objecto. Retorna el identificador del elemento insertado en la tabla.
 
 ```php
     $datos_de_la_entrada = [
         'titulo' => 'Beneficios de usar PHP', 'cuerpo' => '...', 'activa' => 1
         ];
-    $entrada = new Entrada();
-    $id_insertado = $entrada->create($datos_de_la_entrada);
+    $entrada = new Entrada($datos_de_la_entrada);
+    $id_insertado = $entrada->create();
 ```
 
 
@@ -281,7 +290,7 @@ update(array $attributes, string $condition = null)
 El método **update** permite modificar uno o varios registros en la tabla de acuerdo a la condición que se use al invocarlo. Retorna el número de filas (registros) afectadas en la actualización.
 
 ```php
-    //inactivar todos los registros de la tabla entrada que son del usuario 2
+    //desactivar todos los registros de la tabla entrada que son del usuario 2
     $datos_de_la_entrada = [ 'activa' => 0 ];
     $condicion = "WHERE usuario_id = 2";
 
@@ -290,6 +299,25 @@ El método **update** permite modificar uno o varios registros en la tabla de ac
     //en términos de sql sería algo así
     //UPDATE entrada set activa = 0 WHERE usuario_id = 2;
 ```
+
+Si la condición no es enviada se asume que se trata de WHERE id = algo_valor_para_id
+```php
+    //desactivar la entrada cuyo id es 6
+    $entrada = (new Entrada)->findById(6);
+    $datos_de_la_entrada = [ 'activa' => 0 ];
+    
+    $entrada->update($datos_de_la_entrada);
+    //en términos de sql sería algo así
+    //UPDATE entrada set activa = 0 WHERE id = 6;
+
+    //volver a activar la entrada cuyo id es 6
+    $entrada->activa = 1;
+    $entrada->update();
+    //en términos de sql sería algo así
+    //UPDATE entrada set activa = 1 WHERE id = 6;
+```
+
+
 
 ## Eliminar elementos
 
@@ -304,8 +332,7 @@ El método **delete** permite quitar un registro en la tabla de acuerdo a la pro
 
 ```php
     //eliminar el registro con identificador 99 desde la tabla
-    $entrada = new Entrada();
-    $entrada->id = 99;
+    $entrada = (new Entrada)->findById(99);
     $entrada->delete();
     //en términos de sql sería algo así
     //DELETE FROM entrada WHERE id = 99;
@@ -350,5 +377,5 @@ Si bien la clase Modelo presenta métodos útiles para la mayor parte de los cas
 
 Para ese tipo de tareas es posible utilizar la clase Db (acrónimo de Database)
 
-Puede verse la documentación de Db en el archivo Documentation\db.md
+Puede verse la documentación de Db en el archivo docs\db.md
 

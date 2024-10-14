@@ -14,41 +14,43 @@ En esta sección se presentan las convenciones, o los acuerdos sobre los cuales 
 ### Convenciones generales
 
 #### Nombre de Clases
-Las clases que sean creadas deben ser creadas usando el formato NombreDeClase, por ejemplo: Usuario, CarroDeCompras, Categoria. Del mismo modo, el nombre de archivo de la clase debe mantenerse tal cual en el sistema de archivos, es decir, Usuario.php, CarroDeCompras.php, Categoria.php.
+Las clases que sean creadas deben ser creadas usando el formato NombreDeClase, por ejemplo: Usuario, CarroDeCompras, Categoria. A este formato se le conoce como *PascalCase*. Por otro lado, el nombre de archivo de la clase debe usarse en formato *snake_case*, es decir, usuario.php, carro_de_compras.php, categoria.php.
 
 #### Carga automática de clases
 El framework cuenta con un cargador automático de clases (Autoloader). Inicialmente buscará aquellas clases que estén creadas en las siguientes ubicaciones:
-- \Libs
-- \App\Controllers
-- \App\Libs
-- \App\Models
-- \App\Helpers
+- \libs
+- \app\controllers
+- \app\libs
+- \app\models
+- \app\helpers
 
-Luego cargará cualquier clase que haya sido incluida usando composer (desde la carpeta vendor)
+Luego cargará cualquier clase que haya sido incluida usando PSR-0 o composer (desde la carpeta vendor)
 
 #### Nombre de Controladores
-Los controladores deberán crearse en la carpeta App\Controllers. Su nombre de clase debe seguir las características indicadas anteriormente, pero además deberá agregarse el sufijo Controller en el nombre de la misma (y también en el nombre del archivo físico). Ejemplos para nombres de clases válidos: UsuariosController, LoginController, HomeController. De igual forma, los nombres de archivos deberán coincidir con la regla del nombrado de clases, es decir, UsuariosController.php, LoginController.php, HomeController.php.
+Los controladores deberán crearse en la carpeta app\controllers. Su nombre de clase debe seguir las características indicadas anteriormente, pero además deberá agregarse el sufijo Controller en el nombre de la misma (y también en el nombre del archivo físico). Ejemplos para nombres de clases válidos: UsuariosController, LoginController, HomeController. De igual forma, los nombres de archivos deberán coincidir con la regla del nombrado de clases en *snake_case*, es decir, usuarios_controller.php, login_controller.php, home_controller.php.
 
 #### Controlador predeterminado
-De forma predeterminada, IsaliaPHP utiliza el controlador HomeController como clase inicial. Esta configuración puede ser modificada en el archivo App\Libs\Config.php
+De forma predeterminada, IsaliaPHP utiliza el controlador HomeController como clase inicial. Esta configuración puede ser modificada en el archivo app\libs\config.php
 
 #### Acción/método predeterminada
-De igual forma, se ha definido que el nombre de la acción predeterminada sea *index*, por lo tanto, cada vez que un usuario utilice una llamada al controlador sin incluir la acción, IsaliaPHP buscará la acción (método/función) index dentro del controlador. Esta configuración puede ser modificada igualmente en el archivo App\Libs\Config.php
+De igual forma, se ha definido que el nombre de la acción predeterminada sea *index*, por lo tanto, cada vez que un usuario utilice una llamada al controlador sin incluir la acción, IsaliaPHP buscará la acción (método/función) index dentro del controlador. Esta configuración puede ser modificada igualmente en el archivo app\libs\config.php
 
 #### Ubicación de las vistas
-Cada controlador deberá contar con vistas, las que alojará dentro de la ruta \App\Views\NombreDelControlador (sin el sufijo Controlador). Por ejemplo, las vistas del controlador UsuariosController se encontrarán en App\Views\Usuarios.
+Cada controlador deberá contar con vistas, las que alojará dentro de la ruta \app\views\nombre_del_controlador (sin el sufijo Controller). Por ejemplo, las vistas del controlador UsuariosController se encontrarán en app\views\usuarios.
 
 #### Nombre de las vistas
-Las vistas pueden llevar el nombre que el usuario estime conveniente. Sólo es necesario que la extensión del archivo sea .phtml. Por ejemplo, si el controlador UsuariosController tiene un metodo para agregar usuarios, entonces podría tener una archivo de vista llamado agregar.phtml. Se hace hincapié en que el nombre no es relevante porque es el usuario quien decide qué vista es la que puede cargar dentro del método del controlador.
+Las vistas pueden llevar el nombre que el usuario estime conveniente. Sólo es necesario que la extensión del archivo sea .phtml. Por ejemplo, si el controlador UsuariosController tiene un metodo para agregar usuarios, entonces podría tener una archivo de vista llamado agregar.phtml. IsaliaPHP procura buscar un archivo de vista con el nombre del método que se esté ejecutando en ese preciso momento, aunque se puede modificar manualmente usando el metodo setView() del controlador. 
 
 #### Enviar datos las vistas
-Las vistas pueden recibir datos desde el controlador de forma sencilla. Los elementos enviados a la vista deben ir en el formato de arreglo asociativo de acuerdo al ejemplo:
+Las vistas pueden recibir datos desde el controlador de forma sencilla. Los elementos enviados se crean como variables del controlador, que luego son recuperados automaticamente en la vista de acuerdo con el siguiente ejemplo:
 
 ```php
 class UsuariosController extends Controller
 {
+    //pintar la vista index.phtml
+    //y enviar la variable saludo
     public function index(){
-        return Load::view('Usuarios/index', ['saludo' => 'Hola Mundo']);
+        $this->saludo = 'Hola Mundo';
     }
 }
 ```
@@ -62,7 +64,6 @@ class EntradasController extends Controller
 {
     public function index(){
         $this->lista_de_entradas_activas = (new Entradas)->findAll("WHERE activa = 1");
-        return Load::view('Entradas/index', $this->getProperties());
     }
 }
 ```
@@ -79,8 +80,8 @@ class AdminController extends Controller
 
     public function beforeFilter(){
         if (Session::get('esta_logueado') == false) {
-            //va al controlador login, método entrar
-            return Router::to('login/entrar'); 
+            //hace una redireccion al controlador login, método entrar
+            $this->redirect('login/entrar'); 
         }
     }
 }
@@ -99,14 +100,20 @@ class EntradasController extends AdminController
 }
 ```
 
+### ORM
+IsaliaPHP implementa un ORM sencillo (Object-Relational Mapping) para facilitar la interacción con la base de datos. El ORM permite mapear las tablas de la base de datos a clases de PHP, lo que permite interactuar con la base de datos de una manera más natural y sencilla. La clase destinada para esto es la clase Model.
+En ella se implementan diferentes métodos para interactuar con la base de datos, como find, findAll, create, update, delete, etc.
+
+Puede verse su documentación en detalle dentro del archivo docs\model.md
+
 ### Acceso a la base de datos
 IsaliaPHP implementa una clase llamada Db (por DataBase /Base de Datos en español) en la cual se alojan métodos estáticos que permiten la consulta, creación, actualización y eliminación de datos. En términos de utilidad, las operaciones de INSERT, UPDATE y DELETE están encapsuladas para evitar errores clásicos de escritura de sentencias SQL. Como la clase utiliza PDO, hace uso de dichas funcionalidades. Los métodos de consulta de datos reciben SQL directo.
 
-Puede verse su documentación en detalle dentro del archivo Documentation\db.md
+Puede verse su documentación en detalle dentro del archivo docs\db.md
 
 
 ### Documentación
-La documentación podrá encontrarse dentro de la carpeta Documentation en la raíz del proyecto.
+La documentación podrá encontrarse dentro de la carpeta docs en la raíz del proyecto.
 
 
 ### Aviso final

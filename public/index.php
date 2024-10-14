@@ -3,12 +3,12 @@
 /**
  * Configurar la zona horaria de la aplicación
  */
-//date_default_timezone_set("America/Santiago");
+date_default_timezone_set("America/Santiago");
 
 define('ROOT', dirname(dirname(__FILE__)));
 define('DS', DIRECTORY_SEPARATOR);
-define('APP_PATH', ROOT . DS . 'App' . DS);
-define('LIBS_PATH', ROOT . DS . 'Libs' . DS);
+define('APP_PATH', ROOT . DS . 'app' . DS);
+define('LIBS_PATH', ROOT . DS . 'libs' . DS);
 define('START_TIME', microtime(TRUE));
 
 
@@ -30,12 +30,14 @@ $url = isset($_GET['url']) ? $_GET['url'] : '/';
 /**
  * Iniciar la Sesión de PHP
  */
-session_start();
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
 /**
  * Generación de carga automática de clases
  */
-require_once LIBS_PATH . "Autoloader.php";
+require_once LIBS_PATH . "autoloader.php";
 
 spl_autoload_register(
     function ($class_name) {
@@ -66,3 +68,4 @@ Sanitize::execute();
  * Cargamos el controlador de acuerdo a la $url recibida en el navegador web
  */
 Load::controllerFromUrl($url);
+
