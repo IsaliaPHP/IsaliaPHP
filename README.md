@@ -24,7 +24,7 @@ El framework cuenta con un cargador automático de clases (Autoloader). Inicialm
 - \app\models
 - \app\helpers
 
-Luego cargará cualquier clase que haya sido incluida usando composer (desde la carpeta vendor)
+Luego cargará cualquier clase que haya sido incluida usando PSR-0 o composer (desde la carpeta vendor)
 
 #### Nombre de Controladores
 Los controladores deberán crearse en la carpeta app\controllers. Su nombre de clase debe seguir las características indicadas anteriormente, pero además deberá agregarse el sufijo Controller en el nombre de la misma (y también en el nombre del archivo físico). Ejemplos para nombres de clases válidos: UsuariosController, LoginController, HomeController. De igual forma, los nombres de archivos deberán coincidir con la regla del nombrado de clases en *snake_case*, es decir, usuarios_controller.php, login_controller.php, home_controller.php.

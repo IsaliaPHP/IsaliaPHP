@@ -36,6 +36,12 @@ class Autoloader
             }
         }
 
+        // revisar si existe archivo de carga de composer y cargarlo
+        if (file_exists(dirname(LIBS_PATH) . DS . 'vendor' . DS . 'autoload.php')) {
+            require_once dirname(LIBS_PATH) . DS . 'vendor' . DS . 'autoload.php';
+            return;
+        }
+
         throw new Exception("Clase no encontrada $class_name");
     }
 }
