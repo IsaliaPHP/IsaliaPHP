@@ -15,7 +15,7 @@ Sintaxis
 render($view_name, $parameters = null)
 ```
 
-El método **render** nos permite cargar una vista en una acción del controlador. El primer parámetro recibe el nombre del archivo de la vista que será recuperado desde app/views. El segundo parámetro (opcional), permite enviar un arreglo asociativo PHP con diferentes variables que uno pudiera necesitar en la vista. En sí, el segundo parámetro es la vía de comunicación entre la acción del controlador y la vista.
+El método **render** nos permite cargar una vista en una acción del controlador. El primer parámetro recibe el nombre del archivo de la vista que será recuperado desde app/views. El segundo parámetro (opcional), permite enviar un arreglo asociativo PHP con diferentes variables que uno pudiera necesitar en la vista. En sí, el segundo parámetro es la vía de comunicación entre la acción del controlador y la vista. Los controladores ejecutan el método **render** para enviar la vista al navegador, pero lo hacen al momento de que la clase va saliendo de memoria, es decir, en el método **__destruct** de la clase.
 
 ```php
 class HomeController extends Controller
@@ -24,14 +24,11 @@ class HomeController extends Controller
     {
         //cargar la página inicial
         $this->pagina = (new Pagina)->findById(1);
-        View::view("Home/index", $this->getProperties());
     }
 }
 ```
 
-En el ejemplo, usamos **View::view** para cargar la vista ubicada en App/Views/Home/index.phtml. No es necesario pasar la extensión porque eso ya lo agrega el método. En el segundo parámetro del ejemplo aprovechamos una característica de la clace Controller que nos permite agregar propiedades directamente en él (usando $this->propiedad). Como se aprecia, el ejemplo crear una propiedad llamada **pagina** en la que asigna un registro de la tabla **pagina** recuperado desde el modelo **Pagina** usando el método **findById** (buscar por id). Luego todas las propiedades que uno pueda agregar en la acción del controlador (o que vengan desde la acción initialize y/o beforeFilter) pasarán a la vista si usamos el método del controlador llamado **getProperties**. Dicho método se encarga de convertir las propiedades para que luego la vista las pueda utilizar como variables independientes.
-
-**View::view** debe utilizarse dentro de las acciones de los controladores.
+En el ejemplo, **View::render** intentará cargar la vista ubicada en app/views/home/index.phtml. 
 
 
 ### partial
@@ -41,7 +38,7 @@ Sintaxis
 partial($partial_name, $parameters = null)
 ```
 
-El método **partial** nos permite cargar una **vista parcial** desde las vistas o desde las plantillas. El primer parámetro recibe el nombre del archivo de la vista parcial que será recuperado desde App/Views/_Shared/Partials. El segundo parámetro (opcional), permite enviar un arreglo asociativo PHP con diferentes variables que uno pudiera necesitar en la vista. En sí, el segundo parámetro es la vía de comunicación entre la vista y la vista parcial.
+El método **partial** nos permite cargar una **vista parcial** desde las vistas o desde las plantillas. El primer parámetro recibe el nombre del archivo de la vista parcial que será recuperado desde app/views/_shared/partials. El segundo parámetro (opcional), permite enviar un arreglo asociativo PHP con diferentes variables que uno pudiera necesitar en la vista. En sí, el segundo parámetro es la vía de comunicación entre la vista y la vista parcial.
 
 ```php
 <!doctype html>
@@ -109,12 +106,11 @@ class HomeController extends Controller
     public function index() 
     {
         $this->pagina = (new Pagina)->findById(1);
-        View::view("Home/index", $this->getProperties());
     }
 
 }
 ```
-En este ejemplo, usamos el método **initialize** del controlador para definir que todas las acciones del controlador utilizarán la plantilla **default**. Las plantillas se alojan en App/Views/_Shared/Templates. Su extensión es también **.phtml**.
+En este ejemplo, usamos el método **initialize** del controlador para definir que todas las acciones del controlador utilizarán la plantilla **default**. Las plantillas se alojan en app/views/_shared/templates. Su extensión es también **.phtml**.
 
 Como se indicó antes, puede usarse el método **setTemplate** como elemento general, o puede usarse por cada acción del controlador.
 Digamos que queremos que una cierta acción se ejecute como petición AJAX (una llamada asíncrona desde el navegador del cliente que no recarga la página completa). Entonces en dicha acción enviaremos por ejemplo una respuesta como JSON (una notación para objetos en Javascript). Si tenemos una plantilla destinada para tal efecto, usaremos **setTemplate** como en el siguiente ejemplo:
@@ -127,7 +123,6 @@ Digamos que queremos que una cierta acción se ejecute como petición AJAX (una 
         View::setTemplate('plain');
         $this->result = (new PerfilRecurso)->actualizarConfiguracion(
             $perfil_id, $recurso_id, $estado);
-        View::view("Recursos/modificar_perfil", $this->getProperties());
     }
 ```
 
@@ -163,6 +158,10 @@ setContent($contenido)
 
 El método **setContent** es un método que sólo es útil dentro del método **view** de esta misma clase. Su utilidad en dicho método es permitir guardar al contenido resultante de la carga de las variables y el archivo de la vista almacenándolos en la variable de clase _content. Esto permitirá posteriormente recuperar el contenido con **getContent**.
 
+
+# Clase Loader
+
+La clase Loader (Cargador en español) se encarga de despachar las peticiones desde el controlador frontal (index.php ubicado en public).
 
 ### controllerFromUrl
 
@@ -201,6 +200,8 @@ Router::to("Login/entrar");
 
 ```
 A modo de convenición, en un controlador encargado de hacer un CRUD (crear, leer, actualizar y borrar) se estila que al terminar cada acción que afecta datos se redireccione hacia la acción index, es decir, cuando se envía el formulario para crear un registro, y la creación es exitosa, se hace redirección. Cuando estamos editando y enviamos el formulario, y la actualización es realizada, redirigimos. Lo mismo cuando pedimos borrar un registro. Pero esto es un comportamiento en el que uno puede no estar de acuerdo. Por ejemplo en vez de redirigir en la edición, permanecemos en el formulario editando en vez de redirigir. Cuando usuario decide volver al inicio, entonces él puede hacerlo a su gusto. Es otra forma de ver y resolver la situación.
+
+Para mayor referencia de cómo utilizarlo en controladores, vea la sección CRUD en el archivo crud.md
 
 
 # Clase Request
@@ -272,7 +273,7 @@ Si luego quisiéramos validar que cada elemento fue enviado (bien nos valdría t
         $producto->descripcion = Request::post('descripcion');
         $producto->precio = Request::post('precio');
         $producto->save();
-        Router::to("Productos");
+        $this->redirect("productos");
     }
 ```
 
@@ -295,10 +296,9 @@ Y modificamos el comportamiento del controlador
 ```php
     if (Request::hasPost("producto")) {
         //crear el producto con los datos recibidos
-        $producto = new Producto();
-        $producto->View(Request::post('producto'));
-        $producto->save();
-        Router::to("Productos");
+        $producto = new Producto(Request::post('producto'));
+        $producto->create();
+        $this->redirect("productos");
     }
 ```
 
@@ -436,12 +436,12 @@ Sintaxis
 writeLog(string $mensaje)
 ```
 
-El método **writeLog** escribe el contenido de $mensaje dentro del archivo de texto del día. Los archivos se crean en App/Temp/Logs
+El método **writeLog** escribe el contenido de $mensaje dentro del archivo de texto del día. Los archivos se crean en app/temp/logs
 
 ```php
 Console::writeLog("El usuario $usuario ha iniciado sesión");
 ```
 
-Se puede invocar el método **writeLog** en las acciones del controlador, los modelos, vistas, librerías (App/Libs) o ayudante (App/Helpers)
+Se puede invocar el método **writeLog** en las acciones del controlador, los modelos, vistas, librerías (app/libs) o ayudante (app/helpers)
 
 
