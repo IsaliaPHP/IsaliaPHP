@@ -46,7 +46,7 @@ El método **partial** nos permite cargar una **vista parcial** desde las vistas
     <head>
         <title>IsaliaPHP les da la bienvenida</title>
         <link rel="stylesheet" type="text/css" 
-              href="<?= PUBLIC_PATH ?>css/simple.css">
+              href="<?= PUBLIC_PATH ?>css/isaliaphp_style.css">
     </head>
     <body>
     	<?php echo View::getContent(); ?>    	
@@ -74,7 +74,7 @@ El método **getContent** es útil cuando creamos plantillas. Internamente Isali
     <head>
         <title>IsaliaPHP les da la bienvenida</title>
         <link rel="stylesheet" type="text/css" 
-              href="<?= PUBLIC_PATH ?>css/simple.css">
+              href="<?= PUBLIC_PATH ?>css/isaliaphp_style.css">
     </head>
     <body>
     	<?php echo View::getContent(); ?>

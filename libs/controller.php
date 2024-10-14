@@ -8,6 +8,7 @@
  * @property string _action
  * @property string _view
  * @property string _controller_url
+ * @property string _redirect
  */
 class Controller
 {

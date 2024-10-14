@@ -136,11 +136,11 @@ class Model
     {
         if (intval($this->id) > 0) {
             $this->beforeUpdate();
-            return $this->update($this->_attributes, " WHERE id = " . $this->id) > 0;
+            return $this->update() > 0;
             $this->afterUpdate();
         } else {
             $this->beforeCreate();
-            $last_id = intval($this->create($this->_attributes));
+            $last_id = intval($this->create());
             $this->afterCreate();
             $this->id = $last_id;
             return $last_id > 0;

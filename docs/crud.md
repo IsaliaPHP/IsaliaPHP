@@ -153,9 +153,7 @@ Veamos qué contiene el template default (alojado en app\views\_shared\templates
     <head>
         <title>IsaliaPHP les da la bienvenida</title>
         <link rel="stylesheet" type="text/css" 
-             href="<?= PUBLIC_PATH ?>css/simple.css">
-        <link rel="stylesheet" type="text/css" 
-             href="<?= PUBLIC_PATH ?>css/custom.css">
+             href="<?= PUBLIC_PATH ?>css/isaliaphp_style.css">        
     </head>
     <body>
     
