@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * PostsController
+ * @author nelson rojas
+ * Clase base para la gestion operaciones sobre la tabla post
+ * @property array posts
+ * @property Post post
+ */
 class PostsController extends Controller
 {
     public function index()

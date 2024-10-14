@@ -5,7 +5,7 @@
  * @author nelson rojas
  * @property list_of_items array
  * @property message string
- * @property current_item array
+ * @property current_item
  */
 class ScaffoldController extends AdminController
 {
