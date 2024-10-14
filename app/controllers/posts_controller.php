@@ -1,0 +1,49 @@
+<?php
+
+class PostsController extends Controller
+{
+    public function index()
+    {
+        $this->posts = (new Post)->findAll();
+    }
+
+    public function show(int $id)
+    {
+        $this->post = (new Post)->findById($id);
+    }
+
+    public function create()
+    {
+        if (Request::hasPost("post")) {
+            $post = new Post(Request::post("post"));
+            if ($post->save()) {
+                Flash::valid("Post created successfully");
+                $this->redirect("posts");
+            }
+        }
+    }
+
+    public function edit(int $id)
+    {
+        $post = (new Post)->findById($id);
+        if (Request::hasPost("post")) {
+            if ($post->update(Request::post("post"))) {
+                Flash::valid("Post updated successfully");
+                $this->redirect("posts");
+            }
+        }
+        $this->post = $post;
+    }
+
+    public function delete(int $id)
+    {
+        //no view required
+        $this->setView(null);
+        $post = (new Post)->findById($id);
+        if ($post && $post->delete()) {
+            Flash::valid("Post deleted successfully");
+        }
+        $this->redirect("posts");
+    }
+
+}

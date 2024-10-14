@@ -1,0 +1,35 @@
+<h1>List of posts</h1>
+
+<?php if (Flash::hasMessages()) { ?>    
+    <?= Flash::render(); ?>
+<?php } ?>
+
+<?= Html::link("posts/create", "Create new post") ?>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Body</th>
+            <th>Created At</th>
+            <th>Updated At</th>
+            <th>Options</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($posts as $post): ?>
+            <tr>
+                <td><?php echo $post->id; ?></td>
+                <td><?php echo $post->title; ?></td>
+                <td><?php echo substr($post->body, 0, 100) . '...'; ?></td>
+                <td><?php echo $post->created_at; ?></td>
+                <td><?php echo $post->updated_at; ?></td>
+                <td>
+                    <?= Html::link("posts/show/$post->id", "View") ?>
+                    <?= Html::link("posts/edit/$post->id", "Edit") ?>
+                    <?= Html::link("posts/delete/$post->id", "Delete", ["onclick" => "return confirm('Are you sure?')"]) ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

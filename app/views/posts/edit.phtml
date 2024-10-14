@@ -1,0 +1,24 @@
+<h1>Edit Post</h1>
+
+<?php if (Flash::hasMessages()) { ?>    
+    <?= Flash::render(); ?>
+<?php } ?>
+
+<form action="<?= PUBLIC_PATH ?>posts/edit/<?= $post->id ?>" method="post">
+    <div>
+        <label for="post_title">Title:</label>
+        <input type="text" id="post_title" name="post[title]" value="<?= htmlspecialchars($post->title) ?>" required>
+    </div>
+    
+    <div>
+        <label for="post_body">Body:</label>
+        <textarea id="post_body" name="post[body]" required><?= htmlspecialchars($post->body) ?></textarea>
+    </div>
+    
+    <div>
+        <button type="submit">Update Post</button>
+    </div>
+</form>
+<p>Last updated at: <?= $post->updated_at ?></p>
+<?= Html::link('posts', 'Back to Posts') ?>
+<?= Html::link("posts/view/{$post->id}", 'View Post') ?>

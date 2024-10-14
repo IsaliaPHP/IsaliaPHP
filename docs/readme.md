@@ -1,16 +1,16 @@
 # Bienvenidos a IsaliaPHP
 
-Quisiera empezar esta bienvenida comentándote lo que me motivó a crear esta herramienta. Sé que para los que ya saben de frameworks será **una rueda más**, pero bueno, es una rueda que me sirve para resolver problemas de acuerdo a lo que las personas me han solicitado.
+Quisiera empezar esta bienvenida comentándote lo que me motivó a crear esta herramienta. Sé que para los que ya saben de frameworks será **una rueda más**, pero bueno, es una rueda que me ha servido para resolver problemas de acuerdo a lo que las personas me han solicitado.
 
-**IsaliaPHP** es un framework MVC, como otros, pero que tiene documentación completamente en español. Se basa en principios de Convenciones sobre Configuraciones, y también en No te repitas (aunque suene contradictorio). Este último concepto es más bien sobre escribir el código en un único lugar y reutilizarlo tanto como sea posible.
+**IsaliaPHP** es un framework MVC, que tiene documentación completamente en español. Se basa en principios de Convenciones sobre Configuraciones, y también en No te repitas (aunque suene contradictorio). Este último concepto es más bien sobre escribir el código en un único lugar y reutilizarlo tanto como sea posible.
 
 En términos sencillos, **si yo puedo resolver problemas con él, quizás alguien más pueda lograrlo también**.
 
-IsaliaPHP tiene los componentes mínimos necesarios para que proyectos sencillos y avanzados puedan ser llevados a cabo sin problema.
+IsaliaPHP tiene los componentes mínimos necesarios para que proyectos de distinto tamaño puedan ser llevados a cabo sin problema.
 
-Dicho esto, en esta documentación dejaremos los elementos que creemos necesarios para el buen uso de esta herramienta.
+Dicho esto, en esta documentación dejaré los elementos que creo necesarios para el buen uso de esta herramienta.
 
-Te recomendamos empezar por los siguientes puntos:
+Te recomiendo empezar por los siguientes puntos:
 - [CRUD con IsaliaPHP](crud.md)
 - [Clase Model de IsaliaPHP](model.md)
 - [Clase Db de IsaliaPHP](db.md)
@@ -20,4 +20,4 @@ Si estás interesado en aprender para qué sirve cada componente dentro del fram
 
 Suerte en este viaje.
 
-El equipo de IsaliaPHP!
+Nelson, creador de IsaliaPHP!

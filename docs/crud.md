@@ -1,116 +1,153 @@
 # CRUD con IsaliaPHP
 
-En esta sección de la documentación se presenta un CRUD (create, read, update, delete) clásico y simple que se trabajará sobre una tabla llamada item y que sirve para alojar la información de las publicaciones que se crean en un sitio web.
+En esta sección de la documentación se presenta un CRUD (create, read, update, delete) clásico que trabajará sobre una tabla llamada post y que sirve para alojar la información de las publicaciones que se crean en un sitio web.
 
 Veremos primeramente la estructura de la tabla
 
 ```sql
-CREATE TABLE item
+CREATE TABLE post
 (
     id int not null primary key auto_increment,
-    nombre varchar(1000) not null,
-    slug varchar(1000),
-    cuerpo text,
-    activo int,
-    fcreacion timestamp default CURRENT_TIMESTAMP,
-    factualizacion timestamp
+    title varchar(255) not null,
+    body text,
+    created_at timestamp default CURRENT_TIMESTAMP,
+    updated_at timestamp
 )
 ```
 
 Ahora crearemos nuestra clase de Modelo
 
 ```php
-// App\Models\Item.php
-class Item extends Model
+// app\models\post.php
+class Post extends Model
 {
     public function beforeUpdate()
     {
-        $this->factualizacion = date("Y-m-d H:i:s");
+        $this->updated_at = date("Y-m-d H:i:s");
     }
     
     public function beforeCreate()
     {
-        $this->activo = 1;
+        $this->created_at = date("Y-m-d H:i:s");
     }
 }
 ```
-En la clase hemos activado dos métodos de apoyo, antes de actualizar (beforeUpdate) y antes de crear (beforeCreate)
+
+## Convenciones de modelo
+Los nombres de clase de los modelos mapean las tablas de la base de datos usando el mismo nombre de la clase, pero en minúscula y en modo snake_case
+Es decir, si la tabla se llama post, la clase se llamará Post.
+Si una clase se llama OrdenCompra, la tabla se llamará orden_compra.
+
+Las tablas deben contar con un atributo llamado id, que es el identificador del registro. Este atributo es de tipo int o bigint y debe ser autoincremental. Debe también ser la llave primaria de la tabla.
+
+Por otro lado, en caso de existir relaciones entre tablas los atributos de relación deben ser nombrados usando el mismo nombre de la relación en modo snake_case seguido del underscore y el sufijo _id. Por ejemplo, si la tabla post tiene una relación con la tabla comment, el atributo de relación se llamará post_id en la tabla comment.
+
+En la documentación de Model encontrarás más detalles como por ejemplo cambiar el nombre de la tabla que mapea el modelo.
+
+En el ejemplo, se ha activado dos métodos de apoyo, antes de actualizar (beforeUpdate) y antes de crear (beforeCreate).
 
 En ellos llevamos a cabo operaciones sobre el registro actual antes de ejecutar las operaciones de actualización y creación respectivamente.
 
 Ahora veremos la estructura en términos del controlador
 
 ```php
-//App\Controllers\ItemsController.php
-class ItemsController extends Controller
+//app\controllers\posts_controller.php
+class PostsController extends Controller
 {
-    public function initialize()
-    {
-        Load::setTemplate('default');
-    }
-    
     public function index()
     {
-        $this->lista_de_entradas = (new Item)->findAll("WHERE activo = 1 ORDER BY id DESC LIMIT 10");
-        return Load::view("Items/index", $this->getProperties());
+        $this->posts = (new Post)->findAll();
     }
-    
-    public function add()
+
+    public function show(int $id)
     {
-        if (Request::hasPost('item')) {
-            $item = new Item();
-            $item->load(Request::post('item'));
-            
-            if ($item->save()) {
-                //redirigir al método index del controlador Items
-                return Router::to("Items");
-            } else {
-                $this->item = Request::post('item');
-                $this->mensaje = "No pudo crearse el item.";
+        $this->post = (new Post)->findById($id);
+    }
+
+    public function create()
+    {
+        if (Request::hasPost("post")) {
+            $post = new Post(Request::post("post"));
+            if ($post->save()) {
+                Flash::valid("Post created successfully");
+                $this->redirect("posts");
             }
         }
-        //cargar la vista
-        return Load::view("Items/add", $this->getProperties());
     }
-    
+
     public function edit(int $id)
     {
-        if (Request::hasPost('item')) {
-            $item = new Item();
-            $item->load(Request::post('item'));
-            $item->id = $id;
-            
-            if ($item->save()) {
-                //redirigir al método index del controlador Items
-                return Router::to("Items");
-            } else {
-                $this->mensaje = "No pudo actualizarse el item.";
+        $post = (new Post)->findById($id);
+        if (Request::hasPost("post")) {
+            if ($post->update(Request::post("post"))) {
+                Flash::valid("Post updated successfully");
+                $this->redirect("posts");
             }
         }
-        //buscar el elemento en la tabla por su identificador
-        $this->item = (new Item)->findById($id);
-        //cargar la vista
-        return Load::view("Items/edit", $this->getProperties());
+        $this->post = $post;
     }
-    
+
     public function delete(int $id)
     {
-        $item = new Item();
-        $item->id = $id;
-        $item->delete();
-        //redirigir al método index del controlador Items
-        return Router::to("Items");
+        //no view required
+        $this->setView(null);
+        $post = (new Post)->findById($id);
+        if ($post && $post->delete()) {
+            Flash::valid("Post deleted successfully");
+        }
+        $this->redirect("posts");
     }
+
 }
 ```
 
-Inicializamos el controlador con el método initialize y en él le decimos a Load que deberá usar la plantilla (template) llamada 'default'.
+## Convenciones de controlador
 
-El método index hace una operación de consulta sobre la tabla item solicitando sólo los elementos activos, extrayendo sólo los últimos 10 elementos de la tabla.
+Los controladores pueden tener como nombre lo que el desarrollador desee, pero es recomendable usar el nombre del modelo en singular y el sufijo Controller. Por ejemplo, si el modelo se llama Post, el controlador se llamará PostsController. De todos modos, no hay restricciones al respecto.
 
-Carga la vista Items/index en la que se podrá trabajar con la variable $lista_de_entradas que está contenida en el arreglo que se retorna al llamar a getProperties.
+Respecto de las vistas predeterminadas, se ha decidido que cada acción tenga su vista asociada.
 
-Veamos primero qué contiene el template default (alojada en App\Views\\_Shared\Templates\default.phtml)
+Por ejemplo, si el controlador se llama PostsController, las vistas asociadas serán:
+
+- index.phtml
+- show.phtml
+- create.phtml
+- edit.phtml
+- delete.phtml
+
+Como puedes ver, la convención es bastante simple y no es necesario hacer configuraciones adicionales dentro del controlador.
+
+Si quisieras usar una vista diferente, puedes usar el método setView para indicar cuál es la vista que deseas usar.
+
+```php
+//usar una vista diferente
+$this->setView('miVista');
+
+//no usar ninguna vista
+$this->setView(null);
+
+```
+
+### Explicación del código del controlador
+
+El método index hace una operación de consulta sobre la tabla post solicitando todos los elementos de la tabla.
+Una vez asignado el resultado de la consulta a la variable $posts, se lo pasa a la vista posts/index.
+
+El método show hace una operación de consulta sobre la tabla post solicitando un único elemento de la tabla.
+Una vez asignado el resultado de la consulta a la variable $post, se lo pasa a la vista posts/show.
+
+El método create recibe los datos del formulario y crea un nuevo elemento de la tabla post. Una vez creado, se redirige al usuario a la acción index del controlador.
+
+El método edit hace una operación de consulta sobre la tabla post solicitando un único elemento de la tabla y se lo pasa a la vista posts/edit que pinta un formulario para editar los datos del elemento. Una vez enviado el formulario, se actualiza el elemento y se redirige al usuario a la acción index del controlador.
+
+El método delete hace una operación de eliminación sobre la tabla post solicitando un único elemento de la tabla.
+Una vez eliminado, se redirige al usuario a la acción index del controlador.
+
+## Vistas
+Las vistas son archivos que contienen el diseño de la página web. Para facilitar la tarea de desarrollo, se ha decidido usar una vista por acción. Cada vez que pinta una vista lo hace dentro de una plantilla, para permitir tener un contenido común y luego extenderlo con el contenido específico de la vista.
+
+### Template default
+Veamos qué contiene el template default (alojada en app\views\_shared\templates\default.phtml)
 
 ```php
 <!doctype html>
@@ -118,22 +155,22 @@ Veamos primero qué contiene el template default (alojada en App\Views\\_Shared\
     <head>
         <title>IsaliaPHP les da la bienvenida</title>
         <link rel="stylesheet" type="text/css" 
-              href="<?= PUBLIC_PATH ?>css/simple.css">
+             href="<?= PUBLIC_PATH ?>css/simple.css">
     </head>
     <body>
     
-    	<?php echo Load::getContent(); ?>
+    	<?php echo View::getContent(); ?>
     	
-  		<?php echo Load::partial('piedepagina'); ?>
+  		<?php echo View::partial('footer'); ?>
 	</body>
 </html>    
 ```
 
-La plantilla es muy sencilla, y carga en ella lo que venga desde la variable content que está en la clase Load (que se obtiene usando getContent)
+La plantilla es muy sencilla, y carga en ella lo que venga desde la variable content que está en la clase View (que se obtiene usando getContent)
 
 Tambián carga una vista parcial (que son trozos de vistas que nos pueden ser de utilidad en diferentes vistas: un pie de página, un menú, entre otros).
 
-Veamos el contenido de la vista parcial (alojada en App\Views\\_Shared\Partials\piedepagina.phtml)
+Veamos el contenido de la vista parcial (alojada en app\views\_shared\partials\footer.phtml)
 
 ```php
 <p>
@@ -146,6 +183,7 @@ Veamos el contenido de la vista parcial (alojada en App\Views\\_Shared\Partials\
 Ahora vamos por las vistas en el siguiente orden: index, add y edit.
 
 ```php
+//app\views\posts\index.phtml
 <header>
     <h1>IsaliaPHP - Listado de Items</h1>
 </header>
