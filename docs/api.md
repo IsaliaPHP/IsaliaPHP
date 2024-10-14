@@ -2,20 +2,20 @@
 
 Bienvenidas y bienvenidos al API de IsaliaPHP. Aquí expondremos cada una de las clases que componen este framework.
 
-# Clase Load
+# Clase View
 
-La clase Load (Cargar en español) aloja métodos estáticos que permiten incluir elementos de visualización como vistas o vistas parciales, así como también asignar la plantilla HTML padre sobre la cual se cargarán las vistas.
+La clase View (vista en español) aloja métodos estáticos que permiten incluir elementos de visualización como vistas o vistas parciales, así como también asignar la plantilla HTML padre sobre la cual se cargarán las vistas.
 
 A continuación se describen sus métodos.
 
-### view
+### render
 
 Sintaxis
 ```php
-view($partial_name, $parameters = null)
+render($view_name, $parameters = null)
 ```
 
-El método **view** nos permite cargar una vista en una acción del controlador. El primer parámetro recibe el nombre del archivo de la vista que será recuperado desde App/Views. El segundo parámetro (opcional), permite enviar un arreglo asociativo PHP con diferentes variables que uno pudiera necesitar en la vista. En sí, el segundo parámetro es la vía de comunicación entre la acción del controlador y la vista.
+El método **render** nos permite cargar una vista en una acción del controlador. El primer parámetro recibe el nombre del archivo de la vista que será recuperado desde app/views. El segundo parámetro (opcional), permite enviar un arreglo asociativo PHP con diferentes variables que uno pudiera necesitar en la vista. En sí, el segundo parámetro es la vía de comunicación entre la acción del controlador y la vista.
 
 ```php
 class HomeController extends Controller
@@ -24,14 +24,14 @@ class HomeController extends Controller
     {
         //cargar la página inicial
         $this->pagina = (new Pagina)->findById(1);
-        Load::view("Home/index", $this->getProperties());
+        View::view("Home/index", $this->getProperties());
     }
 }
 ```
 
-En el ejemplo, usamos **Load::view** para cargar la vista ubicada en App/Views/Home/index.phtml. No es necesario pasar la extensión porque eso ya lo agrega el método. En el segundo parámetro del ejemplo aprovechamos una característica de la clace Controller que nos permite agregar propiedades directamente en él (usando $this->propiedad). Como se aprecia, el ejemplo crear una propiedad llamada **pagina** en la que asigna un registro de la tabla **pagina** recuperado desde el modelo **Pagina** usando el método **findById** (buscar por id). Luego todas las propiedades que uno pueda agregar en la acción del controlador (o que vengan desde la acción initialize y/o beforeFilter) pasarán a la vista si usamos el método del controlador llamado **getProperties**. Dicho método se encarga de convertir las propiedades para que luego la vista las pueda utilizar como variables independientes.
+En el ejemplo, usamos **View::view** para cargar la vista ubicada en App/Views/Home/index.phtml. No es necesario pasar la extensión porque eso ya lo agrega el método. En el segundo parámetro del ejemplo aprovechamos una característica de la clace Controller que nos permite agregar propiedades directamente en él (usando $this->propiedad). Como se aprecia, el ejemplo crear una propiedad llamada **pagina** en la que asigna un registro de la tabla **pagina** recuperado desde el modelo **Pagina** usando el método **findById** (buscar por id). Luego todas las propiedades que uno pueda agregar en la acción del controlador (o que vengan desde la acción initialize y/o beforeFilter) pasarán a la vista si usamos el método del controlador llamado **getProperties**. Dicho método se encarga de convertir las propiedades para que luego la vista las pueda utilizar como variables independientes.
 
-**Load::view** debe utilizarse dentro de las acciones de los controladores.
+**View::view** debe utilizarse dentro de las acciones de los controladores.
 
 
 ### partial
@@ -52,12 +52,12 @@ El método **partial** nos permite cargar una **vista parcial** desde las vistas
               href="<?= PUBLIC_PATH ?>css/simple.css">
     </head>
     <body>
-    	<?php echo Load::getContent(); ?>    	
-  	<?php echo Load::partial('footer'); ?>
+    	<?php echo View::getContent(); ?>    	
+  	    <?php echo View::partial('footer'); ?>
     </body>
 </html>
 ```
-Este ejemplo es una plantilla. En las plantillas se recibe el contenido de las vistas usando **Load::getContent**, y se pueden invocar vistas parciales con **Load::partial**. Para este caso, se ha cargado la vista parcial "footer" que será buscada desde App/Views/_Shared/Partials/footer.phtml.
+Este ejemplo es una plantilla. En las plantillas se recibe el contenido de las vistas usando **View::getContent**, y se pueden invocar vistas parciales con **View::partial**. Para este caso, se ha cargado la vista parcial "footer" que será buscada desde App/Views/_Shared/Partials/footer.phtml.
 
 Los usos de las vistas parciales son principalmente para poder contar con un trozo de código que puede cargarse desde diferentes vistas o plantillas. Por ejemplo un menú, una sección de enlaces, una lista de archivos descargables, la cabecera con el logo y nombre del sitio, una sección de suscribirse, entre otros tantos usos que uno vea que se repiten entre las diferentes vistas y que uno quisiera modificar una vez para que los cambios se apliquen en todos los lugares donde se haya utilizado la vista parcial.
 
@@ -80,7 +80,7 @@ El método **getContent** es útil cuando creamos plantillas. Internamente Isali
               href="<?= PUBLIC_PATH ?>css/simple.css">
     </head>
     <body>
-    	<?php echo Load::getContent(); ?>
+    	<?php echo View::getContent(); ?>
     </body>
 </html>
 ```
@@ -103,13 +103,13 @@ class HomeController extends Controller
 {
     public function initialize()
     {
-        Load::setTemplate('default');
+        View::setTemplate('default');
     }
     
     public function index() 
     {
         $this->pagina = (new Pagina)->findById(1);
-        Load::view("Home/index", $this->getProperties());
+        View::view("Home/index", $this->getProperties());
     }
 
 }
@@ -124,10 +124,10 @@ Digamos que queremos que una cierta acción se ejecute como petición AJAX (una 
     //método modificar_perfil del controlador Recursos
     public function modificar_perfil(int $perfil_id, int $recurso_id, int $estado)
     {
-        Load::setTemplate('plain');
+        View::setTemplate('plain');
         $this->result = (new PerfilRecurso)->actualizarConfiguracion(
             $perfil_id, $recurso_id, $estado);
-        Load::view("Recursos/modificar_perfil", $this->getProperties());
+        View::view("Recursos/modificar_perfil", $this->getProperties());
     }
 ```
 
@@ -135,7 +135,7 @@ Ahora veamos qué hace la plantilla **plain**
 
 ```php
 //contenido de la plantilla plain
-<?= Load::getContent(); ?>
+<?= View::getContent(); ?>
 ```
 Sólo pasa el contenido de lo que se genere en la vista, sin adornos (sin cabecera html, sin css, sin js)
 
@@ -296,7 +296,7 @@ Y modificamos el comportamiento del controlador
     if (Request::hasPost("producto")) {
         //crear el producto con los datos recibidos
         $producto = new Producto();
-        $producto->load(Request::post('producto'));
+        $producto->View(Request::post('producto'));
         $producto->save();
         Router::to("Productos");
     }

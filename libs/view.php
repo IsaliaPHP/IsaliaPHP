@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * View
+ * @author nelson rojas
+ * Clase encargada de la gestión de vistas, plantillas y parciales
+ */
 class View
 {
     static $_content;

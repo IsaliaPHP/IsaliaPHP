@@ -19,11 +19,11 @@
     <tbody>
         <?php foreach ($posts as $post): ?>
             <tr>
-                <td><?php echo $post->id; ?></td>
-                <td><?php echo $post->title; ?></td>
-                <td><?php echo substr($post->body, 0, 100) . '...'; ?></td>
-                <td><?php echo $post->created_at; ?></td>
-                <td><?php echo $post->updated_at; ?></td>
+                <td><?= $post->id; ?></td>
+                <td><?= $post->title; ?></td>
+                <td><?= substr($post->body, 0, 100) . '...'; ?></td>
+                <td><?= $post->created_at; ?></td>
+                <td><?= $post->updated_at; ?></td>
                 <td>
                     <?= Html::link("posts/show/$post->id", "View") ?>
                     <?= Html::link("posts/edit/$post->id", "Edit") ?>

@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * ScaffoldController
+ * @author nelson rojas
  * @property list_of_items array
  * @property message string
  * @property current_item array

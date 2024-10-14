@@ -1,5 +1,9 @@
 <?php 
 
+/**
+ * AdminController
+ * @author nelson rojas
+ */
 class AdminController extends Controller
 {
     /**

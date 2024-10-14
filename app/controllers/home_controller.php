@@ -2,7 +2,7 @@
 
 /**
  * Controlador inicial si no se cambia en 
- * App\Libs\Config
+ * app\libs\config.php
  */
 class HomeController extends Controller
 {
@@ -14,10 +14,10 @@ class HomeController extends Controller
     }
     /**
      * Método predeterminado si no se modifica en 
-     * App\Libs\Config
+     * app\libs\config.php
      */
     public function index() {
-        //Load::view("Home/index");
+        //carga la vista ubicada en app\views\home\index.phtml
     }
 
 }

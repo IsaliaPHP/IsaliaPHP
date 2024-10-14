@@ -34,21 +34,19 @@ class Post extends Model
 ```
 
 ## Convenciones de modelo
-Los nombres de clase de los modelos mapean las tablas de la base de datos usando el mismo nombre de la clase, pero en minúscula y en modo snake_case
-Es decir, si la tabla se llama post, la clase se llamará Post.
-Si una clase se llama OrdenCompra, la tabla se llamará orden_compra.
+Los nombres de clase de los modelos mapean las tablas de la base de datos usando el mismo nombre de la clase, pero en minúscula y en modo snake_case, es decir, si la tabla se llama post, la clase se llamará Post. Si una clase se llama OrdenCompra, la tabla se llamará orden_compra.
 
 Las tablas deben contar con un atributo llamado id, que es el identificador del registro. Este atributo es de tipo int o bigint y debe ser autoincremental. Debe también ser la llave primaria de la tabla.
 
-Por otro lado, en caso de existir relaciones entre tablas los atributos de relación deben ser nombrados usando el mismo nombre de la relación en modo snake_case seguido del underscore y el sufijo _id. Por ejemplo, si la tabla post tiene una relación con la tabla comment, el atributo de relación se llamará post_id en la tabla comment.
+Por otro lado, en caso de existir relaciones entre tablas los atributos de relación deben ser nombrados usando el mismo nombre de la relación en modo snake_case seguido del sufijo _id. Por ejemplo, si la tabla post tiene una relación con la tabla comment (que almacena los comentarios de los post), el atributo de relación se llamará post_id en la tabla comment.
 
-En la documentación de Model encontrarás más detalles como por ejemplo cambiar el nombre de la tabla que mapea el modelo.
+En la documentación de Model encontrarás más detalles como por ejemplo cambiar el nombre predeterminado de la tabla a la que mapea el modelo.
 
 En el ejemplo, se ha activado dos métodos de apoyo, antes de actualizar (beforeUpdate) y antes de crear (beforeCreate).
 
 En ellos llevamos a cabo operaciones sobre el registro actual antes de ejecutar las operaciones de actualización y creación respectivamente.
 
-Ahora veremos la estructura en términos del controlador
+Ahora veremos la estructura en términos del controlador para el CRUD
 
 ```php
 //app\controllers\posts_controller.php
@@ -103,27 +101,27 @@ class PostsController extends Controller
 
 ## Convenciones de controlador
 
-Los controladores pueden tener como nombre lo que el desarrollador desee, pero es recomendable usar el nombre del modelo en singular y el sufijo Controller. Por ejemplo, si el modelo se llama Post, el controlador se llamará PostsController. De todos modos, no hay restricciones al respecto.
+Los controladores pueden tener como nombre lo que el desarrollador desee, pero es recomendable usar el nombre del modelo en plural y el sufijo Controller. Por ejemplo, si el modelo se llama Post, el controlador se llamará PostsController. De todos modos, no hay restricciones al respecto. La recomendación es usar los nombres de los controladores de acuerdo a la forma en la que se quiere mostrar las urls a los usuarios.
 
 Respecto de las vistas predeterminadas, se ha decidido que cada acción tenga su vista asociada.
 
-Por ejemplo, si el controlador se llama PostsController, las vistas asociadas serán:
+En el ejemplo, el controlador PostsController esperará que existan las vistas asociadas:
 
 - index.phtml
 - show.phtml
 - create.phtml
 - edit.phtml
-- delete.phtml
+- delete.phtml, aunque este comportamiento es omitido al usar setView(null).
 
 Como puedes ver, la convención es bastante simple y no es necesario hacer configuraciones adicionales dentro del controlador.
 
-Si quisieras usar una vista diferente, puedes usar el método setView para indicar cuál es la vista que deseas usar.
+Si quisieras usar una vista diferente, puedes usar el método setView para indicar cuál es la vista que deseas cargar.
 
 ```php
 //usar una vista diferente
 $this->setView('miVista');
 
-//no usar ninguna vista
+//no usar vista
 $this->setView(null);
 
 ```
@@ -133,21 +131,21 @@ $this->setView(null);
 El método index hace una operación de consulta sobre la tabla post solicitando todos los elementos de la tabla.
 Una vez asignado el resultado de la consulta a la variable $posts, se lo pasa a la vista posts/index.
 
-El método show hace una operación de consulta sobre la tabla post solicitando un único elemento de la tabla.
+El método show hace una operación de consulta sobre la tabla post solicitando un único elemento de la tabla que corresponde con el identificador definido en $id.
 Una vez asignado el resultado de la consulta a la variable $post, se lo pasa a la vista posts/show.
 
-El método create recibe los datos del formulario y crea un nuevo elemento de la tabla post. Una vez creado, se redirige al usuario a la acción index del controlador.
+El método create primero pinta la vista posts/create que corresponde con un formulario para crear posts. Luego, al hacer la petición desde el formulario recibe los datos y crea un nuevo elemento de la tabla post. Una vez creado, se crea una notificación y se redirige al usuario a la acción index del controlador.
 
-El método edit hace una operación de consulta sobre la tabla post solicitando un único elemento de la tabla y se lo pasa a la vista posts/edit que pinta un formulario para editar los datos del elemento. Una vez enviado el formulario, se actualiza el elemento y se redirige al usuario a la acción index del controlador.
+El método edit hace una operación de consulta sobre la tabla post solicitando un único elemento de la tabla y se lo pasa a la vista posts/edit que pinta un formulario para editar los datos del elemento. Una vez enviado el formulario, se actualiza el elemento, se crea una notificación y se redirige al usuario a la acción index del controlador.
 
 El método delete hace una operación de eliminación sobre la tabla post solicitando un único elemento de la tabla.
-Una vez eliminado, se redirige al usuario a la acción index del controlador.
+Una vez eliminado, se crea una notificación y se redirige al usuario a la acción index del controlador.
 
 ## Vistas
 Las vistas son archivos que contienen el diseño de la página web. Para facilitar la tarea de desarrollo, se ha decidido usar una vista por acción. Cada vez que pinta una vista lo hace dentro de una plantilla, para permitir tener un contenido común y luego extenderlo con el contenido específico de la vista.
 
 ### Template default
-Veamos qué contiene el template default (alojada en app\views\_shared\templates\default.phtml)
+Veamos qué contiene el template default (alojado en app\views\_shared\templates\default.phtml)
 
 ```php
 <!doctype html>
@@ -156,6 +154,8 @@ Veamos qué contiene el template default (alojada en app\views\_shared\templates
         <title>IsaliaPHP les da la bienvenida</title>
         <link rel="stylesheet" type="text/css" 
              href="<?= PUBLIC_PATH ?>css/simple.css">
+        <link rel="stylesheet" type="text/css" 
+             href="<?= PUBLIC_PATH ?>css/custom.css">
     </head>
     <body>
     
@@ -180,82 +180,142 @@ Veamos el contenido de la vista parcial (alojada en app\views\_shared\partials\f
 </p>
 ```
 
-Ahora vamos por las vistas en el siguiente orden: index, add y edit.
+Ahora vamos por las vistas en el siguiente orden: index, show, create y edit.
 
 ```php
-//app\views\posts\index.phtml
-<header>
-    <h1>IsaliaPHP - Listado de Items</h1>
-</header>
-<main>    
-    <?php foreach($lista_de_entradas as $item): ?>
-    <p><?= $item['nombre'];?> 
-    &nbsp;<a href="<?=PUBLIC_PATH?>items/edit/<?= $item['id']?>">Editar</a>
-    &nbsp;<a href="<?=PUBLIC_PATH?>items/delete/<?= $item['id']?>">Eliminar</a>
-        <br><small><?= $item['factualizacion']?></small>
-    </p>
-    <hr>
-    <?php endforeach; ?>    
-</main>
+//vista: app/views/posts/index.phtml
+<h1>List of posts</h1>
+
+<?php if (Flash::hasMessages()) { ?>    
+    <?= Flash::render(); ?>
+<?php } ?>
+
+<?= Html::link("posts/create", "Create new post") ?>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Body</th>
+            <th>Created At</th>
+            <th>Updated At</th>
+            <th>Options</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($posts as $post): ?>
+            <tr>
+                <td><?= $post->id; ?></td>
+                <td><?= $post->title; ?></td>
+                <td><?= substr($post->body, 0, 100) . '...'; ?></td>
+                <td><?= $post->created_at; ?></td>
+                <td><?= $post->updated_at; ?></td>
+                <td>
+                    <?= Html::link("posts/show/$post->id", "View") ?>
+                    <?= Html::link("posts/edit/$post->id", "Edit") ?>
+                    <?= Html::link("posts/delete/$post->id", "Delete", ["onclick" => "return confirm('Are you sure?')"]) ?>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
 ```
 
-Iteramos sobre el arreglo $lista_de_entradas que dejamos en $item. Luego mostramos el nombre de la entrada, un par de enlaces para editar y eliminar y finalmente la fecha de actualiación.
+Iteramos sobre el arreglo $posts que dejamos en $post. Luego mostramos el nombre de la entrada, el cuerpo, la fecha de creación y actualización y finalmente un par de enlaces para ver, editar y eliminar.
 
+Pasamos a la vista show.
 ```php
+//vista: app/views/posts/show.phtml
 <header>
-    <h1>IsaliaPHP - Agregar entrada</h1>
+    <h1><?= $post->title ?></h1>
 </header>
-<main>    
-    <form action="<?= PUBLIC_PATH?>items/add" method="post">
-        <p>
-            <label>Nombre</label>
-            <input type="text" name="item[nombre]" required value="<?=$item['nombre'] ?? '';?>" />
-        </p>
-        <p>
-            <label>Cuerpo</label>
-            <textarea name="item[cuerpo]" required><?=$item['cuerpo'] ?? '';?></textarea>
-        </p>
-        <button type="submit">Enviar</button>
-    </form>
+
+<main>
+    <article>
+        <p class="post-meta">Published on: <?= date('F j, Y', strtotime($post->created_at)) ?></p>
+        <div class="post-content">
+            <?= $post->body ?>
+        </div>
+    </article>
+    <nav>
+		 <?= Html::link("posts", "Back to Posts") ?>
+    </nav>
 </main>
+
+```
+En ella se muestran los datos de la publicación seleccionada.
+
+Ahora iremos a la vista create.
+```php
+//vista: app/views/posts/create.phtml
+<h1>Create New Post</h1>
+
+<?php if (Flash::hasMessages()) { ?>    
+    <?= Flash::render(); ?>
+<?php } ?>
+
+<form action="<?= PUBLIC_PATH ?>posts/create" method="post">
+    <div>
+        <label for="post_title">Title:</label>
+        <input type="text" id="post_title" name="post[title]" required>
+    </div>
+    <div>
+        <label for="post_body">Body:</label>
+        <textarea id="post_body" name="post[body]" required></textarea>
+    </div>
+    <div>
+        <button type="submit">Create Post</button>
+    </div>
+</form>
+
+<?= Html::link('posts', 'Back to Posts') ?>
+
 ```
 
-Aquí tenemos un formulario con los elementos básicos de la publicación. Para términos de usabilidad se ha utilizado la forma de nombre del input como agrupador[atributo]. Con ello hacemos que viaje un paquete de datos con el nombre item, que contiene internamente todos los atributos (nombre y cuerpo). El formulario se dirige al mismo método que lo pintó, pero usando el método POST del formulario. Con esto podemos acceder al contenido desde el controlador como se refuerza en las siguientes líneas:
+Aquí tenemos un formulario con los elementos básicos de la publicación. Para términos de usabilidad se ha utilizado la forma de nombre del input como agrupador[atributo]. Con ello hacemos que viaje un paquete de datos con el nombre *post*, que contiene internamente todos los atributos (title y body). El formulario se dirige al mismo método que lo pintó, pero usando el método POST del formulario. Con esto podemos acceder al contenido desde el controlador como se refuerza en las siguientes líneas:
 
 ```php
-//revisar si encuentra un contenedor llamado item dentro de $_POST
-if (Request::hasPost('item')) {
-    $datos = Request::post('item');
-    //obtiene un arreglo asociativo como 
-    //['nombre' => 'Beneficios del té verde', 'cuerpo' => '...']
-    //este arreglo asociativo es el que nos sirve para cargarlo
-    //en un modelo usando el método load para luego usar el método save
-}
+    public function create()
+    {
+        if (Request::hasPost("post")) {
+            $post = new Post(Request::post("post"));
+            if ($post->save()) {
+                Flash::valid("Post created successfully");
+                $this->redirect("posts");
+            }
+        }
+    }
 ```
 
-Finalmente, el formulario edit no es muy diferente de add, como verá en el ejemplo siguiente:
+Finalmente, el formulario edit no es muy diferente de *create*, como verá en el ejemplo siguiente:
 
 ```php
-<header>
-    <h1>IsaliaPHP - Editar entrada</h1>
-</header>
-<main>    
-    <form action="<?= PUBLIC_PATH?>items/edit/<?=$item['id']?>" method="post">
-        <p>
-            <label>Nombre</label>
-            <input type="text" name="item[nombre]" required value="<?=$item['nombre'];?>" />
-        </p>
-        <p>
-            <label>Cuerpo</label>
-            <textarea name="item[cuerpo]" required><?=$item['cuerpo'];?></textarea>
-        </p>
-        <button type="submit">Enviar</button>
-        
-        <?php if(!empty($mensaje)): ?>
-        <p><?= $mensaje ?></p>
-        <?php endif; ?>        
-    </form>
-</main>
+//vista: app/views/posts/edit.phtml
+<h1>Edit Post</h1>
+
+<?php if (Flash::hasMessages()) { ?>    
+    <?= Flash::render(); ?>
+<?php } ?>
+
+<form action="<?= PUBLIC_PATH ?>posts/edit/<?= $post->id ?>" method="post">
+    <div>
+        <label for="post_title">Title:</label>
+        <input type="text" id="post_title" name="post[title]" value="<?= htmlspecialchars($post->title) ?>" required>
+    </div>
+    
+    <div>
+        <label for="post_body">Body:</label>
+        <textarea id="post_body" name="post[body]" required><?= htmlspecialchars($post->body) ?></textarea>
+    </div>
+    
+    <div>
+        <button type="submit">Update Post</button>
+    </div>
+</form>
+<p>Last updated at: <?= $post->updated_at ?></p>
+<?= Html::link('posts', 'Back to Posts') ?>
+<?= Html::link("posts/view/{$post->id}", 'View Post') ?>
 ```
 
 Principalmente, la diferencia radica en la url de la acción, ya que debe llevar el identificador de la entrada.
