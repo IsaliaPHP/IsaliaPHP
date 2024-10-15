@@ -24,6 +24,11 @@ class Config {
      * false
      */
     const SHOW_ERRORS = true;
+
+    /**
+     * Lista blanca para mostrar errores al desarrollador
+     */
+    const EXCEPTIONS = ["127.0.0.1"];
     
     /**
      * Controlador predeterminado

@@ -10,6 +10,7 @@ class View
     static $_content;
     static $_template;
     static $_flash_message;
+    static $_hasErrors = false;
 
     /**
      * Carga una vista de acuerdo a su nombre
@@ -30,6 +31,9 @@ class View
             throw new Exception("No se encuentra " . $archivo_vista, 1);
         }
 
+        if (self::getHasErrors()) {
+            return true;
+        }
 
         if (!empty(self::$_template)) {
             ob_start();
@@ -102,6 +106,14 @@ class View
         return self::$_template;
     }
 
+    public static function setHasErrors(bool $hasErrors)
+    {
+        self::$_hasErrors = $hasErrors;
+    }
 
+    public static function getHasErrors()
+    {
+        return self::$_hasErrors;
+    }
 
 }
