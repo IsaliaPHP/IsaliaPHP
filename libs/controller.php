@@ -81,7 +81,7 @@ class Controller
         if ($this->_redirect !== null) {
             Router::to($this->_redirect);
             return true;
-        } else { $current_view = $this->_controller_url . "/" . $this->_action;
+        } else { $current_view = $this->_controller_url . "/" . $this->_view;
             if (empty(View::getTemplate())) {
                 View::setTemplate("default");
             }
