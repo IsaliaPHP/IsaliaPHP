@@ -1,11 +1,11 @@
 <h1>List of posts</h1>
 
-<?php if (Flash::hasMessages()) { ?>    
+<?php if (Flash::hasMessages()): ?>    
     <?= Flash::render(); ?>
-<?php } ?>
+<?php endif; ?>
 
 <?= Html::link("posts/create", "Create new post") ?>
-<table>
+<table style="margin-top: 1em;">
     <thead>
         <tr>
             <th>ID</th>

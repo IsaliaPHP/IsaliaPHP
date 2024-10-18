@@ -1,0 +1,10 @@
+<h1>{{nombreModelo}}</h1>
+
+<?php if (Flash::hasMessages()): ?>    
+    <?= Flash::render(); ?>
+<?php endif; ?>
+
+{{detalleAtributos}}
+
+<?= Html::link("{{url_controlador}}", 'Volver') ?>
+

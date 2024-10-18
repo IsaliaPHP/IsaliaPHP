@@ -65,6 +65,11 @@ set_exception_handler('Report::handleException');
 Sanitize::execute();
 
 /**
+ * Agregamos los headers necesarios para evitar peticiones POST o GET desde dominios fuera del servidor local
+ */
+Security::injectAntiCSRFHeader();
+
+/**
  * Cargamos el controlador de acuerdo a la $url recibida en el navegador web
  */
 Load::controllerFromUrl($url);
