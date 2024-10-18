@@ -29,6 +29,11 @@ class Config {
      * Lista blanca para mostrar errores al desarrollador
      */
     const EXCEPTIONS = ["127.0.0.1"];
+
+    /** 
+     * Secuencia para asegurar los formularios
+     */
+    const SAFETY_SEED = 'c91f8a8f55c329afe6dca874514e3aff';
     
     /**
      * Controlador predeterminado

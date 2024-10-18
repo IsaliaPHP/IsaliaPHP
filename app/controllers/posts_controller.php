@@ -22,6 +22,10 @@ class PostsController extends Controller
     public function create()
     {
         if (Request::hasPost("post")) {
+            if (!Request::isSafe()) {
+                Flash::error("Non safe data provided");
+                return;
+            }
             $post = new Post(Request::post("post"));
             if ($post->save()) {
                 Flash::valid("Post created successfully");
@@ -34,6 +38,10 @@ class PostsController extends Controller
     {
         $post = (new Post)->findById($id);
         if (Request::hasPost("post")) {
+            if (!Request::isSafe()) {
+                Flash::error("Non safe data provided");
+                return;
+            }
             if ($post->update(Request::post("post"))) {
                 Flash::valid("Post updated successfully");
                 $this->redirect("posts");

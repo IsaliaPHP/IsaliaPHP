@@ -42,4 +42,24 @@ class Request {
         return filter_has_var(INPUT_GET, $var);
     }
 
+    /**
+     * Permite comprobar si una peticion usando formularios
+     * es segura, usando Form:open o Form::openMultipart
+     * @return bool
+     */
+    public static function isSafe()
+    {
+        $result = filter_has_var(INPUT_POST, 'safety_key') ? $_POST['safety_key'] : '';
+        
+        if (strlen($result) != 66) {
+            return false;
+        }
+        $resultMD5 = substr($result, - 33, - 1);
+
+        if ($resultMD5 === md5(Config::SAFETY_SEED)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

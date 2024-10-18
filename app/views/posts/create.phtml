@@ -1,25 +1,23 @@
 <h1>Create New Post</h1>
 
-<?php if (Flash::hasMessages()) { ?>    
+<?php if (Flash::hasMessages()): ?>    
     <?= Flash::render(); ?>
-<?php } ?>
+<?php endif; ?>
 
 
-<form action="<?= PUBLIC_PATH ?>posts/create" method="post">
+<?= Form::open("posts/create")?>
     <div>
-        <label for="post_title">Title:</label>
-        <input type="text" id="post_title" name="post[title]" required>
+        <?= Form::label("post.title", "Title:"); ?>
+        <?= Form::text("post.title", 'required') ?>
     </div>
     
     <div>
-        <label for="post_body">Body:</label>
-        <textarea id="post_body" name="post[body]" required></textarea>
+        <?= Form::label("post.body", "Body:"); ?>
+        <?= Form::textarea("post.body", 'required') ?>
     </div>
     
-    <div>
-        <button type="submit">Create Post</button>
+    <div style="margin-top: 1em;">
+        <?= Form::submit("Create Post") ?>
+        <?= Html::link('posts', 'Back to Posts') ?>
     </div>
-</form>
-
-
-<?= Html::link('posts', 'Back to Posts') ?>
+<?= Form::close(); ?>

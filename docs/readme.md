@@ -15,6 +15,7 @@ Te recomiendo empezar por los siguientes puntos:
 - [Clase Model de IsaliaPHP](model.md)
 - [Clase Db de IsaliaPHP](db.md)
 - [Scaffoding de IsaliaPHP](scaffolding.md)
+- [IsaliaPHP Tools](tools.md)
 
 Si estás interesado en aprender para qué sirve cada componente dentro del framework puedes dirigirte a la sección [API de IsaliaPHP](api.md)
 

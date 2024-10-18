@@ -1,0 +1,13 @@
+<h1>Editar {{nombreModelo}}</h1>
+
+<?php if (Flash::hasMessages()): ?>    
+    <?= Flash::render(); ?>
+<?php endif; ?>
+
+<?= Form::open("{{url_controlador}}/edit/" . $current_item->id) ?>
+    {{atributos_form}}                    
+    <div>
+        <?= Form::submit("Actualizar {{nombreModelo}}") ?>
+        <?= Html::link("{{url_controlador}}", "Volver")?>
+    </div>
+<?= Form::close() ?>
