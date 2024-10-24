@@ -69,7 +69,7 @@ static $_inputId;
             self::$_inputId = $elements[0] . '_' . $elements[1];
             self::$_inputName = $elements[0] . '[' . $elements[1] . ']';
         }
-        if ($value != null) {
+        if (!empty($value)) {
             self::$_value = " value=\"$value\"";
         }
 

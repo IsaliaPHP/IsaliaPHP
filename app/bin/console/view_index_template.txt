@@ -1,0 +1,27 @@
+<h1>Lista de {{nombreModelo}}</h1>
+
+<?php if (Flash::hasMessages()): ?>    
+    <?= Flash::render(); ?>
+<?php endif; ?>
+
+<?= Html::link("{{url_controlador}}/create", "Crear {{nombreModelo}}") ?>
+<table>
+    <thead>
+        <tr>
+            {{columnas_tabla}}
+            <th>Opciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($list_of_items as $item): ?>
+        <tr>
+            {{atributos_tabla}}
+            <td align="center">
+                <?= Html::link("{{url_controlador}}/show/" . $item->id, "Ver") ?>
+                <?= Html::link("{{url_controlador}}/edit/" . $item->id, "Editar") ?>
+                <?= Html::link("{{url_controlador}}/delete/" . $item->id, "Borrar", ["onclick" => "return confirm('¿Está seguro?')"]) ?>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

@@ -16,8 +16,11 @@ Te recomiendo empezar por los siguientes puntos:
 - [Clase Db de IsaliaPHP](db.md)
 - [Scaffoding de IsaliaPHP](scaffolding.md)
 - [IsaliaPHP Tools](tools.md)
+- [Autenticación de usuarios](auth.md)
 
 Si estás interesado en aprender para qué sirve cada componente dentro del framework puedes dirigirte a la sección [API de IsaliaPHP](api.md)
+
+Puedes descargar IsaliaPHP desde [aquí](https://github.com/IsaliaPHP/IsaliaPHP/releases)
 
 Suerte en este viaje.
 

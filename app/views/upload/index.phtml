@@ -1,0 +1,10 @@
+<h1>Subir archivo</h1>
+
+<?php if (Flash::hasMessages()): ?>    
+    <?= Flash::render(); ?>
+<?php endif; ?>
+
+<?= Form::openMultipart('upload') ?>
+    <input type="file" name="file" />
+    <button type="submit">Subir</button>
+<?= Form::close() ?>

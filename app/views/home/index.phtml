@@ -1,6 +1,11 @@
 <header>
     <h1><span class="text-primary">IsaliaPHP</span> les da la bienvenida</h1>
 </header>
+
+<?php if (Flash::hasMessages()): ?>    
+    <?= Flash::render(); ?>
+<?php endif; ?>
+
 <main>
     <article class="well">
         <p>Muchas gracias por confiar en este proyecto. La idea principal es contar con las bondades de un framework MVC, con documentación en español y un grupo de librerías básicas para realizar proyectos.</p>

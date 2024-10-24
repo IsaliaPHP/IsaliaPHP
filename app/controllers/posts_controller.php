@@ -7,7 +7,7 @@
  * @property array posts
  * @property Post post
  */
-class PostsController extends Controller
+class PostsController extends AdminController
 {
     public function index()
     {
@@ -23,12 +23,12 @@ class PostsController extends Controller
     {
         if (Request::hasPost("post")) {
             if (!Request::isSafe()) {
-                Flash::error("Non safe data provided");
+                Flash::error("Se proporcionaron datos no seguros.");
                 return;
             }
             $post = new Post(Request::post("post"));
             if ($post->save()) {
-                Flash::valid("Post created successfully");
+                Flash::valid("Post creado exitosamente.");
                 $this->redirect("posts");
             }
         }
@@ -39,11 +39,11 @@ class PostsController extends Controller
         $post = (new Post)->findById($id);
         if (Request::hasPost("post")) {
             if (!Request::isSafe()) {
-                Flash::error("Non safe data provided");
+                Flash::error("Se proporcionaron datos no seguros.");
                 return;
             }
             if ($post->update(Request::post("post"))) {
-                Flash::valid("Post updated successfully");
+                Flash::valid("Post actualizado exitosamente.");
                 $this->redirect("posts");
             }
         }
@@ -56,7 +56,7 @@ class PostsController extends Controller
         $this->setView(null);
         $post = (new Post)->findById($id);
         if ($post && $post->delete()) {
-            Flash::valid("Post deleted successfully");
+            Flash::valid("Post eliminado exitosamente.");
         }
         $this->redirect("posts");
     }

@@ -1,0 +1,20 @@
+<h1>Acceso</h1>
+
+<?php if (Flash::hasMessages()): ?>    
+    <?= Flash::render(); ?>
+<?php endif; ?>
+
+<?= Form::open('login'); ?>
+<div>
+    <?= Form::label('username', 'Usuario'); ?>
+    <?= Form::text(field: 'username', value: $username ?? '', options: 'autofocus'); ?>
+</div>
+<div>
+    <?= Form::label('password', 'Contraseña'); ?>
+    <?= Form::password('password'); ?>
+</div>
+<div>
+    <?= Form::submit('Acceder'); ?>
+    <?= Html::link('', 'Volver'); ?>
+</div>
+<?= Form::close(); ?>

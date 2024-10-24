@@ -9,9 +9,9 @@ class Config {
     /**
      * utiliza de forma predeterminada MySQL (o MariaDB)
      */
-    const CONNECTION_STRING = 'mysql:host=127.0.0.1;dbname=NombreBaseDatos;charset=utf8';
-    const USER = 'usuario_base_datos';
-    const PASSWORD = 'clave_del_usuario_base_datos';
+    const CONNECTION_STRING = 'mysql:host=127.0.0.1;dbname=blog;charset=utf8';
+    const USER = 'nelson';
+    const PASSWORD = 's3cret';
     const PARAMETERS = [
         PDO::ATTR_PERSISTENT => true, //conexión persistente
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -34,6 +34,21 @@ class Config {
      * Secuencia para asegurar los formularios
      */
     const SAFETY_SEED = 'c91f8a8f55c329afe6dca874514e3aff';
+
+    /**
+     * Directorio para almacenar los archivos adjuntos
+     */
+    const UPLOAD_DIR = ROOT . DS . 'public' . DS . 'files';
+    
+    /**
+     * Tamaño máximo del archivo en bytes (2MB)
+     */
+    const MAX_UPLOAD_FILE_SIZE = 2097152;
+
+    /**
+     * Tipos de archivos permitidos
+     */
+    const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png', 'application/pdf'];
     
     /**
      * Controlador predeterminado

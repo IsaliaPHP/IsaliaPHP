@@ -57,6 +57,8 @@ class ScaffoldController extends AdminController
          //espera que el paquete de datos enviado desde el formulario venga
         //encapsulado dentro del nombre data
         //ej: data[nombre], data[precio]
+        $this->current_item = $model_instance->findById($id);
+
         if (Request::hasPost('data')) {
             $requested_data = Request::post('data');
             $model_instance->load($requested_data);
@@ -69,7 +71,6 @@ class ScaffoldController extends AdminController
                 Flash::error("Imposible actualizar el elemento");
             }
         }
-        $this->current_item = $model_instance->findById($id);
         //espera que exista una vista en la carpeta con el nombre del controlador
         //y que su nombre sea edit.phtml        
     }

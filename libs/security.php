@@ -14,7 +14,7 @@ class Security
      * Agrega los headers necesarios para evitar peticiones POST o GET desde dominios fuera del servidor local
      * @return void
      */
-    static function injectAntiCSRFHeader()
+    public static function injectAntiCSRFHeader()
     {
         // Cross-Origin Resource Sharing Header
         header('Access-Control-Allow-Origin: http://127.0.0.1');

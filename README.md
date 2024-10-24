@@ -113,8 +113,7 @@ Puede verse su documentación en detalle dentro del archivo docs\db.md
 
 
 ### Documentación
-La documentación podrá encontrarse dentro de la carpeta docs en la raíz del proyecto.
-
+La documentación podrá encontrarse dentro de la carpeta docs en la raíz del proyecto o desde la web [https://isaliaphp.github.io/IsaliaPHP](https://isaliaphp.github.io/IsaliaPHP)
 
 ### Aviso final
 El código aquí expuesto no asegura ni garantiza que esté libre de errores o fallos, por lo tanto, el usuario es responsable de utilizarlo bajo su propio criterio. Su creador no entrega garantías de ningún tipo sobre el código y no es responsable por el uso que las personas hagan de él.

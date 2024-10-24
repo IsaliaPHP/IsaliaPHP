@@ -5,9 +5,9 @@
 <?php endif; ?>
 
 <?= Form::open("{{url_controlador}}/create") ?>
-    {{atributos_form}}                    
-    <div>
-        <?= Form::submit("Crear {{nombreModelo}}") ?>
-        <?= Html::link("{{url_controlador}}", "Volver")?>
-    </div>
+{{atributos_form}}                    
+<div>
+    <?= Form::submit("Crear {{nombreModelo}}") ?>
+    <?= Html::link("{{url_controlador}}", "Volver")?>
+</div>
 <?= Form::close() ?>
