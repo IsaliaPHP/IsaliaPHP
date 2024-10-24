@@ -30,15 +30,15 @@ class AttachmentManager {
      */
     public function upload($file) {
         if ($file['error'] !== UPLOAD_ERR_OK) {
-            throw new Exception('Error during file upload.');
+            throw new Exception('Error durante la subida del archivo.');
         }
 
         if (!in_array($file['type'], $this->allowedTypes)) {
-            throw new Exception('File type not allowed.');
+            throw new Exception('Tipo de archivo no permitido.');
         }
 
         if ($file['size'] > $this->maxFileSize) {
-            throw new Exception('File size exceeds the limit.');
+            throw new Exception('El tamaño del archivo excede el límite.');
         }
 
         $filename = $this->generateFilename($file['name']);
@@ -47,7 +47,7 @@ class AttachmentManager {
         if (move_uploaded_file($file['tmp_name'], $filePath)) {
             return $filename;
         } else {
-            throw new Exception('Failed to move uploaded file.');
+            throw new Exception('Error al mover el archivo subido.');
         }
     }
 
@@ -58,6 +58,9 @@ class AttachmentManager {
      */
     protected function generateFilename($originalName) {
         $ext = pathinfo($originalName, PATHINFO_EXTENSION);
+        if (is_array($ext)) {
+            $ext = ''; // Valor predeterminado como cadena vacía si $ext es inesperadamente un array
+        }
         return uniqid() . '.' . $ext;
     }
 }

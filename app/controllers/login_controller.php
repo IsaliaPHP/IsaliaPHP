@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Controlador de login
+ * @author nelson rojas
+ * @property string username
+ */
 class LoginController extends Controller
 {
     public function index()
