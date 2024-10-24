@@ -17,6 +17,7 @@ Te recomiendo empezar por los siguientes puntos:
 - [Scaffoding de IsaliaPHP](scaffolding.md)
 - [IsaliaPHP Tools](tools.md)
 - [Autenticación de usuarios](auth.md)
+- [Subir adjuntos](upload.md)
 
 Si estás interesado en aprender para qué sirve cada componente dentro del framework puedes dirigirte a la sección [API de IsaliaPHP](api.md)
 
