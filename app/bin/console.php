@@ -12,8 +12,18 @@ if (!str_ends_with(dirname(__FILE__), DS . 'app' . DS .'bin')) {
 }
 
 
+function limpiarPantalla()
+{
+    if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+        system('cls');
+    } else {
+        system('clear');
+    }
+}
+
 function mostrarMenu()
 {
+    limpiarPantalla();
     echo "----------------------------------\n";
     echo "Consola Interactiva IsaliaPHP\n";
     echo "----------------------------------\n";
@@ -49,7 +59,7 @@ function crearModelo($nombreModelo = '')
     }
 
     $archivoModelo = APP_PATH . DS . "models" . DS . $nombreArchivoModelo . ".php";
-    $templateModelo = file_get_contents(APP_PATH . DS . "bin" . DS . "console" . DS . "model_template.php");
+    $templateModelo = file_get_contents(APP_PATH . DS . "bin" . DS . "console" . DS . "model_template.txt");
     $templateModelo = str_replace("{{nombreModelo}}", $nombreModelo, $templateModelo);
     file_put_contents($archivoModelo, $templateModelo);
 
@@ -76,7 +86,7 @@ function crearControlador($nombreControlador = '', $controladorPadre = 'Controll
     }
 
     $archivoControlador = APP_PATH . DS . "controllers" . DS . $nombreArchivoControlador . ".php";
-    $templateControlador = file_get_contents(APP_PATH . DS . "bin" . DS . "console" . DS . "controller_template.php");
+    $templateControlador = file_get_contents(APP_PATH . DS . "bin" . DS . "console" . DS . "controller_template.txt");
     $templateControlador = str_replace("{{nombreControlador}}", $nombreControlador, $templateControlador);
     $templateControlador = str_replace("{{clasePadre}}", "$controladorPadre", $templateControlador);
     $templateControlador = str_replace("{{definicionModelo}}", "$definicionModelo", $templateControlador);
@@ -123,7 +133,7 @@ function crearVistasCRUD()
     echo "Se le solicitará el nombre del controlador que debe ser en notación PascalCase \n";
     echo "Por ejemplo Producto, Compras, Ventas, DetalleCompras. \n";
     echo "No debe incluir el sufijo Controller al final. Se agregará automáticamente. \n";
-
+    echo "=======================\n";
     echo "Ingrese el nombre del controlador: ";
     $nombreControlador = trim(fgets(STDIN));
     $url_controlador = pascalToSnakeCase($nombreControlador);
@@ -138,8 +148,6 @@ function crearVistasCRUD()
     echo "=======================\n";
     echo "Ingrese el nombre del modelo: ";
     $nombreModelo = trim(fgets(STDIN));
-
-    $nombreTabla = pascalToSnakeCase($nombreModelo);
 
     echo "Paso 3: Atributos\n";
     echo "Se le solicitará la lista de atributos de la tabla \n";
@@ -159,15 +167,15 @@ function crearVistasCRUD()
 
     $columnas_tabla = '';
     foreach ($atributos as $atributo) {
-        $columnas_tabla .= "\t<th>".ucfirst($atributo)."</th>" . PHP_EOL;
+        $columnas_tabla .= "\t\t\t<th>".ucfirst($atributo)."</th>" . PHP_EOL;
     }
 
     $atributos_tabla = '';
     foreach ($atributos as $atributo) {
-        $atributos_tabla .= "\t<td><?=$" . "item->$atributo; ?></td>" . PHP_EOL;
+        $atributos_tabla .= "\t\t\t<td><?=$" . "item->$atributo; ?></td>" . PHP_EOL;
     }
 
-    $template_index = file_get_contents(APP_PATH . DS . "bin". DS. "console". DS . "view_index_template.phtml");
+    $template_index = file_get_contents(APP_PATH . DS . "bin". DS. "console". DS . "view_index_template.txt");
     $template_index = str_replace("{{nombreModelo}}", $nombreModelo, $template_index);
     $template_index = str_replace("{{url_controlador}}", $url_controlador, $template_index);
     $template_index = str_replace("{{columnas_tabla}}", $columnas_tabla, $template_index);
@@ -177,12 +185,12 @@ function crearVistasCRUD()
     $atributos_form = '';
     foreach ($atributos as $atributo) {
         $atributos_form .= "<div>" . PHP_EOL;
-        $atributos_form .= "<?= Form::label(\"data.$atributo\", \"".ucfirst($atributo)."\"); ?>" . PHP_EOL;
-        $atributos_form .= "<?= Form::text(\"data.$atributo\");?>" . PHP_EOL;
+        $atributos_form .= "\t<?= Form::label(\"data.$atributo\", \"".ucfirst($atributo)."\"); ?>" . PHP_EOL;
+        $atributos_form .= "\t<?= Form::text(\"data.$atributo\");?>" . PHP_EOL;
         $atributos_form .= "</div>" . PHP_EOL;
     }
 
-    $template_create = file_get_contents(APP_PATH . DS . "bin". DS. "console". DS . "view_create_template.phtml");
+    $template_create = file_get_contents(APP_PATH . DS . "bin". DS. "console". DS . "view_create_template.txt");
     $template_create = str_replace("{{nombreModelo}}", $nombreModelo, $template_create);
     $template_create = str_replace("{{url_controlador}}", $url_controlador, $template_create);
     $template_create = str_replace("{{atributos_form}}", $atributos_form, $template_create);
@@ -192,17 +200,17 @@ function crearVistasCRUD()
     $atributos_form = '';
     foreach ($atributos as $atributo) {
         $atributos_form .= "<div>" . PHP_EOL;
-        $atributos_form .= "<?= Form::label(\"data.$atributo\", \"".ucfirst($atributo)."\"); ?>" . PHP_EOL;
+        $atributos_form .= "\t<?= Form::label(\"data.$atributo\", \"".ucfirst($atributo)."\"); ?>" . PHP_EOL;
         
         $soloLectura = "";
         if ($atributo == "id") {
             $soloLectura = "readonly";
         }
 
-        $atributos_form .= "<?= Form::text(\"data.$atributo\", \"$soloLectura\", htmlspecialchars($" . "current_item->$atributo));?>" . PHP_EOL;
+        $atributos_form .= "\t<?= Form::text(\"data.$atributo\", \"$soloLectura\", htmlspecialchars($" . "current_item->$atributo));?>" . PHP_EOL;
         $atributos_form .= "</div>" . PHP_EOL;
     }
-    $template_edit = file_get_contents(APP_PATH . DS . "bin". DS. "console". DS . "view_edit_template.phtml");
+    $template_edit = file_get_contents(APP_PATH . DS . "bin". DS. "console". DS . "view_edit_template.txt");
     $template_edit = str_replace("{{nombreModelo}}", $nombreModelo, $template_edit);
     $template_edit = str_replace("{{url_controlador}}", $url_controlador, $template_edit);
     $template_edit = str_replace("{{atributos_form}}", $atributos_form, $template_edit);
@@ -211,11 +219,11 @@ function crearVistasCRUD()
     $detalleAtributos = '';
     foreach ($atributos as $atributo) {
         $detalleAtributos .= "<div>" . PHP_EOL;
-        $detalleAtributos .= "<strong>".ucfirst($atributo)."</strong>" . PHP_EOL;
-        $detalleAtributos .= "<p><?=$" . "current_item->$atributo" . "?></p>" . PHP_EOL;
+        $detalleAtributos .= "\t<strong>".ucfirst($atributo)."</strong>" . PHP_EOL;
+        $detalleAtributos .= "\t<p><?=$" . "current_item->$atributo" . "?></p>" . PHP_EOL;
         $detalleAtributos .= "</div>" . PHP_EOL;
     }
-    $template_show = file_get_contents(APP_PATH . DS . "bin". DS. "console". DS . "view_show_template.phtml");
+    $template_show = file_get_contents(APP_PATH . DS . "bin". DS. "console". DS . "view_show_template.txt");
     $template_show = str_replace("{{nombreModelo}}", $nombreModelo, $template_show);
     $template_show = str_replace("{{url_controlador}}", $url_controlador, $template_show);
     $template_show = str_replace("{{detalleAtributos}}", $detalleAtributos, $template_show);
@@ -225,7 +233,7 @@ function crearVistasCRUD()
     echo "Vistas CRUD para '$nombreControlador' creadas con éxito.\n";
 }
 
-// Agregar esta nueva función después de crearVistasCRUD()
+// convierte notación PascalCase a snake_case
 function pascalToSnakeCase($string)
 {
     return strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $string));
@@ -249,10 +257,13 @@ while (true) {
             crearVistasCRUD();
             break;
         case '5':
-            echo "Saliendo...\n";
+            limpiarPantalla();
+            echo "\n\tHasta la próxima!\n";
             exit(0);
         default:
-            echo "Opción no válida, intenta nuevamente.\n";
+            echo "\tOpción no válida, intenta nuevamente.\n";
     }
-    echo "\n";
+    sleep(2);
+    echo "\nPresiona Enter para continuar...";
+    fgets(STDIN);
 }
