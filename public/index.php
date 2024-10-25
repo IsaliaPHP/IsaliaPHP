@@ -8,7 +8,8 @@ date_default_timezone_set("America/Santiago");
 define('ROOT', dirname(dirname(__FILE__)));
 define('DS', DIRECTORY_SEPARATOR);
 define('APP_PATH', ROOT . DS . 'app' . DS);
-define('LIBS_PATH', ROOT . DS . 'libs' . DS);
+define('CORE_PATH', ROOT . DS . 'core' . DS);
+define('LIBS_PATH', CORE_PATH . 'libs' . DS);
 define('START_TIME', microtime(TRUE));
 
 
