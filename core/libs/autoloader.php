@@ -29,7 +29,7 @@ class Autoloader
         return false;
     }
 
-    private static function loadPSR4($class_name) {
+    private static function loadPSR4() {
         // revisar si existe archivo de carga de composer y cargarlo
         if (file_exists(dirname(LIBS_PATH) . DS . 'vendor' . DS . 'autoload.php')) {
             require_once dirname(LIBS_PATH) . DS . 'vendor' . DS . 'autoload.php';
@@ -49,7 +49,7 @@ class Autoloader
         $result = false;
         $snake_case = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $class_name));
 
-        foreach (static::$_folders as $folder) {
+        foreach (self::$_folders as $folder) {
             if (is_file($folder . $snake_case . '.php')) {
                 require_once($folder . $snake_case . '.php');
                 $result = true;
@@ -62,7 +62,7 @@ class Autoloader
         }
 
         if (!$result) {
-            $result = static::loadPSR4($class_name);
+            $result = static::loadPSR4();
         }        
 
         if ($result) {
