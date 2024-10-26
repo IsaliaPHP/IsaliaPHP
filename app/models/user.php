@@ -7,7 +7,7 @@
  */
 class User extends Model
 {
-    public function check(string $username, string $password): bool|User
+    public function check(string $username, string $password): bool|Model
     {
         $user =  $this->findFirst('WHERE username = :username', [':username' => $username]);
         if ($user && password_verify($password, $user->password)) {
