@@ -115,7 +115,7 @@ class Model
         $this->beforeCreate();
         $result = Db::insert($this->_table_name, $this->_attributes);
         $this->afterCreate();
-        return $result;
+        return !empty($result);
     }
 
     /**
@@ -124,24 +124,29 @@ class Model
      * @param string $condition La condición de actualización.
      * @return bool True si la operación se realizó correctamente, false en caso contrario.
      */
-    public function update(array $attributes=[], string $condition = '')
+    public function update(array $attributes = null, string $condition = '')
     {
-        
         if (empty($condition)) {
             $condition = " WHERE id = " . $this->id;
         }
-        
 
-        if (count($attributes) == 0) {
-            $attributes = [...$this->_attributes];
-        } 
+        // Si $attributes es null, usamos todos los atributos del modelo
+        if ($attributes === null) {
+            $attributes = $this->_attributes;
+        } else {
+            // Si $attributes no es null, cargamos solo los atributos proporcionados
+            $this->load($attributes);
+        }
 
-        $this->load($attributes);
-        
+        // Aseguramos que haya atributos para actualizar
+        if (empty($attributes)) {
+            return false; // No hay nada que actualizar
+        }
+
         $this->beforeUpdate();
-        $result = Db::update($this->_table_name, $this->_attributes, $condition);
+        $result = Db::update($this->_table_name, $attributes, $condition);
         $this->afterUpdate();
-        return $result;
+        return ($result > 0);
     }
 
     /**
@@ -155,7 +160,7 @@ class Model
         $this->beforeDelete();
         $result = Db::delete($this->_table_name, $condition, $parameters);
         $this->afterDelete();
-        return $result;
+        return ($result > 0);
     }
 
     /**
@@ -169,7 +174,7 @@ class Model
             $this->beforeDelete();
             $result = Db::delete($this->_table_name, $condition);
             $this->afterDelete();
-            return $result;
+            return ($result > 0);
         } else {
             return false;
         }
@@ -207,9 +212,9 @@ class Model
         return $result;
     }
     
-    //
-    //metodos auxiliares
-    //
+    /**
+     * Métodos auxiliares
+     */
 
     /**
      * Método para inicializar el modelo.
@@ -272,7 +277,7 @@ class Model
      */
     protected function hydrate($data)
     {
-        if (!$data) {
+        if (empty($data)) {
             return null;
         }
         $model = new $this->_model_name();
