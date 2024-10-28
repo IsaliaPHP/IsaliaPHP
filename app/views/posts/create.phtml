@@ -1,4 +1,4 @@
-<h1>Create New Post</h1>
+<h1>Crear nueva publicación</h1>
 
 <?php if (Flash::hasMessages()): ?>    
     <?= Flash::render(); ?>
@@ -7,17 +7,17 @@
 
 <?= Form::open("posts/create")?>
     <div>
-        <?= Form::label("post.title", "Title:"); ?>
+        <?= Form::label("post.title", "Título:"); ?>
         <?= Form::text("post.title", 'required') ?>
     </div>
     
     <div>
-        <?= Form::label("post.body", "Body:"); ?>
+        <?= Form::label("post.body", "Cuerpo:"); ?>
         <?= Form::textarea("post.body", 'required') ?>
     </div>
     
     <div style="margin-top: 1em;">
-        <?= Form::submit("Create Post") ?>
-        <?= Html::link('posts', 'Back to Posts') ?>
+        <?= Form::submit("Crear") ?>
+        <?= Html::link('posts', 'Volver a publicaciones') ?>
     </div>
 <?= Form::close(); ?>

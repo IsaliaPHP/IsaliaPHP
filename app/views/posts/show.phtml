@@ -1,17 +1,17 @@
 <header>
-    <h1><?= $post->title ?></h1>
+    <h1><?= htmlspecialchars($post->title) ?></h1>
 </header>
 
 <main>
     <article>
-        <p class="post-meta">Published on: <?= date('F j, Y', strtotime($post->created_at)) ?></p>
+        <p class="post-meta">Publicado el: <?= date('F j, Y', strtotime($post->created_at)) ?></p>
         <div class="post-content">
-            <?= $post->body ?>
+            <?= htmlspecialchars($post->body) ?>
         </div>
     </article>
     
     <nav>
-        <?= Html::link('posts', 'Back to Posts') ?>
+        <?= Html::link('posts', 'Volver a publicaciones') ?>
     </nav>
 </main>
 

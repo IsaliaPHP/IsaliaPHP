@@ -1,4 +1,4 @@
-<h1>Edit Post</h1>
+<h1>Editar publicación</h1>
 
 <?php if (Flash::hasMessages()): ?>    
     <?= Flash::render(); ?>
@@ -8,19 +8,19 @@
 <?= Form::open("posts/edit/". $post->id)?>
 
     <div>
-        <?= Form::label("post.title", "Title:"); ?>
+        <?= Form::label("post.title", "Título:"); ?>
         <?= Form::text("post.title", 'required', htmlspecialchars($post->title)); ?>        
     </div>
     
     <div>
-        <?= Form::label("post.body", "Body:"); ?>
+        <?= Form::label("post.body", "Cuerpo:"); ?>
         <?= Form::textarea("post.body", 'required', htmlspecialchars($post->body)); ?>        
     </div>
     
     <div style="margin-top: 1em;">
-        <?= Form::submit("Update Post"); ?>
-        <?= Html::link('posts', 'Back to Posts') ?>
-        <?= Html::link("posts/view/{$post->id}", 'View Post') ?>
+        <?= Form::submit("Actualizar publicación"); ?>
+        <?= Html::link('posts', 'Volver a publicaciones') ?>
+        <?= Html::link("posts/view/{$post->id}", 'Ver publicación') ?>
     </div>
 <?= Form::close(); ?>
 

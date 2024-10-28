@@ -8,7 +8,7 @@
  * @property Post post
  */
 class PostsController extends AdminController
-{
+{  
     public function index()
     {
         $this->posts = (new Post)->findAll();
@@ -21,11 +21,7 @@ class PostsController extends AdminController
 
     public function create()
     {
-        if (Request::hasPost("post")) {
-            if (!Request::isSafe()) {
-                Flash::error("Se proporcionaron datos no seguros.");
-                return;
-            }
+        if (Request::hasPost("post") && $this->checkValid()) {
             $post = new Post(Request::post("post"));
             if ($post->save()) {
                 Flash::valid("Post creado exitosamente.");
@@ -37,11 +33,7 @@ class PostsController extends AdminController
     public function edit(int $id)
     {
         $post = (new Post)->findById($id);
-        if (Request::hasPost("post")) {
-            if (!Request::isSafe()) {
-                Flash::error("Se proporcionaron datos no seguros.");
-                return;
-            }
+        if (Request::hasPost("post") && $this->checkValid()) {
             if ($post->update(Request::post("post"))) {
                 Flash::valid("Post actualizado exitosamente.");
                 $this->redirect("posts");
@@ -61,4 +53,20 @@ class PostsController extends AdminController
         $this->redirect("posts");
     }
 
+    /**
+     * permite revisar si las peticiones usando posts desde formularios 
+     * usan la semilla de seguridad definida en el archivo de configuración
+     * evitando que cualquiera pueda apuntar desde otros sitios a los métodos
+     * de los controladores de la aplicación, ya sea a través de formularios o herramientas
+     * como Postman, Insomnia, Bruno, o CURL directo
+     */
+    private function checkValid()
+    {
+        if (!Request::isSafe()) {
+            Flash::error("Se proporcionaron datos no seguros.");
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
