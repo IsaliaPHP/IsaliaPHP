@@ -1,8 +1,9 @@
 <?php
 /**
  * SqlBuilder
- * Clase encargada de la construcción de consultas SQL
  * @author nelson rojas
+ * @abstract
+ * Clase encargada de la construcción de consultas SQL
  */
 class SqlBuilder {
     use ConditionTrait, JoinTrait, OrderLimitTrait, GroupByTrait, HavingTrait, UnionTrait;

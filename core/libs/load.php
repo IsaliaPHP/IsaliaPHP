@@ -3,6 +3,7 @@
 /**
  * Load
  * @author nelson rojas
+ * @abstract
  * Se encarga de despachar las peticiones de url a los controladores
  */
 class Load

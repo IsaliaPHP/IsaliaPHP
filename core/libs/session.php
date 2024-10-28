@@ -3,6 +3,7 @@
 /**
  * Session
  * @author nelson rojas
+ * @abstract
  * Clase para gestionar variables de sesión. Ideal para autenticación 
  * o carros de compra
  */

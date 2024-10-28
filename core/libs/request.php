@@ -3,6 +3,7 @@
 /**
  * Request
  * @author nelson rojas
+ * @abstract
  * Clase para gestionar los Requests POST y GET
  */
 class Request {

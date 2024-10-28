@@ -3,6 +3,7 @@
 /**
  * Router
  * @author nelson rojas
+ * @abstract
  * Permite realizar la acción de redirección en los controladores
  */
 class Router {

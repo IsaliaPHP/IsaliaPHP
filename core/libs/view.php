@@ -3,6 +3,7 @@
 /**
  * View
  * @author nelson rojas
+ * @abstract
  * Clase encargada de la gestión de vistas, plantillas y parciales
  */
 class View
@@ -106,11 +107,19 @@ class View
         return self::$_template;
     }
 
+    /**
+     * Setter para el atributo $_hasErrors
+     * @param bool $hasErrors
+     */
     public static function setHasErrors(bool $hasErrors)
     {
         self::$_hasErrors = $hasErrors;
     }
 
+    /**
+     * Getter para el atributo $_hasErrors
+     * @return bool
+     */
     public static function getHasErrors()
     {
         return self::$_hasErrors;

@@ -3,6 +3,7 @@
 /**
  * Flash
  * @author nelson rojas
+ * @abstract
  * sirve como helper de envío de notificaciones
  */
 class Flash

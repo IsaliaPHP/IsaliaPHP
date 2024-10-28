@@ -3,6 +3,7 @@
 /**
  * Db
  * @author nelson rojas
+ * @abstract
  * Clase para la gestión de acceso a la base de datos
  * y operaciones CRUD: Crear, Leer, update y Borrar
  *

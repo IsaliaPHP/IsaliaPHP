@@ -3,6 +3,8 @@
 /**
  * Clase AttachmentManager
  * @author nelson rojas
+ * @abstract
+ * Clase que permite gestionar los archivos adjuntos
  */
 class AttachmentManager {
     protected $uploadDir;

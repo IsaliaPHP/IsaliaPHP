@@ -4,6 +4,7 @@
  * 
  * @author nelson rojas
  * class Model
+ * @abstract
  * Clase base para la gestion de modelos ORM
  * @property int id
  */

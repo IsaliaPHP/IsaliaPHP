@@ -14,7 +14,7 @@ static $_inputId;
     static $_checked;
 
     /**
-     * Genera un formulario
+     * Genera la apertura de un formulario
      * @param string $url, url del formulario
      * @param array $attributes, atributos del formulario
      * @return string
@@ -31,6 +31,7 @@ static $_inputId;
     }
 
     /**
+     * Cierra un formulario
      * @return string
      */
     public static function close()
@@ -39,7 +40,7 @@ static $_inputId;
     }
 
     /**
-     * Genera un formulario con el atributo enctype="multipart/form-data" ideal para subir archivos
+     * Genera la aperturaun formulario con el atributo enctype="multipart/form-data" ideal para subir archivos
      * @param string $url
      * @param array $attributes
      * @return string
@@ -52,6 +53,7 @@ static $_inputId;
     }
 
     /**
+     * Obtiene los atributos del input
      * @param string $field
      * @param string $options
      * @param string $value

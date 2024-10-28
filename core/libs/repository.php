@@ -3,6 +3,7 @@
 /**
  * Repository
  * @author nelson rojas
+ * @abstract
  * Clase repositorio de objetos
  */
 class Repository

@@ -7,6 +7,13 @@
  */
 class Autoloader
 {
+    /**
+     * variable que almacena las rutas de las clases
+     * @var array $_folders
+     * @access private
+     * @static
+     * @var array
+     */
     private static $_folders = [LIBS_PATH,
         CORE_PATH . 'traits' . DS,
         CORE_PATH . 'interfaces' . DS,
@@ -16,6 +23,13 @@ class Autoloader
         APP_PATH . 'helpers' . DS
     ];
 
+    /**
+     * Carga de clases PSR0
+     * @param string $class_name
+     * @return bool
+     * @access private
+     * @static
+     */
     private static function loadPSR0($class_name) {
         // PSR0
         if (strpos($class_name, '\\')) {
@@ -29,8 +43,13 @@ class Autoloader
         return false;
     }
 
+    /**
+     * revisar si existe archivo de carga de composer y cargarlo
+     * @return bool
+     * @access private
+     * @static
+     */
     private static function loadPSR4() {
-        // revisar si existe archivo de carga de composer y cargarlo
         if (file_exists(dirname(LIBS_PATH) . DS . 'vendor' . DS . 'autoload.php')) {
             require_once dirname(LIBS_PATH) . DS . 'vendor' . DS . 'autoload.php';
             return true;

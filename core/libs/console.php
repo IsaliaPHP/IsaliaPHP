@@ -3,6 +3,7 @@
 /**
  * Console
  * @author nelson rojas
+ * @abstract
  * Clase que permite escribir logs
  */
 class Console {

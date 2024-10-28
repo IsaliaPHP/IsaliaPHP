@@ -3,6 +3,7 @@
 /**
  * Report
  * @author nelson rojas
+ * @abstract
  * Manegador de errores y excepciones
  */
 class Report
