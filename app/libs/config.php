@@ -8,15 +8,38 @@
 class Config {
     /**
      * utiliza de forma predeterminada MySQL (o MariaDB)
+     * para testing se utiliza SQLite
      */
-    const CONNECTION_STRING = 'mysql:host=127.0.0.1;dbname=BaseDatos;charset=utf8';
-    const USER = 'Usuario';
-    const PASSWORD = 'ClaveUsuario';
-    const PARAMETERS = [
-        PDO::ATTR_PERSISTENT => true, //conexión persistente
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+    const DB_CONFIG = [
+        'default' => [
+            'dsn' => 'mysql:host=127.0.0.1;dbname=BaseDatos;charset=utf8',
+            'user' => 'usuario',
+            'password' => 'clave_usuario',
+            'parameters' => [
+                PDO::ATTR_PERSISTENT => true, //conexión persistente
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            ]
+            ],
+        'testing' => [
+            'dsn' => 'sqlite:' . ROOT . '/tests/test.db',
+            'user' => null,
+            'password' => null,
+            'parameters' => [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+            ]
+            ],
+        'invalid' => [
+            'dsn' => 'sqlite:' . ROOT . '/tests/invalid.db',
+            'user' => null,
+            'password' => null,
+            'parameters' => [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+            ]
+        ]
     ];
-
+    
     /**
      * Permite ver los errores mientras estamos trabajando 
      * en el desarrollo de la aplicación. 

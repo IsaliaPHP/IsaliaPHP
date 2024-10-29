@@ -50,8 +50,8 @@ class Autoloader
      * @static
      */
     private static function loadPSR4() {
-        if (file_exists(dirname(LIBS_PATH) . DS . 'vendor' . DS . 'autoload.php')) {
-            require_once dirname(LIBS_PATH) . DS . 'vendor' . DS . 'autoload.php';
+        if (file_exists(ROOT . DS . 'vendor' . DS . 'autoload.php')) {
+            require_once ROOT . DS . 'vendor' . DS . 'autoload.php';
             return true;
         }   
         return false;
