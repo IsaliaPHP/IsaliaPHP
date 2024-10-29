@@ -46,6 +46,11 @@ class Model
         $this->_table_name = $table_name;
     }
 
+    public function getTableName()
+    {
+        return $this->_table_name;
+    }
+
     /**
      * Método para encontrar un registro por su ID.
      * @param int $id El ID del registro.
@@ -83,7 +88,7 @@ class Model
      * @param array $parameters Los parámetros de la condición.
      * @return Model|null El modelo hidratado o null si no hay resultados.
      */
-    public function findFirst(string $condition, array $parameters = null)
+    public function findFirst(string $condition='', array $parameters = null)
     {
         $sql = "SELECT * FROM " . $this->_table_name . " ";
 

@@ -15,8 +15,28 @@ class Db
      *
      * @var PDO
      */
-    private static $_connection = null;
+    protected static $_connection = null;
 
+    /**
+     * Entorno de configuración de la base de datos
+     * @var string
+     */
+    protected static $env = 'default';    
+
+    /**
+     * Configuración de la base de datos
+     * @var array
+     */
+    protected static $config = null;
+
+
+    public static function setEnv($env) {
+        self::$env = $env;
+    }
+    
+    public static function getConfig() {
+        return self::$config;
+    }
 
     /**
      * Sirve para conectarse a la base de datos
@@ -31,15 +51,17 @@ class Db
         }
 
         try {
+            self::$config = Config::DB_CONFIG[self::$env];
+
             self::$_connection = new PDO(
-                Config::CONNECTION_STRING,
-                Config::USER,
-                Config::PASSWORD,
-                Config::PARAMETERS
+                Config::DB_CONFIG[self::$env]['dsn'],
+                Config::DB_CONFIG[self::$env]['user'],
+                Config::DB_CONFIG[self::$env]['password'],
+                Config::DB_CONFIG[self::$env]['parameters']
             );
             return TRUE;
         } catch (Exception $e) {
-            throw new Exception($e->getMessage());
+            throw new Exception('Unable to connect to the database');
         }
     }
 
@@ -119,7 +141,7 @@ class Db
      *
      * @return int
      */
-    private static function execute(string $sql, array $parameters = null)
+    public static function execute(string $sql, array $parameters = null)
     {
 
         error_log($sql);

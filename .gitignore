@@ -1,3 +1,31 @@
+# Ignorar dependencias instaladas por Composer
+/vendor/
+
+# Cache de PHPUnit y otros archivos generados
+.phpunit.result.cache
+
+# Ignorar archivos de cobertura de PHPUnit
+coverage/
+coverage.xml
+
+# Ignorar archivos relacionados con IDEs comunes
+*.idea
+*.vscode
+nbproject/
 .DS_Store
+
+# Ignorar archivos temporales y logs
 app/temp/logs/**
 .vscode/**
+
+# Ignorar bases de datos locales o archivos de entorno específicos
+.env
+.env.local
+.env.test
+.env.*.local
+
+# Ignorar archivos de configuraciones personales de Mac/Linux
+*.swp
+
+# Ignorar base de datos de prueba
+test.db
