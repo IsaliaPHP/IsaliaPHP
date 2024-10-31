@@ -17,11 +17,7 @@ class Session
 	 */
 	public static function get(string $key)
 	{
-		if (empty($_SESSION[$key])) {
-			return null;
-		}
-
-		return $_SESSION[$key];
+		return $_SESSION[$key] ?? null;
 	}
 
 	/**

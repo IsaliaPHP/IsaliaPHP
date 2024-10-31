@@ -10,6 +10,12 @@ class Console {
 
     const LOGS_DIR = APP_PATH . 'temp' . DS . 'logs';
 
+    protected static $logsDir = self::LOGS_DIR;
+
+    public static function setLogsDir(string $path) {
+        self::$logsDir = $path;
+    }
+
     /**
      * Escribe dentro del archivo de log de acuerdo a la fecha del sistema
      * @param string $mensaje
@@ -18,7 +24,7 @@ class Console {
      */
     public static function writeLog(string $mensaje) {
         try {
-            $arch = fopen(realpath(self::LOGS_DIR) .
+            $arch = fopen(realpath(self::$logsDir) .
                     DS . "log_" . date("Y-m-d") . ".txt", "a+");
 
             fwrite($arch, "[" . date("Y-m-d H:i:s.u") . " " .
