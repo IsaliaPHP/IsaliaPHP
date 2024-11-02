@@ -111,10 +111,10 @@ Sintaxis
 findFirst(string $condition, array $parameters = null)
 ```
 
-El método **findFirst** requiere como parámetros un string como condición (generalmente una instrucción WHERE de sql) y, opcionalmente, un array de parámetros (para pasarle opciones PDO). Retorna un objeto con los atributos de la tabla.
+El método **findFirst** requiere como parámetros un string como condición (generalmente una instrucción condicional de sql, sin incluir la palabra WHERE) y, opcionalmente, un array de parámetros (para pasarle opciones PDO). Retorna un objeto con los atributos de la tabla.
 
 ```php
-$ultima_entrada = (new Entrada)->findFirst("WHERE activa = 1 ORDER BY id DESC");
+$ultima_entrada = (new Entrada)->findFirst("activa = 1 ORDER BY id DESC");
 
 /*
 retorna un objeto con los datos de la última entrada 
@@ -129,7 +129,7 @@ echo $ultima_entrada->cuerpo;
 
 
 
-$usuario = (new Usuario)->findFirst("WHERE login = :login", [':login' => $login]);
+$usuario = (new Usuario)->findFirst("login = :login", [':login' => $login]);
 /*
 En este ejemplo buscamos un usuario de acuerdo al atributo login. Usamos el 
 parámetro :login en el texto de la condición el que luego debemos pasar en el arreglo
@@ -148,7 +148,7 @@ findAll(string $condition, array $parameters = null)
 El método **findAll** es similar en parámetros al método obtenerPrimero, con la diferencia que retorna un arreglo de objetos.
 
 ```php
-$ultimas_entradas = (new Entrada)->findAll("WHERE activa = 1 ORDER BY id DESC LIMIT 10");
+$ultimas_entradas = (new Entrada)->findAll("activa = 1 ORDER BY id DESC LIMIT 10");
 
 /*
 retorna un arreglo con objetos con los datos de las última 10 entradas 
@@ -160,7 +160,7 @@ foreach($ultimas_entradas as $entrada) {
 }
 
 
-$usuarios = (new Usuario)->findAll("WHERE perfil = :perfil", [':perfil' => 'admin']);
+$usuarios = (new Usuario)->findAll("perfil = :perfil", [':perfil' => 'admin']);
 /*
 En este ejemplo buscamos los usuarios cuyo perfil tiene el valor admin. Usamos el 
 parámetro :perfil en el texto de la condición el que luego debemos pasar en el arreglo
@@ -287,12 +287,12 @@ Sintaxis
 update(array $attributes, string $condition = null)
 ```
 
-El método **update** permite modificar uno o varios registros en la tabla de acuerdo a la condición que se use al invocarlo. Retorna el número de filas (registros) afectadas en la actualización.
+El método **update** permite modificar uno o varios registros en la tabla de acuerdo a la condición que se use al invocarlo (sin incluir la palabra WHERE). Retorna el número de filas (registros) afectadas en la actualización.
 
 ```php
     //desactivar todos los registros de la tabla entrada que son del usuario 2
     $datos_de_la_entrada = [ 'activa' => 0 ];
-    $condicion = "WHERE usuario_id = 2";
+    $condicion = "usuario_id = 2";
 
     $entrada = new Entrada();
     $entrada->update($datos_de_la_entrada, $condicion);
@@ -300,7 +300,7 @@ El método **update** permite modificar uno o varios registros en la tabla de ac
     //UPDATE entrada set activa = 0 WHERE usuario_id = 2;
 ```
 
-Si la condición no es enviada se asume que se trata de WHERE id = algo_valor_para_id
+Si la condición no es enviada se asume que se trata de *id = algo_valor_para_id*
 ```php
     //desactivar la entrada cuyo id es 6
     $entrada = (new Entrada)->findById(6);
@@ -351,13 +351,13 @@ El método **deleteAll** permite quitar uno o más registros en la tabla de acue
 ```php
     //eliminar todas las entradas inactivas
     $entrada = new Entrada();
-    $entrada->deleteAll("WHERE activa = 0");
+    $entrada->deleteAll("activa = 0");
     //en términos de sql sería algo así
     //DELETE FROM entrada WHERE activa = 0;
 
     //eliminar todas las entradas del usuario 2
     $entrada = new Entrada();
-    $entrada->deleteAll("WHERE usuario_id = :id", [':id' => 2]);
+    $entrada->deleteAll("usuario_id = :id", [':id' => 2]);
     //en términos de sql sería algo así
     //DELETE FROM entrada WHERE usuario_id = 2;
 
@@ -372,10 +372,22 @@ Estos métodos son los siguientes: beforeCreate, afterCreate, beforeUpdate, afte
 Dentro de las utilidades que uno puede darle caben las validaciones, o la generación de valores para atributos que tienen tratamiento especial. Por ejemplo generar un atributo como SLUG (nombre amigable para las entradas de un blog), la encriptación de una contraseña, el cálculo de los impuestos a partir del valor NETO o BRUTO, despachar un correo luego de insertar cierta información, registrar logs de auditoría de sistema, actualizar un atributo de fecha, entre otras tantas ideas.
 
 
-## Otras opciones para acceder a datos
-Si bien la clase Modelo presenta métodos útiles para la mayor parte de los casos, algún usuario avanzado podría requerir utilizar directamente SQL para hacer consultas más detalladas o complejas.
+## Consultas avanzadas usando SqlBuilder incluido en la clase Model
+Dada la inclusión de la clase SqlBuilder en la clase Model, es posible realizar consultas avanzadas usando métodos de esta clase.
 
-Para ese tipo de tareas es posible utilizar la clase Db (acrónimo de Database)
+Por ejemplo, para ejecutar una consulta que cargue datos de la tabla entrada, ordenados por fecha de creación descendente, limitados a 10 registros, se puede hacer lo siguiente:
 
-Puede verse la documentación de Db en el archivo docs\db.md
+```php
+$entradas = (new Entrada)->orderBy('created_at', 'DESC')->limit(10)->findAll();
+```
+
+Puede usarse join para cargar datos de otras tablas relacionadas:
+
+```php
+$entradas = (new Entrada)->join('usuario', 'usuario.id = entrada.usuario_id')->orderBy('created_at', 'DESC')->limit(10)->findAll();
+```
+
+En términos simples, la implementación del SqlBuilder, acompañada de los métodos findAll, findFirst y execute permiten realizar consultas más complejas con una sintaxis más clara y legible.
+
+Para ver las opciones avanzadas disponibles puede consultarse la documentación de la clase SqlBuilder en el archivo docs\sql_builder.md
 

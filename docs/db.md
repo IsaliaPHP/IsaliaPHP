@@ -4,6 +4,26 @@ La clase Db (por Database /Base de Datos en español) aloja métodos estáticos 
 
 A continuación se describen sus métodos.
 
+### setEnv
+
+Sintaxis
+```php
+setEnv(string $env)
+```
+
+El método **setEnv** permite cambiar el entorno de configuración de la base de datos. Este método debe ser invocado antes de usar cualquier otro método de la clase Db, de lo contrario usará el entorno por defecto (default).
+
+
+### getEnv
+
+Sintaxis
+```php
+getEnv()
+```
+
+El método **getEnv** retorna el entorno de configuración de la base de datos.
+
+
 ### findAll
 
 Sintaxis
