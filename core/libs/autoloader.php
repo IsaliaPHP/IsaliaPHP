@@ -31,7 +31,6 @@ class Autoloader
      */
     public static function exec($class_name)
     {
-        $result = false;
         $snake_case = strtolower(preg_replace('/(?<!^)[A-Z]/', '_$0', $class_name));
 
         foreach (self::$_folders as $folder) {

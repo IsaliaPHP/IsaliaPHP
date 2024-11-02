@@ -15,9 +15,9 @@ class AttachmentManager {
      * Constructor de la clase AttachmentManager
      */
     public function __construct() {
-        $this->uploadDir = Config::$UPLOAD_DIR;
-        $this->maxFileSize = Config::$MAX_UPLOAD_FILE_SIZE; // 2MB by default
-        $this->allowedTypes = Config::$ALLOWED_FILE_TYPES;
+        $this->uploadDir = Config::UPLOAD_DIR;
+        $this->maxFileSize = Config::MAX_UPLOAD_FILE_SIZE; // 2MB by default
+        $this->allowedTypes = Config::ALLOWED_FILE_TYPES;
 
         if (!is_dir($this->uploadDir)) {
             mkdir($this->uploadDir, 0777, true);
