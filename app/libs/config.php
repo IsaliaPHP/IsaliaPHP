@@ -12,6 +12,7 @@ class Config {
      */
     const DB_CONFIG = [
         'default' => [
+
             'dsn' => 'mysql:host=127.0.0.1;dbname=MiBaseDeDatos;charset=utf8',
             'user' => 'Usuario',
             'password' => 'Clave',
@@ -19,7 +20,7 @@ class Config {
                 PDO::ATTR_PERSISTENT => true, //conexión persistente
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             ]
-            ],
+        ],
         'testing' => [
             'dsn' => 'sqlite:' . ROOT . '/tests/test.db',
             'user' => null,
