@@ -73,9 +73,6 @@ class Db
     {
         self::connect();
 
-        echo "sql: " . $sql . "\n";
-        echo "parameters: " . json_encode($parameters) . "\n";
-
         $sentence = self::$_connection->prepare($sql);
         if (is_array($parameters)) {
             $sentence->execute($parameters);

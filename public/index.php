@@ -5,8 +5,9 @@
  */
 date_default_timezone_set("America/Santiago");
 
-error_log("entramos a index en public");
-
+/**
+ * Definicion de constantes globales
+ */
 define('ROOT', dirname(dirname(__FILE__)));
 define('DS', DIRECTORY_SEPARATOR);
 define('APP_PATH', ROOT . DS . 'app' . DS);
@@ -75,7 +76,5 @@ Security::injectAntiCSRFHeader();
 /**
  * Cargamos el controlador de acuerdo a la $url recibida en el navegador web
  */
-error_log("antes de llamar url");
 Load::controllerFromUrl($url);
-error_log("luego de llamar url");
 

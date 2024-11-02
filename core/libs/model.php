@@ -156,10 +156,12 @@ class Model
             // Si $attributes no es null, cargamos solo los atributos proporcionados
             $this->load($attributes);
         }
-
+        
         // Aseguramos que haya atributos para actualizar
         if (empty($attributes)) {
             return false; // No hay nada que actualizar
+        } else {
+            $attributes = $this->_attributes;
         }
 
         $this->beforeUpdate();

@@ -22,12 +22,17 @@ class ViewTest extends TestCase
         View::render("home/show");
     }    
 
-    public function testRenderThrowsExceptionForNonExistentTemplate()
+    public function testRenderPartial()
     {
-        View::$_template = null;
+        View::partial("footer", ["time" => 10]);
+        $this->expectOutputRegex("/footer/");
+    }
+
+    public function testRenderUnexistingPartial()
+    {
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage("No se encuentra _shared/templates/index.phtml");
-        View::render("hello/index");
+        $this->expectExceptionMessage("No se encuentra _shared/partials/inexistente.phtml");
+        View::partial("inexistente");
     }
 
 }

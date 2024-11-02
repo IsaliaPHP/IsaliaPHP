@@ -97,6 +97,10 @@ class Controller
      */
     public function __destruct()
     {
+        if (!method_exists($this, $this->_action)) {
+            return;
+        }
+        
         if ($this->_redirect !== null) {
             Router::to($this->_redirect);
             return true;
@@ -105,7 +109,7 @@ class Controller
                 View::setTemplate("default");
             }
 
-            if (!empty($this->_view) && method_exists($this, $this->_view)) {
+            if ($this->_view != null) {
                 View::render($current_view, $this->_properties);
             }
         }
