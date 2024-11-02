@@ -13,6 +13,7 @@ class Model
     protected $_model_name;
     protected $_table_name;
     protected $_attributes = [];
+    protected $_query_builder;
 
     /**
      * Constructor de la clase Model.
@@ -30,6 +31,8 @@ class Model
             )
         );
 
+        $this->_query_builder = new SqlBuilder($this->_table_name);
+
         if ((int) method_exists($this, "initialize")) {
             call_user_func(array($this, "initialize"));
         }
@@ -44,8 +47,13 @@ class Model
     public function setTableName(string $table_name)
     {
         $this->_table_name = $table_name;
+        $this->_query_builder->setTableName($table_name);
     }
 
+    /**
+     * Método para obtener el nombre de la tabla.
+     * @return string El nombre de la tabla.
+     */
     public function getTableName()
     {
         return $this->_table_name;
@@ -58,10 +66,12 @@ class Model
      */
     public function findById(int $id)
     {
-        $sql = "SELECT * FROM " . $this->_table_name .
-            " WHERE id = $id";
-        $result = Db::findFirst($sql);
-        return $this->hydrate($result);
+        $result = $this->_query_builder
+            ->reset()
+            ->where("id = :id")
+            ->limit(1);
+        
+        return $this->hydrate(Db::findFirst($result->toSql(), [':id' => $id]));
     }
 
     /**
@@ -72,13 +82,13 @@ class Model
      */
     public function findAll(string $condition = '', array $parameters = null)
     {
-        $sql = "SELECT * FROM " . $this->_table_name . " ";
-
+        $query = $this->_query_builder->reset();
+        
         if (!empty($condition)) {
-            $sql .= $condition;
+            $query->where($condition);
         }
-
-        $results = Db::findAll($sql, $parameters) ?? [];
+        
+        $results = Db::findAll($query->toSql(), $parameters) ?? [];
         return $this->hydrateAll($results);
     }
 
@@ -88,15 +98,17 @@ class Model
      * @param array $parameters Los parámetros de la condición.
      * @return Model|null El modelo hidratado o null si no hay resultados.
      */
-    public function findFirst(string $condition='', array $parameters = null)
+    public function findFirst(string $condition = '', array $parameters = null)
     {
-        $sql = "SELECT * FROM " . $this->_table_name . " ";
-
+        $query = $this->_query_builder
+            ->reset()
+            ->limit(1);
+        
         if (!empty($condition)) {
-            $sql .= $condition;
+            $query->where($condition);
         }
-
-        $result = Db::findFirst($sql, $parameters);
+        
+        $result = Db::findFirst($query->toSql(), $parameters);
         return $this->hydrate($result);
     }
 
@@ -133,8 +145,9 @@ class Model
     public function update(array $attributes = null, string $condition = '')
     {
         if (empty($condition)) {
-            $condition = " WHERE id = " . $this->id;
-        }
+            $condition = "id = " . $this->id;
+        } 
+        $condition = " WHERE " . $condition;
 
         // Si $attributes es null, usamos todos los atributos del modelo
         if ($attributes === null) {
@@ -163,6 +176,7 @@ class Model
      */
     public function deleteAll(string $condition, array $parameters = null)
     {
+        $condition = " WHERE " . $condition;
         $this->beforeDelete();
         $result = Db::delete($this->_table_name, $condition, $parameters);
         $this->afterDelete();
@@ -323,6 +337,34 @@ class Model
     public function __get($attribute)
     {
         return $this->_attributes[$attribute] ?? null;
+    }
+
+    /**
+     * Delega mágicamente los métodos no definidos al SqlBuilder
+     * @param string $method
+     * @param array $arguments
+     * @return mixed
+     */
+    public function __call($method, $arguments)
+    {
+        if (method_exists($this->_query_builder, $method)) {
+            $result = call_user_func_array([$this->_query_builder, $method], $arguments);
+            return ($result === $this->_query_builder) ? $this : $result;
+        }
+        throw new \BadMethodCallException("Method {$method} does not exist");
+    }
+
+    /**
+     * Ejecuta la consulta y retorna los resultados hidratados
+     * @return array
+     */
+    public function execute()
+    {
+        $results = Db::findAll(
+            $this->_query_builder->toSql(), 
+            $this->_query_builder->getParameters()
+        );
+        return $this->hydrateAll($results);
     }
 
 }

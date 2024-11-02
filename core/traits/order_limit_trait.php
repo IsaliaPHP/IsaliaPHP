@@ -56,7 +56,7 @@ trait OrderLimitTrait {
      */
     protected function getLimitClause() {
         $clause = '';
-        if ($this->_limit !== null) {
+        if ($this->_limit !== null && !empty($this->_limit)) {
             $clause .= " LIMIT {$this->_limit}";
             if ($this->_offset !== null) {
                 $clause .= " OFFSET {$this->_offset}";

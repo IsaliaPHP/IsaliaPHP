@@ -73,6 +73,9 @@ class Db
     {
         self::connect();
 
+        echo "sql: " . $sql . "\n";
+        echo "parameters: " . json_encode($parameters) . "\n";
+
         $sentence = self::$_connection->prepare($sql);
         if (is_array($parameters)) {
             $sentence->execute($parameters);
@@ -91,7 +94,6 @@ class Db
      */
     public static function findAll(string $sql, array $parameters = null)
     {
-
         $sentence = self::_exec($sql, $parameters);
 
         $rows = $sentence->fetchAll(PDO::FETCH_ASSOC);

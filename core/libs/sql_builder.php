@@ -10,12 +10,22 @@ class SqlBuilder {
 
     private $_table;
     private $_columns = ['*'];
+    protected $_parameters = [];
 
     /**
      * Constructor de la clase SqlBuilder
      * @param string $table Nombre de la tabla
      */
     public function __construct($table) {
+        $this->_table = $table;
+    }
+
+    /**
+     * Establece manualmente el nombre de la tabla
+     * @param string $table Nombre de la tabla
+     * @return $this
+     */
+    public function setTableName($table) {
         $this->_table = $table;
     }
 
@@ -38,6 +48,26 @@ class SqlBuilder {
     public function paginate($page, $perPage) {
         $offset = ($page - 1) * $perPage;
         return $this->limit($perPage)->offset($offset);
+    }
+
+    public function getParameters() {
+        return $this->_parameters;
+    }
+
+    public function setParameters($parameters) {
+        $this->_parameters = $parameters;
+        return $this;
+    }
+
+    public function reset()
+    {
+        // Reset all query builder properties
+        $this->_conditions = [];
+        $this->_joins = [];
+        $this->_orders = [];
+        $this->_limit = '';
+        $this->_parameters = [];
+        return $this;
     }
 
     /**

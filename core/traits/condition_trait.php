@@ -10,12 +10,26 @@ trait ConditionTrait {
     private $_conditions = [];
 
     /**
-     * Agrega una condición a la consulta
+     * Agrega una condición AND a la consulta
      * @param string $condition
      * @return self
      */
     public function where($condition) {
-        $this->_conditions[] = $condition;
+        if (!empty($this->_conditions)) {
+            $this->_conditions[] = ['AND', $condition];
+        } else {
+            $this->_conditions[] = ['', $condition];
+        }
+        return $this;
+    }
+
+    /**
+     * Agrega una condición OR a la consulta
+     * @param string $condition
+     * @return self
+     */
+    public function orWhere($condition) {
+        $this->_conditions[] = ['OR', $condition];
         return $this;
     }
 
@@ -24,6 +38,17 @@ trait ConditionTrait {
      * @return string
      */
     protected function getWhereClause() {
-        return empty($this->_conditions) ? '' : ' WHERE ' . implode(' AND ', $this->_conditions);
+        if (empty($this->_conditions)) {
+            return '';
+        }
+
+        $sql = ' WHERE ';
+        foreach ($this->_conditions as $i => $condition) {
+            if ($i > 0) {
+                $sql .= " {$condition[0]} ";
+            }
+            $sql .= $condition[1];
+        }
+        return $sql;
     }
 }
