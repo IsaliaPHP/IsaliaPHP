@@ -152,8 +152,6 @@ class Model
         // Si $attributes es null, usamos todos los atributos del modelo
         if (isset($attributes) && count($attributes) > 0) {
             $this->load($attributes);
-        } else {
-            return false;
         }
         
         $this->beforeUpdate();

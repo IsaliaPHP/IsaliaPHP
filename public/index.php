@@ -62,6 +62,11 @@ set_error_handler('Report::handleError');
 set_exception_handler('Report::handleException');
 
 /**
+ * Asignamos el valor de show_errors usando la configuración de la aplicación
+ */
+Report::setShowErrors(Config::SHOW_ERRORS);
+
+/**
  * Como las peticiones que vienen del navegador deben ser
  * consideradas como sospechosas, sanitizamos las variables 
  * globales de PHP por si las dudas

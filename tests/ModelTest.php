@@ -156,9 +156,9 @@ class ModelTest extends TestCase
     }
 
     public function testUpdateUserNoData()
-    {
+    {        
+        $this->expectException(PDOException::class);
         $result = $this->model->update();
-
         $this->assertFalse($result);
     }
 

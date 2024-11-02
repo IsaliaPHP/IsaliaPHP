@@ -7,7 +7,7 @@ class ReportTest extends TestCase
 
     protected function setUp(): void
     {
-        Config::$SHOW_ERRORS = true;
+        Report::setShowErrors(true);
         $_SERVER['REMOTE_ADDR'] = '127.0.0.1';        
     }
 
@@ -43,7 +43,7 @@ class ReportTest extends TestCase
     public function testHandleExceptionWithShowErrors()
     {
         // Configurar para mostrar errores
-        Config::$SHOW_ERRORS = true;
+        Report::setShowErrors(true);
 
         // Crear una excepción de prueba
         $exception = new \Exception("Test exception", 500);
@@ -62,7 +62,7 @@ class ReportTest extends TestCase
     public function testHandleExceptionWithoutShowErrors()
     {
         // Configurar para no mostrar errores
-        Config::$SHOW_ERRORS = false;
+        Report::setShowErrors(false);
 
         // Crear una excepción de prueba
         $exception = new \Exception("Test exception", 500);

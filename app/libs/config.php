@@ -46,7 +46,7 @@ class Config {
      * Una vez que pases a producción lo ideal es pasarle el valor
      * false
      */
-    public static $SHOW_ERRORS = true;
+    const SHOW_ERRORS = true;
 
     /**
      * Lista blanca para mostrar errores al desarrollador
@@ -61,17 +61,17 @@ class Config {
     /**
      * Directorio para almacenar los archivos adjuntos
      */
-    public static $UPLOAD_DIR = ROOT . DS . 'public' . DS . 'files';
+    const UPLOAD_DIR = ROOT . DS . 'public' . DS . 'files';
     
     /**
      * Tamaño máximo del archivo en bytes (2MB)
      */
-    public static $MAX_UPLOAD_FILE_SIZE = 2097152;
+    const MAX_UPLOAD_FILE_SIZE = 2097152;
 
     /**
      * Tipos de archivos permitidos
      */
-    public static $ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png', 'application/pdf'];
+    const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png', 'application/pdf'];
     
     /**
      * Controlador predeterminado
