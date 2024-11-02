@@ -59,6 +59,11 @@ class Model
         return $this->_table_name;
     }
 
+    public function getTableName()
+    {
+        return $this->_table_name;
+    }
+
     /**
      * Método para encontrar un registro por su ID.
      * @param int $id El ID del registro.
