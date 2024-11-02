@@ -97,6 +97,10 @@ class Controller
      */
     public function __destruct()
     {
+        if (!method_exists($this, $this->_action)) {
+            return;
+        }
+        
         if ($this->_redirect !== null) {
             Router::to($this->_redirect);
             return true;

@@ -7,17 +7,17 @@
  * Clase que permite gestionar los archivos adjuntos
  */
 class AttachmentManager {
-    protected $uploadDir;
-    protected $maxFileSize;
-    protected $allowedTypes;
-
+    public $uploadDir;
+    public $maxFileSize;
+    public $allowedTypes;
+    
     /**
      * Constructor de la clase AttachmentManager
      */
     public function __construct() {
-        $this->uploadDir = Config::UPLOAD_DIR;
-        $this->maxFileSize = Config::MAX_UPLOAD_FILE_SIZE; // 2MB by default
-        $this->allowedTypes = Config::ALLOWED_FILE_TYPES;
+        $this->uploadDir = Config::$UPLOAD_DIR;
+        $this->maxFileSize = Config::$MAX_UPLOAD_FILE_SIZE; // 2MB by default
+        $this->allowedTypes = Config::$ALLOWED_FILE_TYPES;
 
         if (!is_dir($this->uploadDir)) {
             mkdir($this->uploadDir, 0777, true);
@@ -46,10 +46,14 @@ class AttachmentManager {
         $filename = $this->generateFilename($file['name']);
         $filePath = $this->uploadDir . '/' . $filename;
 
+        if (!file_exists($file['tmp_name'])) {
+            throw new Exception('El archivo temporal no existe. ' . $file['tmp_name']);
+        }
+
         if (move_uploaded_file($file['tmp_name'], $filePath)) {
             return $filename;
         } else {
-            throw new Exception('Error al mover el archivo subido.');
+            throw new Exception('Error al mover el archivo subido. ' . $filePath . ' a ' . $this->uploadDir . ' desde ' . $file['tmp_name']);
         }
     }
 

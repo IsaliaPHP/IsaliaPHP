@@ -29,28 +29,10 @@ class Sanitize {
     }
 
     /**
-     * Elimina las variables globales de PHP
-     * @return void
-     */
-    private static function unregisterGlobals() {
-        if (ini_get('register_globals')) {
-            $array = array('_SESSION', '_POST', '_GET', '_COOKIE', '_REQUEST', '_SERVER', '_ENV', '_FILES');
-            foreach ($array as $value) {
-                foreach ($GLOBALS[$value] as $key => $var) {
-                    if ($var === $GLOBALS[$key]) {
-                        unset($GLOBALS[$key]);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
      * Ejecuta funciones que se encargan de sanitizar variables globales de PHP
      * @return void
      */
     public static function execute() {
         static::removeMagicQuotes();
-        static::unregisterGlobals();
     }
 }

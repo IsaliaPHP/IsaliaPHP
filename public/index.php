@@ -5,6 +5,9 @@
  */
 date_default_timezone_set("America/Santiago");
 
+/**
+ * Definicion de constantes globales
+ */
 define('ROOT', dirname(dirname(__FILE__)));
 define('DS', DIRECTORY_SEPARATOR);
 define('APP_PATH', ROOT . DS . 'app' . DS);
@@ -57,6 +60,11 @@ ini_set('display_errors', 'On'); //comentar en producción
  */
 set_error_handler('Report::handleError');
 set_exception_handler('Report::handleException');
+
+/**
+ * Asignamos el valor de show_errors usando la configuración de la aplicación
+ */
+Report::setShowErrors(Config::SHOW_ERRORS);
 
 /**
  * Como las peticiones que vienen del navegador deben ser

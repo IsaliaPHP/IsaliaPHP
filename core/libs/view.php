@@ -37,16 +37,17 @@ class View
         }
 
         if (!empty(self::$_template)) {
+            $archivo_plantilla = $ruta_vistas . '_shared' . DS . 'templates' . DS . self::$_template . '.phtml';
+            if (!file_exists($archivo_plantilla)) {
+                throw new Exception('No existe plantilla: ' . $archivo_plantilla);
+            }
+
             ob_start();
             require_once $archivo_vista;
             self::setContent(ob_get_clean());
-
-            $archivo_plantilla = $ruta_vistas . '_shared' . DS . 'templates' . DS . self::$_template . '.phtml';
             if (file_exists($archivo_plantilla)) {
                 include($archivo_plantilla);
-            } else {
-                throw (new Exception('No existe plantilla: ' . $archivo_plantilla));
-            }
+            }            
         } else {
             require_once $archivo_vista;
             return true;
@@ -71,7 +72,7 @@ class View
         if (file_exists($ruta)) {
             require $ruta;
         } else {
-            throw new Exception("No se encuentra " . $ruta, 1);
+            throw new Exception("No se encuentra " . '_shared' . DS . 'partials' . DS . $partial_name . '.phtml', 1);
         }
     }
 

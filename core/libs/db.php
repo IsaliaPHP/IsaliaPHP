@@ -91,7 +91,6 @@ class Db
      */
     public static function findAll(string $sql, array $parameters = null)
     {
-
         $sentence = self::_exec($sql, $parameters);
 
         $rows = $sentence->fetchAll(PDO::FETCH_ASSOC);

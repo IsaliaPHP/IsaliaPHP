@@ -9,6 +9,22 @@
 class Report
 {
     /**
+     * Variable que indica si se muestran los errores
+     * @var bool
+     */
+    protected static $show_errors = true;
+
+    /**
+     * Setea el valor de show_errors
+     * @param $value
+     * @return void
+     */
+    public static function setShowErrors($value)
+    {
+        self::$show_errors = $value;
+    }
+
+    /**
      * Manejador general de errores
      * @param $level
      * @param $message
@@ -32,21 +48,21 @@ class Report
     public static function handleException($exception)
     {
         View::setHasErrors(true);
-        
+
         $code = $exception->getCode();
         if ($code != 404) {
             $code = 500;
         }
         http_response_code($code);
 
-        if (Config::SHOW_ERRORS || in_array($_SERVER['REMOTE_ADDR'], Config::EXCEPTIONS)) {
+        if (self::$show_errors && in_array($_SERVER['REMOTE_ADDR'], Config::EXCEPTIONS)) {
             View::partial("error/header");
             echo "<h1 class='text-danger'>Fatal error</h1>";
             echo "<p>Uncaught exception: '" . get_class($exception) . "'</p>";
             echo "<p>Message: '" . $exception->getMessage() . "'</p>";
             echo "<p>Stack trace:<pre>" . $exception->getTraceAsString() . "</pre></p>";
             echo "<p>Thrown in '" . $exception->getFile() . "' on line " . $exception->getLine() . "</p>";
-            View::partial("error/footer");            
+            View::partial("error/footer");
         } else {
             $log = APP_PATH . 'temp' . DS . 'logs' . DS . date('Y-m-d') . '.txt';
             ini_set('error_log', $log);
@@ -57,7 +73,7 @@ class Report
             $message .= "\nThrown in '" . $exception->getFile() . "' on line " . $exception->getLine();
 
             error_log($message);
-            
+
             View::render("_shared/templates/$code");
         }
     }
