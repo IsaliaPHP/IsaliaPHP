@@ -150,22 +150,14 @@ class Model
         $condition = " WHERE " . $condition;
 
         // Si $attributes es null, usamos todos los atributos del modelo
-        if ($attributes === null) {
-            $attributes = $this->_attributes;
-        } else {
-            // Si $attributes no es null, cargamos solo los atributos proporcionados
+        if (isset($attributes) && count($attributes) > 0) {
             $this->load($attributes);
+        } else {
+            return false;
         }
         
-        // Aseguramos que haya atributos para actualizar
-        if (empty($attributes)) {
-            return false; // No hay nada que actualizar
-        } else {
-            $attributes = $this->_attributes;
-        }
-
         $this->beforeUpdate();
-        $result = Db::update($this->_table_name, $attributes, $condition);
+        $result = Db::update($this->_table_name, $this->_attributes, $condition);
         $this->afterUpdate();
         return ($result > 0);
     }
