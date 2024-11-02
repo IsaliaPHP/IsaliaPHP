@@ -12,9 +12,9 @@ class Config {
      */
     const DB_CONFIG = [
         'default' => [
-            'dsn' => 'mysql:host=127.0.0.1;dbname=blog;charset=utf8',
-            'user' => 'nelson',
-            'password' => 's3cret',
+            'dsn' => 'mysql:host=127.0.0.1;dbname=MiBaseDeDatos;charset=utf8',
+            'user' => 'Usuario',
+            'password' => 'Clave',
             'parameters' => [
                 PDO::ATTR_PERSISTENT => true, //conexión persistente
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
