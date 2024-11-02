@@ -40,7 +40,6 @@ class Load
         } else {
             /* Error Generation Code Here */
             throw new Exception("$controlador/$accion no existe");
-            return false;
         }
     }
 
