@@ -105,7 +105,7 @@ class Controller
                 View::setTemplate("default");
             }
 
-            if ($this->_view != null) {
+            if (!empty($this->_view) && method_exists($this, $this->_view)) {
                 View::render($current_view, $this->_properties);
             }
         }

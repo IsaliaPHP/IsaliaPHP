@@ -36,10 +36,12 @@ class Load
         $despachador = new $controlador($controlador, $accion);
 
         if ((int) method_exists($controlador, $accion)) {
+            error_log("entra a llamar $controlador/$accion");
             call_user_func_array(array($despachador, $accion), $queryString);
         } else {
             /* Error Generation Code Here */
             throw new Exception("$controlador/$accion no existe");
+            return false;
         }
     }
 

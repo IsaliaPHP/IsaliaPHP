@@ -12,6 +12,15 @@ class HomeController extends Controller
     public function beforeFilter()
     {
     }
+
+    /**
+     * funcion que se ejecuta despues de beforeFilter y antes de 
+     * la acción requerida
+     */
+    public function initialize()
+    {
+     
+    }
     /**
      * Método predeterminado si no se modifica en 
      * app\libs\config.php

@@ -12,9 +12,9 @@ class Config {
      */
     const DB_CONFIG = [
         'default' => [
-            'dsn' => 'mysql:host=127.0.0.1;dbname=BaseDatos;charset=utf8',
-            'user' => 'usuario',
-            'password' => 'clave_usuario',
+            'dsn' => 'mysql:host=127.0.0.1;dbname=blog;charset=utf8',
+            'user' => 'nelson',
+            'password' => 's3cret',
             'parameters' => [
                 PDO::ATTR_PERSISTENT => true, //conexión persistente
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -46,7 +46,7 @@ class Config {
      * Una vez que pases a producción lo ideal es pasarle el valor
      * false
      */
-    const SHOW_ERRORS = true;
+    public static $SHOW_ERRORS = true;
 
     /**
      * Lista blanca para mostrar errores al desarrollador
@@ -61,17 +61,17 @@ class Config {
     /**
      * Directorio para almacenar los archivos adjuntos
      */
-    const UPLOAD_DIR = ROOT . DS . 'public' . DS . 'files';
+    public static $UPLOAD_DIR = ROOT . DS . 'public' . DS . 'files';
     
     /**
      * Tamaño máximo del archivo en bytes (2MB)
      */
-    const MAX_UPLOAD_FILE_SIZE = 2097152;
+    public static $MAX_UPLOAD_FILE_SIZE = 2097152;
 
     /**
      * Tipos de archivos permitidos
      */
-    const ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png', 'application/pdf'];
+    public static $ALLOWED_FILE_TYPES = ['image/jpeg', 'image/png', 'application/pdf'];
     
     /**
      * Controlador predeterminado

@@ -39,7 +39,7 @@ class Report
         }
         http_response_code($code);
 
-        if (Config::SHOW_ERRORS || in_array($_SERVER['REMOTE_ADDR'], Config::EXCEPTIONS)) {
+        if (Config::$SHOW_ERRORS || in_array($_SERVER['REMOTE_ADDR'], Config::EXCEPTIONS)) {
             View::partial("error/header");
             echo "<h1 class='text-danger'>Fatal error</h1>";
             echo "<p>Uncaught exception: '" . get_class($exception) . "'</p>";
@@ -48,8 +48,8 @@ class Report
             echo "<p>Thrown in '" . $exception->getFile() . "' on line " . $exception->getLine() . "</p>";
             View::partial("error/footer");            
         } else {
-            $log = APP_PATH . 'temp' . DS . 'logs' . DS . date('Y-m-d') . '.txt';
-            ini_set('error_log', $log);
+            //$log = APP_PATH . 'temp' . DS . 'logs' . DS . date('Y-m-d') . '.txt';
+            //ini_set('error_log', $log);
 
             $message = "Uncaught exception: '" . get_class($exception) . "'";
             $message .= " with message '" . $exception->getMessage() . "'";

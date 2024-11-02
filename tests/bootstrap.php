@@ -8,6 +8,7 @@ define('APP_PATH', ROOT . DS . 'app' . DS);
 define('CORE_PATH', ROOT . DS . 'core' . DS);
 define('LIBS_PATH', CORE_PATH . 'libs' . DS);
 define('PUBLIC_PATH', '/');
+define('START_TIME', microtime(true));
 
 /**
  * Generación de carga automática de clases

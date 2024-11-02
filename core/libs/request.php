@@ -8,12 +8,41 @@
  */
 class Request {
     /**
+     * Datos de entrada
+     */
+    private static $inputData = [
+        'post' => null,
+        'get' => null,
+    ];
+
+    /**
+     * Configuración
+     */
+    public static $config;
+
+    /**
+     * Establece los datos de entrada
+     */
+    public static function setInputData(array $post = null, array $get = null) {
+        self::$inputData['post'] = $post;
+        self::$inputData['get'] = $get;
+    }
+
+    /**
+     * Establece la configuración
+     */
+    public static function setConfig($config) {
+        self::$config = $config;
+    }
+
+    /**
      * Obtiene el contenido de $_POST[$var]
      * @param string $var
      * @return mixed|null
      */
     public static function post(string $var) {
-        return filter_has_var(INPUT_POST, $var) ? $_POST[$var] : NULL;
+        $post = self::$inputData['post'] ?? $_POST;
+        return isset($post[$var]) ? $post[$var] : null;
     }
 
     /**
@@ -21,8 +50,9 @@ class Request {
      * @param string $var
      * @return bool
      */
-    public static function hasPost(string $var):bool {
-        return filter_has_var(INPUT_POST, $var);
+    public static function hasPost(string $var): bool {
+        $post = self::$inputData['post'] ?? $_POST;
+        return isset($post[$var]);
     }
 
     /**
@@ -31,7 +61,8 @@ class Request {
      * @return mixed|null
      */
     public static function get(string $var) {
-        return filter_has_var(INPUT_GET, $var) ? $_GET[$var] : NULL;
+        $get = self::$inputData['get'] ?? $_GET;
+        return isset($get[$var]) ? $get[$var] : null;
     }
 
     /**
@@ -39,8 +70,9 @@ class Request {
      * @param string $var
      * @return bool
      */
-    public static function hasGet(string $var):bool {
-        return filter_has_var(INPUT_GET, $var);
+    public static function hasGet(string $var): bool {
+        $get = self::$inputData['get'] ?? $_GET;
+        return isset($get[$var]);
     }
 
     /**
@@ -50,17 +82,15 @@ class Request {
      */
     public static function isSafe()
     {
-        $result = filter_has_var(INPUT_POST, 'safety_key') ? $_POST['safety_key'] : '';
-        
+        $post = self::$inputData['post'] ?? $_POST;
+        $result = isset($post['safety_key']) ? $post['safety_key'] : '';
+
         if (strlen($result) != 66) {
             return false;
         }
-        $resultMD5 = substr($result, - 33, - 1);
+        $resultMD5 = substr($result, -33, -1);
 
-        if ($resultMD5 === md5(Config::SAFETY_SEED)) {
-            return true;
-        } else {
-            return false;
-        }
+        $safetySeed = self::$config ? self::$config::SAFETY_SEED : Config::SAFETY_SEED;
+        return $resultMD5 === md5($safetySeed);
     }
 }
