@@ -63,7 +63,7 @@ Otra forma de pasar datos desde el controlador a la vista es usar las propiedade
 class EntradasController extends Controller
 {
     public function index(){
-        $this->lista_de_entradas_activas = (new Entradas)->findAll("WHERE activa = 1");
+        $this->lista_de_entradas_activas = (new Entradas)->findAll("activa = 1");
     }
 }
 ```
